@@ -1,0 +1,1 @@
+const i=()=>{const e=document.querySelector(".hero"),o=document.querySelector(".visualization"),t=document.querySelector("#btn-viz");o&&t&&t.addEventListener("click",()=>{e.classList.add("hide"),o.classList.add("show")})};function n(){i(),console.log("init viz")}export{n as init};

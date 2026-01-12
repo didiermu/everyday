@@ -1,0 +1,844 @@
+{
+    "1": {
+        "title": "A Promising Year Ahead",
+        "fecha": "1 Jan - 11 Feb, 2024",
+        "rango": "Days 01 to 42",
+        "duracion": "42 days",
+        "imagen": "viz-01.jpg",
+        "hover": false,
+        "story": "",
+        "emotions": [
+            {
+                "emotion": "Just fine",
+                "count": 16,
+                "percentage": "38.1%",
+                "color": "beige"
+            },
+            {
+                "emotion": "Happy/Satisfied",
+                "count": 12,
+                "percentage": "28.6%",
+                "color": "yellow"
+            },
+            {
+                "emotion": "Excited / Motivated",
+                "count": 5,
+                "percentage": "11.9%",
+                "color": "pink"
+            },
+            {
+                "emotion": "Sad",
+                "count": 3,
+                "percentage": "7.1%",
+                "color": "blue"
+            },
+            {
+                "emotion": "Anxious / Stressed",
+                "count": 2,
+                "percentage": "4.8%",
+                "color": "orange"
+            },
+            {
+                "emotion": "Confused",
+                "count": 1,
+                "percentage": "2.4%",
+                "color": "brown"
+            },
+            {
+                "emotion": "Peaceful",
+                "count": 1,
+                "percentage": "2.4%",
+                "color": "lavender"
+            },
+            {
+                "emotion": "Inspired",
+                "count": 1,
+                "percentage": "2.4%",
+                "color": "lime"
+            },
+            {
+                "emotion": "Extremely Happy",
+                "count": 1,
+                "percentage": "2.4%",
+                "color": "magenta"
+            }
+        ],
+        "total": {
+            "count": 42,
+            "percentage": "100%"
+        },
+        "resumen": "A promising year began as I fell in love with someone while navigating a long-distance relationship. Soon, I was going to live briefly in a different country and start learning a new language. I was excited to finally collaborate on artistic projects with him and travel together. He was loving and supportive—what could possibly go wrong?",
+        "highlights": [
+            {
+                "1": {
+                    "day": "25",
+                    "emotion": "Just Fine",
+                    "location": "México",
+                    "image": "viz-02-1.jpg",
+                    "botones": "1",
+                    "date": "25 Jan, 2024",
+                    "title": "Using a contraception ring",
+                    "resume": "I don’t recommend it; it was awful. There’s a high risk of thrombosis, and I experienced the worst headaches of my life. Never again."
+                }
+            }
+        ]
+    },
+    "2": {
+        "title": "The trip: 33 days of emotions",
+        "fecha": "12 Feb - 15 Mar, 2024",
+        "rango": "Days 43 to 76",
+        "duracion": "33 days",
+        "imagen": "viz-02.jpg",
+        "hover": false,
+        "story": "",
+        "emotions": [
+            {
+                "emotion": "Happy/Satisfied",
+                "count": 10,
+                "percentage": "30.3%",
+                "color": "yellow"
+            },
+            {
+                "emotion": "Just fine",
+                "count": 8,
+                "percentage": "24.2%",
+                "color": "beige"
+            },
+            {
+                "emotion": "Confused",
+                "count": 4,
+                "percentage": "12.2%",
+                "color": "brown"
+            },
+            {
+                "emotion": "Anxious / Stressed",
+                "count": 3,
+                "percentage": "9.0%",
+                "color": "orange"
+            },
+            {
+                "emotion": "Sad",
+                "count": 3,
+                "percentage": "9.0%",
+                "color": "blue"
+            },
+            {
+                "emotion": "Excited / Motivated",
+                "count": 2,
+                "percentage": "6.0%",
+                "color": "pink"
+            },
+            {
+                "emotion": "Peaceful",
+                "count": 2,
+                "percentage": "6.0%",
+                "color": "lavender"
+            },
+            {
+                "emotion": "Extremely Happy",
+                "count": 1,
+                "percentage": "3.0%",
+                "color": "magenta"
+            }
+        ],
+        "total": {
+            "count": 33,
+            "percentage": "100%"
+        },
+        "resumen": "I spent a month living with him and his daughter in Europe to see if we could truly make it work. I also took the opportunity to visit one of my best friends in the US. The trip was full of surprises—some pleasant, while others were disappointing and challenging. I returned feeling grateful for the experience and even created a project about it, but I was also quite confused about my future.",
+        "highlights": [
+            {
+                "1": {
+                    "day": "",
+                    "emotion": "",
+                    "location": "",
+                    "image": "viz-02-1.jpg",
+                    "date": "",
+                    "title": "",
+                    "resume": ""
+                }
+            }
+        ]
+    },
+    "3": {
+        "title": "Back home. Crisis gestation",
+        "fecha": "16 Mar - 3 May, 2024",
+        "rango": "Days 76 to 124",
+        "duracion": "49 days",
+        "imagen": "viz-03.jpg",
+        "hover": true,
+        "story": "<h4>23 April, 2024</h4><h3>A dear friend died</h3><p>Rocío used to bake my favorite pecan cookies. She developed arthritis at a young age and sadly passed away from pneumonia, likely due to complications related to her autoimmune condition. It was heartbreaking for me not to have the chance to say goodbye. She was the kind of person I admired for her stoic approach to life despite her challenges; she always smiled and worked hard without complaining.</p>",
+        "emotions": [
+            {
+                "emotion": "Just fine",
+                "count": 12,
+                "percentage": "24.5%",
+                "color": "beige"
+            },
+            {
+                "emotion": "Sad",
+                "count": 10,
+                "percentage": "20.4%",
+                "color": "blue"
+            },
+            {
+                "emotion": "Confused",
+                "count": 9,
+                "percentage": "18.3%",
+                "color": "brown"
+            },
+            {
+                "emotion": "Excited / Motivated",
+                "count": 5,
+                "percentage": "10.2%",
+                "color": "pink"
+            },
+            {
+                "emotion": "Peaceful",
+                "count": 5,
+                "percentage": "10.2%",
+                "color": "lavender"
+            },
+            {
+                "emotion": "Extremely Sad",
+                "count": 3,
+                "percentage": "6.1%",
+                "color": "navy"
+            },
+            {
+                "emotion": "Extremely Happy",
+                "count": 2,
+                "percentage": "4.1%",
+                "color": "magenta"
+            },
+            {
+                "emotion": "Happy/Satisfied",
+                "count": 2,
+                "percentage": "4.1%",
+                "color": "yellow"
+            },
+            {
+                "emotion": "Anxious / Stressed",
+                "count": 1,
+                "percentage": "2.2%",
+                "color": "orange"
+            }
+        ],
+        "total": {
+            "count": 49,
+            "percentage": "100%"
+        },
+        "resumen": "Returning home after a month immersed in a different culture with someone so significant to me was challenging. I felt lonely and in despair; something had shifted during my time in Europe, but I couldn't pinpoint what it was. My anxiety about the relationship grew, leading to erratic and emotionally unstable behavior. I sensed that I was on the brink of experiencing a lot of pain.",
+        "highlights": [
+            {
+                "1": {
+                    "day": "43",
+                    "emotion": "Excited/Motivated",
+                    "location": "El Salvador",
+                    "image": "viz-03-1.jpg",
+                    "botones": "1",
+                    "date": "12 Feb, 2024",
+                    "title": "At El Salvador Airport",
+                    "resume": "Yes, you can pay with crypto."
+                }
+            },
+            {
+                "2": {
+                    "day": "44",
+                    "emotion": "Peaceful",
+                    "location": "United States",
+                    "image": "viz-03-2.jpg",
+                    "botones": "1",
+                    "date": "13 Feb, 2024",
+                    "title": "Watching snow fall",
+                    "resume": "Visiting my best friend in Maryland"
+                }
+            },
+            {
+                "3": {
+                    "day": "49",
+                    "emotion": "Confused",
+                    "location": "Austria",
+                    "image": "viz-03-3.jpg",
+                    "botones": "1",
+                    "date": "18 Feb, 2024",
+                    "title": "• At the Iceland Airport<br>• At the Munich Airport<br>• Having someone pick me up at the airport in Europe<br>• Watching the beautiful Alps up close in Tyrol<br>• Living as a 'family' with my boyfriend and his daughter.",
+                    "resume": ""
+                }
+            },
+            {
+                "4": {
+                    "day": "57",
+                    "emotion": "Excited/Motivated",
+                    "location": "Austria/United Kingdom",
+                    "image": "viz-03-4.jpg",
+                    "botones": "1",
+                    "date": "26 Feb, 2024",
+                    "title": "• Flying to London<br>• Flying with a partner",
+                    "resume": ""
+                }
+            },
+            {
+                "5": {
+                    "day": "75",
+                    "emotion": "Anxious/Stressed",
+                    "location": "Austria/Germany/Iceland",
+                    "image": "viz-03-5.jpg",
+                    "botones": "1",
+                    "date": "15 Mar, 2024",
+                    "title": "• Seeing Greenland's endless snow clearly from the plane window<br>• Saying goodbye to my partner at the airport and returning to a long-distance relationship",
+                    "resume": "Other first-time experiences from this trip that weren't documented include trying Korean BBQ, enjoying traditional Austrian food, going bouldering, jumping into the Nordkette for dinner in a Hütte, going to the Tate and the impressive Natural History Museum in London, seeing Fever Ray live, experiencing a real winter."
+                }
+            }
+        ]
+    },
+    "4": {
+        "title": "The Crisis. Where is My Mind?",
+        "fecha": "~ 4 May - 18 Jun, 2024",
+        "rango": "Days 125 to 170",
+        "duracion": "~ 46 days",
+        "imagen": "viz-04.jpg",
+        "hover": true,
+        "story": "<h4>11 May, 2024</h4><h3>My auntie died</h3><p>I mourned the loss of my aunt alongside my family and my uncle Luis. He was devastated after losing his wife, they’ve been together for 64 years. He shared stories of their many adventures together—some of them quite surprising, like the time they jumped out of a plane in Acapulco. <br><br> I was also secretly grieving the loss of a partner that no one, except my mother, knew about. By then, I felt that relationship had come to an end. I was devastated too and couldn’t begin to imagine my uncle’s suffering. <br><br> That same weekend, solar activity was so intense that auroras were seen in northern Mexico for the first time.</p><a>Read more</a>",
+        "emotions": [
+            {
+                "emotion": "Extremely Sad",
+                "count": 19,
+                "percentage": "41.3%",
+                "color": "navy"
+            },
+            {
+                "emotion": "Sad",
+                "count": 10,
+                "percentage": "21.7%",
+                "color": "blue"
+            },
+            {
+                "emotion": "Extremely confused",
+                "count": 4,
+                "percentage": "8.7%",
+                "color": "purple"
+            },
+            {
+                "emotion": "Peaceful",
+                "count": 4,
+                "percentage": "8.7%",
+                "color": "lavender"
+            },
+            {
+                "emotion": "Just fine",
+                "count": 4,
+                "percentage": "8.7%",
+                "color": "beige"
+            },
+            {
+                "emotion": "Grateful",
+                "count": 2,
+                "percentage": "4.3%",
+                "color": "violet"
+            },
+            {
+                "emotion": "Confused",
+                "count": 1,
+                "percentage": "2.2%",
+                "color": "brown"
+            },
+            {
+                "emotion": "Happy/Satisfied",
+                "count": 1,
+                "percentage": "2.2%",
+                "color": "yellow"
+            },
+            {
+                "emotion": "Inspired",
+                "count": 1,
+                "percentage": "2.2%",
+                "color": "lime"
+            }
+        ],
+        "total": {
+            "count": 46,
+            "percentage": "100%"
+        },
+        "resumen": "The period I referred to as \"hell\" was one of the darkest times in my life. I was consumed by sadness and guilt and felt mentally unwell, tormented by obsessive thoughts that plagued me from morning until night.",
+        "highlights": [
+            {
+                "1": {
+                    "day": "125",
+                    "emotion": "Confused",
+                    "location": "México",
+                    "image": "viz-04-1.jpg",
+                    "botones": "1",
+                    "date": "5 Apr, 2024",
+                    "title": "Intentionally hurting someone I love",
+                    "resume": "My Buddhist teacher used to say: \"The one who feels badly, acts badly.\" <br><br>I'm not justifying what I did, but it was a clear sign that I was no longer in control of my thoughts or actions. I was overwhelmed with anxiety and gripped by a fear of losing what, at the time,<br>I believed was the relationship I had always dreamed of. I quite literally lost my mind and began acting erratically—undermining trust and pushing away the only."
+                }
+            },
+            {
+                "2": {
+                    "day": "168",
+                    "emotion": "Sad",
+                    "location": "México",
+                    "image": "viz-04-2.jpg",
+                    "botones": "1",
+                    "date": "16 Jun, 2024",
+                    "title": "Being ghosted by someone I love",
+                    "resume": ""
+                }
+            }
+        ]
+    },
+    "5": {
+        "title": "The hard work of healing",
+        "fecha": "~ 19 Jun - 30 Aug, 2024",
+        "rango": "Days 171 to 243",
+        "duracion": "~73 days",
+        "imagen": "viz-05.jpg",
+        "hover": false,
+        "emotions": [
+            {
+                "emotion": "Just fine",
+                "count": 25,
+                "percentage": "34.2%",
+                "color": "beige"
+            },
+            {
+                "emotion": "Sad",
+                "count": 14,
+                "percentage": "19.2%",
+                "color": "blue"
+            },
+            {
+                "emotion": "Happy/Satisfied",
+                "count": 8,
+                "percentage": "10.9%",
+                "color": "yellow"
+            },
+            {
+                "emotion": "Peaceful",
+                "count": 7,
+                "percentage": "9.6%",
+                "color": "lavender"
+            },
+            {
+                "emotion": "Confused",
+                "count": 5,
+                "percentage": "6.8%",
+                "color": "brown"
+            },
+            {
+                "emotion": "Extremely Sad",
+                "count": 4,
+                "percentage": "5.5%",
+                "color": "navy"
+            },
+            {
+                "emotion": "Excited / Motivated",
+                "count": 4,
+                "percentage": "5.5%",
+                "color": "pink"
+            },
+            {
+                "emotion": "Inspired",
+                "count": 2,
+                "percentage": "2.7%",
+                "color": "lime"
+            },
+            {
+                "emotion": "Extremely confused",
+                "count": 2,
+                "percentage": "2.7%",
+                "color": "purple"
+            },
+            {
+                "emotion": "Extremely Happy",
+                "count": 1,
+                "percentage": "1.4%",
+                "color": "magenta"
+            },
+            {
+                "emotion": "Angry / Resentful",
+                "count": 1,
+                "percentage": "1.4%",
+                "color": "red"
+            }
+        ],
+        "total": {
+            "count": 73,
+            "percentage": "100%"
+        },
+        "resumen": "This was the time when I really had to pull myself together again. It was a nightmare finding a therapist as good as Luis, my former therapist and mentor who passed away in 2017. I tried 4 different therapists before finding one who could help me navigate this...",
+        "highlights": [
+            {
+                "1": {
+                    "day": "173",
+                    "emotion": "Excited/Motivated",
+                    "location": "México",
+                    "image": "viz-05-1.jpg",
+                    "botones": "3",
+                    "date": "21 Jun, 2024",
+                    "title": "Not working on Fridays, yay!",
+                    "resume": "Achieving the 4 day Work Week happened almost by accident due to my mental health crisis but it was a game changer. I was finally able to work on my personal projects (like this one) in a week day, devoting 8 hours each week."
+                }
+            },
+            {
+                "2": {
+                    "day": "185",
+                    "emotion": "Happy/Satisfied",
+                    "location": "México",
+                    "image": "viz-05-2.jpg",
+                    "botones": "2",
+                    "date": "03 Jul, 2024",
+                    "title": "Launch my first Data Humanist project: <br> 33 Days of emotions",
+                    "resume": ""
+                }
+            },
+            {
+                "3": {
+                    "day": "195",
+                    "emotion": "Extremely Sad",
+                    "location": "México",
+                    "image": "viz-05-3.jpg",
+                    "botones": "1",
+                    "date": "13 Jul, 2024",
+                    "title": "Noticing a destructive pattern starting to develope in my mind",
+                    "resume": ""
+                }
+            },
+            {
+                "4": {
+                    "day": "203",
+                    "emotion": "Extremely Confused",
+                    "location": "México",
+                    "image": "viz-05-4.jpg",
+                    "botones": "1",
+                    "date": "21 Jul, 2024",
+                    "title": "Being able to change my train of thought consciously and for the better",
+                    "resume": "That day, I felt overwhelmed and confused. I wanted to cry and felt the urge to call my ex for explanations. Instead, I decided to set a timer for two hours to create something nice using Midjourney. My mood changed completely; I felt joy and was grateful to see how happy I am when I'm creating. It doesn't matter if it's something simple."
+                }
+            },
+            {
+                "5": {
+                    "day": "217",
+                    "emotion": "Extremely Happy",
+                    "location": "México",
+                    "image": "viz-05-5.jpg",
+                    "botones": "1",
+                    "date": "4 Aug, 2024",
+                    "title": "Taking an Ice Bath",
+                    "resume": "When it comes to doing something risky or extreme, I'm usually the one who watches others go first, feeling super anxious as my turn approaches. But this time, I was surprisingly relaxed and prepared—so much so that I volunteered to be the first! The guide approved and mentioned that the first 30 seconds would be unbearable, but after that, it would get easier. I thought to myself: I've been enduring unbearable emotional pain, sadness, confusion, and anxiety for at least three months; this is nothing for me! And boy, I did pretty well. I was proud of myself!"
+                }
+            },
+            {
+                "6": {
+                    "day": "241",
+                    "emotion": "Excited/Motivated",
+                    "location": "México",
+                    "image": "viz-05-6.jpg",
+                    "botones": "2",
+                    "date": "28 Aug, 2024",
+                    "title": "Poverty Radar Kickoff",
+                    "resume": "Poverty Radar is one of my favorite projects—a physicalization that involves Arduino and hardware. This time, I invited a friend to collaborate, and he understood the idea perfectly and was willing to help. I couldn't be more grateful and excited!"
+                }
+            }
+        ]
+    },
+    "6": {
+        "title": "The recovery",
+        "fecha": "~ 31 Aug - 16 Oct, 2024",
+        "rango": "Days 244 to 290",
+        "duracion": "47 days",
+        "hover": false,
+        "imagen": "viz-06.jpg",
+        "emotions": [
+            {
+                "emotion": "Just fine",
+                "count": 18,
+                "percentage": "38.3%",
+                "color": "beige"
+            },
+            {
+                "emotion": "Happy/Satisfied",
+                "count": 7,
+                "percentage": "14.8%",
+                "color": "yellow"
+            },
+            {
+                "emotion": "Peaceful",
+                "count": 7,
+                "percentage": "14.8%",
+                "color": "lavender"
+            },
+            {
+                "emotion": "Excited / Motivated",
+                "count": 5,
+                "percentage": "10.6%",
+                "color": "pink"
+            },
+            {
+                "emotion": "Extremely Sad",
+                "count": 3,
+                "percentage": "6.3%",
+                "color": "navy"
+            },
+            {
+                "emotion": "Inspired",
+                "count": 2,
+                "percentage": "4.3%",
+                "color": "lime"
+            },
+            {
+                "emotion": "Grateful",
+                "count": 2,
+                "percentage": "4.3%",
+                "color": "violet"
+            },
+            {
+                "emotion": "Extremely Happy",
+                "count": 1,
+                "percentage": "2.2%",
+                "color": "magenta"
+            },
+            {
+                "emotion": "Angry / Resentful",
+                "count": 1,
+                "percentage": "2.2%",
+                "color": "red"
+            },
+            {
+                "emotion": "Sad",
+                "count": 1,
+                "percentage": "2.2%",
+                "color": "blue"
+            }
+        ],
+        "total": {
+            "count": 47,
+            "percentage": "100%"
+        },
+        "resumen": "After more than two months of hard personal work, I gradually found more moments of joy in my everyday life. Overall, I felt more peaceful and discovered a wealth of inspiration from my creative projects. Art and creativity have always been my safe haven for healing and coping with sadness. Although painful memories and the longing to see him again still haunted me occasionally, I felt almost free at last.",
+        "highlights": [
+            {
+                "1": {
+                    "day": "248",
+                    "emotion": "Angry/Resentful",
+                    "location": "México",
+                    "image": "viz-06-1.jpg",
+                    "botones": "2",
+                    "date": "04 Sep, 2024",
+                    "title": "Launched 10 Months of Food",
+                    "resume": "This is another data humanist project: a dashboard tracking what I ate over the course of 10 months. It was originally intended to cover a full year, but I struggled to consistently record my meals during my trip to the US and Europe."
+                }
+            },
+            {
+                "2": {
+                    "day": "251",
+                    "emotion": "Happy/Satisfied",
+                    "location": "México",
+                    "image": "viz-06-2.jpg",
+                    "botones": "1",
+                    "date": "07 Sep, 2024",
+                    "title": "Publishing an article about break ups, mental health and music",
+                    "resume": "As I learned how to overcome my breakup, I felt compelled to share my small victories with others in similar situations, showing them that there was a way out of the pain. This was the first of many pieces I planned to write, but I struggled to find time between my 9-to-6 job and side projects, which prevented me from completing the others."
+                }
+            },
+            {
+                "3": {
+                    "day": "252",
+                    "emotion": "Extremely Happy",
+                    "location": "México",
+                    "image": "viz-06-3.jpg",
+                    "botones": "1",
+                    "date": "08 Sep, 2024",
+                    "title": "Working on my land patch to grow my veggies",
+                    "resume": ""
+                }
+            },
+            {
+                "4": {
+                    "day": "271",
+                    "emotion": "Excited/Motivated",
+                    "location": "México",
+                    "image": "viz-06-4.jpg",
+                    "botones": "2",
+                    "date": "27 Sep, 2024",
+                    "title": "Launch Circles of joy",
+                    "resume": "A visual record of my most delicious meals, both at home and dining out, as well as my daily cup of coffee."
+                }
+            },
+            {
+                "5": {
+                    "day": "274",
+                    "emotion": "Excited/Motivated",
+                    "location": "México",
+                    "image": "viz-06-5.jpg",
+                    "botones": "3",
+                    "date": "30 Sep, 2024",
+                    "title": "Doing a creative tech workshop to learn MAX",
+                    "resume": "I see this as my very first step toward becoming a creative technologist. I'm not sure yet if I'll be able to make it, but it's worth trying."
+                }
+            }
+        ]
+    },
+    "7": {
+        "title": "New Beginnings",
+        "fecha": "~ 17 Oct - 31 Dec, 2024",
+        "rango": "Days 291 to 365",
+        "duracion": "76 days",
+        "imagen": "viz-07.jpg",
+        "hover": false,
+        "emotions": [
+            {
+                "emotion": "Peaceful",
+                "count": 34,
+                "percentage": "44.7%",
+                "color": "lavender"
+            },
+            {
+                "emotion": "Happy/Satisfied",
+                "count": 22,
+                "percentage": "28.9%",
+                "color": "yellow"
+            },
+            {
+                "emotion": "Inspired",
+                "count": 6,
+                "percentage": "7.8%",
+                "color": "lime"
+            },
+            {
+                "emotion": "Excited / Motivated",
+                "count": 6,
+                "percentage": "7.8%",
+                "color": "pink"
+            },
+            {
+                "emotion": "Anxious / Stressed",
+                "count": 3,
+                "percentage": "3.9%",
+                "color": "orange"
+            },
+            {
+                "emotion": "Extremely Happy",
+                "count": 2,
+                "percentage": "2.6%",
+                "color": "magenta"
+            },
+            {
+                "emotion": "Grateful",
+                "count": 2,
+                "percentage": "2.6%",
+                "color": "violet"
+            },
+            {
+                "emotion": "Just fine",
+                "count": 1,
+                "percentage": "1.3%",
+                "color": "beige"
+            }
+        ],
+        "total": {
+            "count": 76,
+            "percentage": "100%"
+        },
+        "resumen": "This period felt like a reward after a very tough year. Attending my favorite electronic music festival, MUTEK, for the first time since the pandemic was fantastic, especially since it was the 20th anniversary. I got to enjoy it with a dear friend who no longer lives in Mexico. Additionally, taking my first trip to Europe, as I promised when I was a kid, brought me immense joy. It was a delightful journey for both my creative and adventurous.",
+        "highlights": [
+            {
+                "1": {
+                    "day": "291",
+                    "emotion": "Happy/Peaceful",
+                    "location": "México",
+                    "image": "viz-07-1.jpg",
+                    "botones": "1",
+                    "date": "17 Oct, 2024",
+                    "title": "Seeing Suzanne Ciani live",
+                    "resume": ""
+                }
+            },
+            {
+                "2": {
+                    "day": "295",
+                    "emotion": "Extremely Happy/Grateful",
+                    "location": "Portugal/France/Italy/Austria",
+                    "image": "viz-07-2.jpg",
+                    "botones": "3",
+                    "date": "21 Oct, 2024",
+                    "title": "Taking my mom to Europe",
+                    "resume": "Growing up in a working-class family, my mom never had the chance to travel overseas. As a child, I vowed to change that for her. Seeing her explore new places for the first time was one of the most fulfilling experiences of my life, and those cherished memories will remain with me always. 💜"
+                }
+            },
+            {
+                "3": {
+                    "day": "306",
+                    "emotion": "Excited/Grateful",
+                    "location": "Austria",
+                    "image": "viz-07-3.jpg",
+                    "botones": "2",
+                    "date": "1 Nov, 2024",
+                    "title": "Started Dating again",
+                    "resume": "Growing up in a working-class family, my mom never had the chance to travel overseas. As a child, I vowed to change that for her. Seeing her explore new places for the first time was one of the most fulfilling experiences of my life, and those cherished memories will remain with me always. 💜"
+                }
+            },
+            {
+                "4": {
+                    "day": "308",
+                    "emotion": "Excited",
+                    "location": "Austria",
+                    "image": "viz-07-4.jpg",
+                    "botones": "3",
+                    "date": "3 Nov, 2024",
+                    "title": "This is a private one",
+                    "resume": ""
+                }
+            },
+            {
+                "5": {
+                    "day": "335",
+                    "emotion": "Extremely Happy",
+                    "location": "México",
+                    "image": "viz-07-5.jpg",
+                    "botones": "2",
+                    "date": "30 Nov, 2024",
+                    "title": "Listen to one of my favorite recordings without being triggered",
+                    "resume": ""
+                }
+            },
+            {
+                "6": {
+                    "day": "336",
+                    "emotion": "Excited/Motivated",
+                    "location": "México",
+                    "image": "viz-07-6.jpg",
+                    "botones": "1",
+                    "date": "01 Dec, 2024",
+                    "title": "Having the confidence to apply to my dream job",
+                    "resume": "It wasn't really about getting the job; I knew I had no chance. But for the first time in my life, it felt like I had the perfect experience and profile for the position. So, I put together my resume and latest projects and sent it off. It was a huge step for me since I've been dealing with impostor syndrome my whole life."
+                }
+            },
+            {
+                "7": {
+                    "day": "359",
+                    "emotion": "Inspired",
+                    "location": "México",
+                    "image": "viz-07-7.jpg",
+                    "botones": "1",
+                    "date": "24 Dec, 2024",
+                    "title": "Not celebrating Xmas",
+                    "resume": "As the year came to a close, I realized I wasn't achieving the results I hoped for from the Max course. This made me quite anxious, so I decided to dedicate my Christmas holidays to learning the basics of Arduino on my own. I was so invested in it that I chose to skip the Christmas celebration with my family, something I had never done before."
+                }
+            },
+            {
+                "8": {
+                    "day": "360",
+                    "emotion": "Inspired",
+                    "location": "México",
+                    "image": "viz-07-8.jpg",
+                    "botones": "1",
+                    "date": "25 Dec, 2024",
+                    "title": "Using Arduino!",
+                    "resume": "As the year came to a close, I realized I wasn't achieving the results I hoped for from the Max course. This made me quite anxious, so I decided to dedicate my Christmas holidays to learning the basics of Arduino on my own. I was so invested in it that I chose to skip the Christmas celebration with my family, something I had never done before."
+                }
+            }
+        ]
+    }
+}

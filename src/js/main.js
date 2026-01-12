@@ -6,7 +6,8 @@ import "bootstrap/js/dist/offcanvas";
 import "bootstrap/js/dist/collapse";
 
 // Layout
-await loadComponent("#header", "componets/header.html");
-// loadComponent('#footer', '/src/components/footer/footer.html');
-
-initRouter();
+(async () => {
+    await loadComponent("#header", "componets/header.html");
+    // loadComponent('#footer', '/src/components/footer/footer.html');
+    initRouter();
+})();

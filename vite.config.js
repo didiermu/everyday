@@ -1,26 +1,35 @@
 import { defineConfig } from "vite";
 import { resolve } from "path";
-const path = require("path");
+import path from "path";
 
-export default defineConfig({
+export default {
     root: path.resolve(__dirname, "src"),
-    base: "/",
+    base: "./",
     publicDir: path.resolve(__dirname, "public"),
     build: {
         outDir: path.resolve(__dirname, "dist"),
         rollupOptions: {
             input: {
                 index: path.resolve(__dirname, "src/index.html"),
-                home: path.resolve(__dirname, "src/home.html"),
-                legales: path.resolve(
+                home: path.resolve(__dirname, "src/pages/home.html"),
+                about: path.resolve(__dirname, "src/pages/about.html"),
+                epilogue: path.resolve(__dirname, "src/pages/epilogue.html"),
+                periods: path.resolve(__dirname, "src/pages/periods.html"),
+                physicalizing: path.resolve(
                     __dirname,
-                    "src/aviso-de-privacidad.html"
+                    "src/pages/physicalizing.html"
+                ),
+                visualization: path.resolve(
+                    __dirname,
+                    "src/pages/visualization.html"
                 ),
             },
             output: {
                 chunkFileNames: "js/[name]-[hash].js",
                 entryFileNames: "js/[name]-[hash].js",
-
+                manualChunks: {
+                    three: ["three"],
+                },
                 assetFileNames: ({ name }) => {
                     if (/\.(gif|jpe?g|png|svg)$/.test(name ?? "")) {
                         return "img/[name]-[hash][extname]";
@@ -47,4 +56,4 @@ export default defineConfig({
         open: true,
         hot: true,
     },
-});
+};
