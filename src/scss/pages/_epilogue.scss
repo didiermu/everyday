@@ -1,0 +1,183 @@
+@use "../core/typography";
+
+&.page-epilogue {
+    background: var(--color-magic);
+
+    .header {
+        #button-menu {
+            background: var(--color-magic);
+        }
+    }
+
+    .hero {
+        .row {
+            row-gap: var(--spacing-2xl);
+        }
+
+        .col-12 {
+            display: flex;
+            flex-direction: column;
+            row-gap: var(--spacing-lg);
+        }
+
+        p {
+            @include typography.typography("md", tertiary);
+            text-align: center;
+        }
+
+        .buttons {
+            align-items: center;
+        }
+
+        .button-secondary {
+            @include typography.typography("sm", tertiary);
+            letter-spacing: 0;
+            cursor: pointer;
+        }
+    }
+
+    .panels {
+        display: none;
+
+        .nav {
+            justify-content: center;
+            border-bottom: 1px solid var(--color-not-so-black);
+        }
+
+        .nav-item {
+            flex: 1 1 50%;
+            text-align: center;
+            display: grid;
+        }
+
+        .nav-link {
+            @include typography.typography("sm", tertiary);
+            background: none;
+            border: 0;
+            padding: 0 0 var(--spacing-sm);
+            color: var(--color-not-so-black);
+
+            &.active {
+                border-bottom: 2px solid var(--color-not-so-black);
+                font-weight: 500;
+            }
+        }
+
+        .tab-content {
+            padding-block: var(--spacing-2xl);
+
+            & > .active {
+                display: flex;
+                row-gap: var(--spacing-4xl);
+                flex-direction: column;
+            }
+
+            .container {
+                display: grid;
+                row-gap: var(--spacing-md);
+
+                &.panels__large {
+                    row-gap: 6rem;
+                }
+
+                & > h4 {
+                    @include typography.typography("9xl", primary);
+                }
+            }
+
+            h2 {
+                @include typography.typography("8xl", primaryBold);
+                text-transform: uppercase;
+                letter-spacing: -1px;
+            }
+
+            span {
+                @include typography.typography("md", tertiary);
+            }
+
+            p {
+                @include typography.typography("lg", tertiary);
+            }
+        }
+
+        &__recommended {
+            display: grid;
+            row-gap: var(--spacing-md);
+
+            h5 {
+                @include typography.typography("md", tertiary);
+                font-weight: 500;
+            }
+
+            a {
+                @include typography.typography("sm", tertiary);
+                display: block;
+                color: var(--color-not-so-black);
+                display: flex;
+                align-items: center;
+                column-gap: var(--spacing-sm);
+                text-decoration: none;
+
+                &::after {
+                    content: "";
+                    background: var(--icon-link) no-repeat center / contain;
+                    width: 16px;
+                    height: 16px;
+                    display: block;
+                }
+            }
+        }
+
+        &__tools {
+            border-top: 1px solid var(--color-not-so-black);
+            padding-block: var(--spacing-lg);
+            display: grid;
+            align-items: center;
+            row-gap: var(--spacing-2xl);
+
+            h5 {
+                @include typography.typography("lg", tertiary);
+                font-weight: 300;
+            }
+
+            .swiper {
+                width: 100%;
+                padding-inline: 24px;
+
+                &-slide {
+                    width: max-content;
+                    min-width: 15.625rem;
+                    padding-bottom: 20px;
+                }
+
+                a {
+                    text-decoration: none;
+                }
+            }
+
+            &__card {
+                scroll-snap-align: start;
+                background: var(--color-magic-strong);
+                border-radius: var(--border-radius-md);
+                padding: var(--spacing-lg);
+                box-shadow: 0px 16px 16px -8px rgba(12, 12, 13, 0.1),
+                    0px 4px 4px -4px rgba(12, 12, 13, 0.05);
+                color: var(--color-not-so-black);
+                height: 13.75rem;
+                display: grid;
+                place-content: space-between;
+
+                h4 {
+                    @include typography.typography("7xl", primary);
+                    line-height: 1;
+                    // width: max-content;
+                }
+
+                span {
+                    @include typography.typography("sm", tertiary);
+                    font-weight: 300;
+                }
+            }
+        }
+    }
+}

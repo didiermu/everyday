@@ -1,0 +1,150 @@
+@use "../core/typography";
+
+&.page-physicalizing {
+    background: var(--color-magic);
+
+    .hero {
+        .col-12 {
+            display: flex;
+            flex-direction: column;
+            row-gap: var(--spacing-lg);
+        }
+
+        p {
+            @include typography.typography("lg", tertiary);
+            text-align: center;
+        }
+
+        .img-cover {
+            margin-block-start: 6.25rem;
+        }
+    }
+
+    .expand {
+        h2 {
+            @include typography.typography("8xl", primaryBold);
+            text-transform: uppercase;
+            margin-block-end: 9.0625rem;
+        }
+
+        p {
+            @include typography.typography("lg", tertiary);
+        }
+
+        &__image {
+            margin-block-start: 6.25rem;
+            position: relative;
+
+            &--fondo {
+                picture {
+                    aspect-ratio: 40 / 93;
+                }
+            }
+
+            &__info {
+                display: grid;
+                row-gap: var(--spacing-md);
+                position: absolute;
+                bottom: var(--spacing-3xl);
+                background: var(--color-magic);
+                border-radius: var(--border-radius-sm);
+                padding: var(--spacing-md);
+                margin-inline: 3.875rem;
+
+                p {
+                    @include typography.typography("sm", tertiary);
+                }
+            }
+        }
+    }
+
+    .regular {
+        &.carousel {
+            display: flex;
+            flex-direction: column;
+            row-gap: var(--spacing-lg);
+        }
+
+        .col-12 {
+            display: flex;
+            flex-direction: column;
+            row-gap: var(--spacing-lg);
+        }
+
+        h2 {
+            @include typography.typography("8xl", primaryBold);
+            text-transform: uppercase;
+        }
+
+        p {
+            @include typography.typography("lg", tertiary);
+        }
+
+        & > .img-cover {
+            margin-block-start: 6.25rem;
+        }
+
+        .swiper {
+            width: 100%;
+
+            &-slide {
+                width: auto;
+
+                picture {
+                    overflow: hidden;
+                    border-radius: var(--border-radius-sm);
+                    width: 200px;
+                }
+            }
+        }
+    }
+
+    .hours {
+        .row {
+            row-gap: var(--spacing-lg);
+        }
+
+        h3 {
+            @include typography.typography("6xl", primary);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        &--list {
+            row-gap: var(--spacing-md) !important;
+        }
+
+        ul {
+            display: flex;
+            justify-content: space-between;
+            list-style: none;
+            padding: 0 var(--spacing-sm);
+
+            &:last-child {
+                background: var(--color-magic-500);
+                border-radius: var(--border-radius-xs);
+                padding: var(--spacing-sm);
+                margin-block-start: var(--spacing-xxs);
+            }
+
+            li {
+                @include typography.typography("md", tertiary);
+                flex-basis: 10%;
+                text-align: right;
+
+                &:first-child {
+                    text-align: left;
+                    flex-basis: 67%;
+                }
+
+                strong {
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    .link-decorated {
+        margin-block: 100px var(--spacing-4xl);
+    }
+}

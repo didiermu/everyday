@@ -1,0 +1,76 @@
+@use "../core/typography";
+
+&.page-about {
+    background: var(--color-not-so-black);
+    color: var(--color-magic);
+
+    .header {
+        #button-menu {
+            background: var(--color-not-so-black);
+            color: var(--color-magic);
+            border-color: var(--color-magic);
+            filter: drop-shadow(3px 6px var(--color-magic));
+        }
+    }
+
+    .hero {
+        .col-12 {
+            display: flex;
+            flex-direction: column;
+            row-gap: var(--spacing-lg);
+        }
+
+        p {
+            @include typography.typography("lg", tertiary);
+            text-align: center;
+        }
+
+        .title {
+            span {
+                color: var(--color-not-so-black);
+            }
+        }
+
+        .img-cover {
+            aspect-ratio: 360 / 416;
+            margin-block-start: var(--spacing-lg);
+        }
+    }
+
+    .regular {
+        padding-block: 6.25rem;
+
+        .row {
+            row-gap: 6.25rem;
+        }
+
+        .col-12 {
+            display: flex;
+            flex-direction: column;
+            row-gap: var(--spacing-lg);
+        }
+
+        h2 {
+            @include typography.typography("8xl", primaryBold);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            @include typography.typography("xl", tertiary);
+        }
+
+        p {
+            @include typography.typography("md", tertiary);
+        }
+
+        .button-primary {
+            background: var(--color-not-so-black);
+            color: var(--color-magic);
+            border-color: var(--color-magic);
+            filter: drop-shadow(3px 6px var(--color-magic));
+            @include typography.typography("md", tertiary);
+            letter-spacing: 0;
+        }
+    }
+}

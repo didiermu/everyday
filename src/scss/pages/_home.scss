@@ -1,0 +1,83 @@
+@use "../core/typography";
+@use "../core/mixins";
+
+&.page-home {
+    background: var(--color-banana);
+
+    canvas {
+        position: fixed;
+        inset: 0;
+        margin: auto;
+    }
+
+    .intro {
+        background: var(--color-banana);
+        padding-block: var(--spacing-4xl) var(--spacing-lg);
+
+        .col-12 {
+            display: flex;
+            flex-direction: column;
+            row-gap: 80px;
+        }
+
+        h1 {
+            @include typography.typography("11xl", primaryBold);
+            text-transform: uppercase;
+        }
+
+        p {
+            @include typography.typography("xl", tertiary);
+
+            &:nth-child(2) {
+                @include typography.typography("md", tertiary);
+            }
+        }
+
+        &--resume {
+            display: flex;
+            flex-direction: column;
+            row-gap: var(--spacing-lg);
+        }
+    }
+
+    .video {
+        position: relative;
+        // z-index: 9;
+
+        video {
+            display: block;
+            width: 100%;
+            object-fit: cover;
+            aspect-ratio: 9 / 16;
+        }
+
+        picture {
+            display: block;
+            width: 100%;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        button {
+            position: absolute;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            border: 2px solid var(--color-not-so-black);
+            filter: drop-shadow(3px 6px var(--color-not-so-black));
+            background: var(--color-magic);
+            @include typography.typography("2xl", primaryBold);
+            letter-spacing: 2px;
+            z-index: 9;
+        }
+    }
+
+    // @include mixins.modal("#modal-video");
+    @include mixins.modal;
+}

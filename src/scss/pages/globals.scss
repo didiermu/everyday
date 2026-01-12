@@ -1,0 +1,50 @@
+@use "../core/mixins";
+
+& {
+    font-family: var(--font-primaria-regular);
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    ul,
+    li {
+        margin: 0;
+    }
+
+    dialog::backdrop {
+        background-color: rgba(
+            0,
+            0,
+            0,
+            1
+        ); /* A semi-transparent black overlay */
+    }
+
+    section {
+        padding-block: var(--spacing-4xl) 0;
+    }
+
+    .container {
+        @include mixins.container;
+    }
+
+    .font-tertiary {
+        font-family: "Space Grotesk", sans-serif !important;
+    }
+
+    .title {
+        @include mixins.title;
+    }
+
+    .link-decorated {
+        @include mixins.link-decorated;
+    }
+
+    .img-cover {
+        @include mixins.img-cover;
+    }
+}

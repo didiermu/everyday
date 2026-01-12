@@ -1,0 +1,496 @@
+@use "../core/typography";
+@use "../core/mixins";
+
+&.page-periods {
+    background: var(--color-not-so-white-viz-300);
+
+    #button-menu {
+        background: var(--color-not-so-white-viz-300);
+    }
+
+    .hero {
+        padding-block-start: var(--spacing-lg);
+
+        .row {
+            row-gap: var(--spacing-sm);
+        }
+
+        .col-12 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            row-gap: var(--spacing-xs);
+        }
+
+        .title {
+            @include typography.typography("8xl", primary);
+        }
+
+        &__data {
+            display: flex;
+            justify-content: center;
+            column-gap: var(--spacing-sm);
+
+            span {
+                @include typography.typography("xs", tertiary);
+                display: flex;
+                align-items: center;
+                column-gap: var(--spacing-xs);
+                font-weight: 300;
+
+                strong {
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    .periods {
+        padding-block: var(--spacing-md) var(--spacing-4xl);
+
+        .row {
+            row-gap: var(--spacing-md);
+        }
+
+        &--pagination {
+            display: flex;
+            justify-content: center;
+            column-gap: var(--spacing-md);
+
+            a {
+                @include typography.typography("sm", tertiary);
+                width: 32px;
+                height: 32px;
+                border-radius: var(--border-radius-full);
+                border: 1px solid var(--color-not-so-black);
+                text-decoration: none;
+                display: grid;
+                place-items: center;
+                color: var(--color-not-so-black);
+                cursor: pointer;
+                flex: 0 0 32px;
+
+                &.active {
+                    background: var(--color-not-so-black);
+                    color: var(--color-not-so-white);
+                }
+            }
+        }
+
+        &--data {
+            padding-block-start: var(--spacing-sm);
+            @include mixins.data-table;
+        }
+
+        .periods-image {
+            position: relative;
+        }
+
+        .periods-hover {
+            position: absolute;
+            display: block;
+            width: 8%;
+            height: 8%;
+            aspect-ratio: 1 / 1;
+        }
+
+        &#period-3 .periods-hover {
+            top: 78%;
+            right: 31%;
+        }
+
+        &#period-4 .periods-hover {
+            bottom: 18%;
+            left: 27%;
+        }
+
+        &--summary {
+            padding-block-start: var(--spacing-sm);
+            display: grid;
+            row-gap: var(--spacing-lg);
+
+            h4 {
+                @include typography.typography("6xl", primary);
+                letter-spacing: 2px;
+            }
+
+            p {
+                @include typography.typography("md", tertiary);
+                font-weight: 100;
+            }
+
+            .button {
+                place-self: center;
+                width: 200px;
+            }
+        }
+    }
+
+    @include mixins.modal;
+
+    #modal-story,
+    #modal-data {
+        background: var(--color-banana);
+        z-index: 9999;
+        justify-content: flex-start;
+        overflow-y: scroll;
+        margin: 0;
+
+        section {
+            padding-block: 108px;
+        }
+
+        .container {
+            row-gap: var(--spacing-3xl);
+            display: flex;
+            flex-direction: column;
+
+            .modal--story--content {
+                row-gap: var(--spacing-lg);
+            }
+        }
+
+        .close {
+            background: var(--icon-close-white) no-repeat center/0.4em
+                var(--color-not-so-black);
+        }
+
+        p {
+            @include typography.typography("md", tertiary);
+
+            &:first-child {
+                @include typography.typography("lg", tertiary);
+            }
+        }
+
+        .modal--content {
+            width: 100%;
+        }
+
+        .modal-data--table {
+            width: 100%;
+            display: grid;
+            overflow-x: scroll;
+
+            [class*="modal-data--row"] {
+                display: flex;
+                column-gap: var(--spacing-md);
+                padding: var(--spacing-md);
+                border-bottom: 1px solid var(--color-not-so-black);
+                // width: max-content;
+
+                &.modal-data--row--header {
+                    background: var(--color-not-so-black);
+                    color: var(--color-banana);
+                    border-radius: var(--border-radius-xs);
+                }
+
+                span {
+                    @include typography.typography("md", tertiary);
+                    font-weight: 300;
+                    display: flex;
+                    align-items: center;
+                    column-gap: 0.125rem;
+
+                    &:first-child {
+                        // flex: 0 0 35px;
+                        width: 35px;
+                    }
+
+                    &:nth-child(2) {
+                        // flex: 1 0 70px;
+                        width: 70px;
+                    }
+                    &:nth-child(3) {
+                        @include typography.typography("sm", tertiary);
+                        // flex: 0 0 260px;
+                        width: 260px;
+                    }
+
+                    i {
+                        background: var(--icon-gota) no-repeat center / contain;
+                        width: 14px;
+                        height: 14px;
+                        // display: inline-block;
+                    }
+                }
+            }
+        }
+    }
+
+    #modal-high {
+        z-index: 9999;
+        justify-content: flex-start;
+        overflow-y: scroll;
+        margin: 0;
+        background: var(--color-not-so-white-viz-300);
+
+        .close {
+            background: var(--icon-close-white) no-repeat center/0.4em
+                var(--color-not-so-black);
+        }
+
+        section {
+            padding-block: 6.25rem var(--spacing-4xl);
+        }
+
+        .modal--content {
+            background: var(--color-not-so-white-viz-300);
+            height: 100dvh;
+
+            .row {
+                row-gap: var(--spacing-lg);
+            }
+        }
+
+        p {
+            display: grid;
+            place-items: center;
+            row-gap: var(--spacing-xxs);
+
+            span {
+                @include typography.typography("sm", tertiary);
+                display: flex;
+                column-gap: var(--spacing-xs);
+            }
+        }
+
+        .modal-high--image {
+            display: grid;
+            row-gap: var(--spacing-lg);
+        }
+
+        figure {
+            position: relative;
+            display: grid;
+            place-items: center;
+            row-gap: var(--spacing-lg);
+
+            .img-cover {
+                aspect-ratio: 367 / 372;
+            }
+
+            .button {
+                position: absolute;
+                border: 1px solid var(--color-not-so-black);
+                letter-spacing: 2px;
+                filter: drop-shadow(2px 3px var(--color-not-so-black));
+                width: 80px;
+                height: 80px;
+                border-radius: var(--border-radius-full);
+                background: var(--color-magic);
+                @include typography.typography("md", primaryBold);
+                text-align: center;
+                line-height: 1;
+                color: var(--color-not-so-black);
+                text-transform: uppercase;
+                padding: 0;
+                display: grid;
+                place-items: center;
+
+                &::after {
+                    display: none;
+                }
+
+                &#btn-miles {
+                    border: none;
+                    background: var(--icon-bg-star) no-repeat center / contain;
+                }
+            }
+
+            &[data-botones="2"] {
+                #btn-viz {
+                    display: none;
+                }
+                #btn-miles {
+                    display: block;
+                }
+            }
+
+            &[data-botones="1"] {
+                #btn-viz {
+                    display: block;
+                }
+                #btn-miles {
+                    display: none;
+                }
+            }
+
+            .img-ring {
+                display: flex;
+                align-items: center;
+                column-gap: 28px;
+                display: flex;
+
+                img {
+                    width: 16px;
+                    height: 16px;
+                    opacity: 0.3;
+                }
+
+                .active {
+                    opacity: 1;
+                }
+            }
+        }
+
+        &.period-1 figure .button,
+        &.period-4 figure .button {
+            top: 5%;
+            right: 10%;
+        }
+
+        &.period-3 figure .button {
+            bottom: 3.75rem;
+            left: 3rem;
+        }
+
+        &.period-5 figure {
+            &[data-botones="3"] {
+                #btn-viz {
+                    bottom: 6.25rem;
+                    left: 0rem;
+                    top: auto;
+                    z-index: 0;
+                }
+                #btn-miles {
+                    bottom: 15%;
+                    left: 15%;
+                    top: auto;
+                    z-index: 0;
+                }
+            }
+
+            .button {
+                bottom: 15%;
+                left: 15%;
+            }
+        }
+
+        &.period-6 figure {
+            &[data-botones="3"] {
+                #btn-viz {
+                    right: 0%;
+                    top: 20%;
+                    z-index: 1;
+                }
+                #btn-miles {
+                    right: 10%;
+                    top: 3%;
+                }
+            }
+            .button {
+                right: 10%;
+                top: 3%;
+            }
+        }
+        &.period-7 figure {
+            &[data-botones="3"] {
+                #btn-viz {
+                    right: 7%;
+                    bottom: 10%;
+                    z-index: 1;
+                }
+                #btn-miles {
+                    bottom: 24%;
+                    right: 19%;
+                    left: auto;
+                }
+            }
+            .button {
+                right: 7%;
+                bottom: 10%;
+            }
+        }
+
+        h5 {
+            text-align: center;
+            display: grid;
+            row-gap: var(--spacing-md);
+            margin-block-end: var(--spacing-lg);
+
+            span {
+                display: block;
+
+                &[data-field="date"] {
+                    @include typography.typography("md", tertiary);
+                }
+                &[data-field="title"] {
+                    @include typography.typography("md", script);
+                }
+            }
+        }
+
+        p {
+            @include typography.typography("md", tertiary);
+            font-weight: 300;
+        }
+    }
+
+    #modal-resume {
+        .modal--content {
+            background: var(--color-not-so-white);
+            border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+        }
+
+        section {
+            padding-block: var(--spacing-lg);
+        }
+
+        .col-12 {
+            display: grid;
+            row-gap: var(--spacing-md);
+            place-items: center;
+        }
+
+        h4 {
+            @include typography.typography("md", tertiary);
+        }
+
+        h3 {
+            @include typography.typography("md", script);
+            letter-spacing: 2px;
+        }
+
+        .clamp[open] p {
+            line-clamp: unset;
+            -webkit-line-clamp: unset;
+        }
+
+        p {
+            @include typography.typography("md", secondary);
+            font-weight: 300;
+        }
+
+        a {
+            @include typography.typography("md", tertiary);
+            margin-block-start: var(--spacing-sm);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        &:has(a) {
+            p {
+                display: -webkit-box; /* fallback */
+                line-clamp: 5;
+                -webkit-line-clamp: 5; /* fallback */
+                -webkit-box-orient: vertical; /* fallback */
+                overflow: hidden;
+                transition: 0.3s ease-in-out all;
+
+                &.is-open {
+                    -webkit-line-clamp: unset;
+                    line-clamp: unset;
+                }
+            }
+
+            .button {
+                margin-block: var(--spacing-sm);
+            }
+        }
+
+        .button {
+            margin-block: var(--spacing-xl) var(--spacing-md);
+        }
+    }
+}

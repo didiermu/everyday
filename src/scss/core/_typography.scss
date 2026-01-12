@@ -1,0 +1,94 @@
+@use "fonts";
+
+$font-family-base: "TTTrailers-regular";
+
+$font-families: (
+    primary: "TTTrailers-regular",
+    primaryBold: "TTTrailers-bold",
+    primaryDemiBold: "TTTrailers-demibold",
+    secondary: "Kanit",
+    tertiary: "Space Grotesk",
+    script: "Handlee",
+);
+
+$font-sizes: (
+    "xs": (
+        size: 0.875rem,
+        line: 150%,
+    ),
+    "sm": (
+        size: 1rem,
+        line: 150%,
+    ),
+    "md": (
+        size: 1.125rem,
+        line: 120%,
+    ),
+    "lg": (
+        size: 1.25rem,
+        line: 150%,
+    ),
+    "xl": (
+        size: 1.5rem,
+        line: 140%,
+    ),
+    "2xl": (
+        size: 1.6875rem,
+        line: 140%,
+    ),
+    "3xl": (
+        size: 2rem,
+        line: 140%,
+    ),
+    "4xl": (
+        size: 2.375rem,
+        line: 140%,
+    ),
+
+    "5xl": (
+        size: 2.5rem,
+        line: 80%,
+    ),
+    "6xl": (
+        size: 2.625rem,
+        line: 120%,
+    ),
+    "7xl": (
+        size: 3.5rem,
+        line: 120%,
+    ),
+    "8xl": (
+        size: 3.875rem,
+        line: 84%,
+    ),
+    "9xl": (
+        size: 4.5rem,
+        line: 100%,
+    ),
+    "10xl": (
+        size: 6.25rem,
+        line: 100%,
+    ),
+    "11xl": (
+        size: 6.75rem,
+        line: 75%,
+    ),
+);
+
+@mixin typography($variant, $family: primary) {
+    $token: map-get($font-sizes, $variant);
+    $font-family: map-get($font-families, $family);
+
+    @if $token == null {
+        @error "Typography variant `#{$variant}` does not exist";
+    }
+
+    @if $font-family == null {
+        @error "Font family `#{$family}` does not exist";
+    }
+
+    font-family: $font-family;
+    font-size: map-get($token, size);
+    line-height: map-get($token, line);
+    // letter-spacing: 2px;
+}

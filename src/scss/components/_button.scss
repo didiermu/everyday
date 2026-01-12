@@ -1,0 +1,79 @@
+@use "./../core/typography";
+
+.button {
+    @include typography.typography("xl", primaryBold);
+    border-radius: var(--border-radius-full);
+    box-shadow: none;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: 1px solid var(--color-not-so-black);
+    letter-spacing: 2px;
+    filter: drop-shadow(3px 6px var(--color-not-so-black));
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &-min {
+        padding: var(--spacing-xxs) 40px;
+    }
+    &-full {
+        padding: var(--spacing-xxs) 40px;
+    }
+
+    &-primary {
+        background: var(--color-banana);
+        color: var(--color-not-so-black);
+    }
+    &-secondary {
+        background: var(--color-magic);
+    }
+
+    &-tertiary {
+        background: var(--color-not-so-white);
+    }
+
+    &-icon {
+        background: var(--color-not-so-white-viz);
+        column-gap: var(--spacing-xs);
+        letter-spacing: normal;
+        justify-content: center;
+        @include typography.typography("sm", tertiary);
+
+        &::before {
+            content: "";
+            transition: 0.3s ease-in-out all;
+            display: inline;
+            width: 16px;
+            height: 16px;
+        }
+
+        &.star::before {
+            background: var(--icon-star) no-repeat center / contain;
+        }
+        &.read::before {
+            background: var(--icon-read) no-repeat center / contain;
+        }
+        &.data::before {
+            background: var(--icon-data) no-repeat center / contain;
+        }
+    }
+
+    &:not(.button-min, .button-icon)::after {
+        content: "";
+        transition: 0.3s ease-in-out all;
+        background: var(--icon-arrow) no-repeat center / contain;
+        display: inline;
+        width: 0;
+        height: 16px;
+    }
+
+    @media (hover: hover) {
+        &:hover {
+            column-gap: var(--spacing-xs);
+
+            &::after {
+                width: 16px;
+            }
+        }
+    }
+}

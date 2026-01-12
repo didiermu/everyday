@@ -1,0 +1,161 @@
+@use "../core/typography";
+@use "../core/mixins";
+
+&.page-visualization {
+    background: var(--color-banana);
+
+    &:has(.visualization.show) {
+        background: var(--color-not-so-white-viz-300);
+    }
+
+    .hero {
+        padding-block-end: 100px;
+
+        &.hide {
+            display: none;
+        }
+
+        .col-12 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            row-gap: var(--spacing-lg);
+        }
+
+        p {
+            @include typography.typography("lg", tertiary);
+            text-align: center;
+        }
+
+        .title {
+            span {
+                background: var(--color-magic);
+            }
+        }
+
+        .button {
+            @include typography.typography("sm", tertiary);
+            letter-spacing: 0;
+            width: max-content;
+            padding: var(--spacing-sm) var(--spacing-lg);
+        }
+    }
+
+    .visualization {
+        background: var(--color-not-so-white-viz-300);
+        padding-block-start: var(--spacing-xl);
+        padding-block-end: var(--spacing-3xl);
+        display: none;
+
+        &.show {
+            display: block;
+        }
+
+        .row {
+            row-gap: var(--spacing-md);
+        }
+
+        .col-12 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            row-gap: var(--spacing-xs);
+        }
+
+        h2 {
+            @include typography.typography("9xl", primary);
+        }
+
+        &__data {
+            display: flex;
+            align-items: center;
+            column-gap: var(--spacing-sm);
+
+            span {
+                @include typography.typography("md", tertiary);
+            }
+        }
+
+        &__group {
+            display: flex;
+            align-items: center;
+            column-gap: var(--spacing-xs);
+
+            strong {
+                display: flex;
+                align-items: center;
+                column-gap: var(--spacing-xs);
+                font-weight: 500;
+
+                &::before {
+                    content: "";
+                    display: inline-block;
+                    background: var(--icon-chevron) no-repeat center / contain;
+                    width: 12px;
+                    height: 12px;
+                }
+            }
+
+            &:last-child {
+                strong::before {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+
+        &--fondo {
+            position: relative;
+        }
+
+        &--button {
+            position: absolute;
+            top: 2.375rem;
+            right: 0.75rem;
+            border: 1px solid var(--color-not-so-black);
+            letter-spacing: 2px;
+            filter: drop-shadow(3px 6px var(--color-not-so-black));
+            width: 110px;
+            height: 110px;
+            border-radius: var(--border-radius-full);
+            background: var(--color-banana);
+            @include typography.typography("xl", primaryBold);
+            display: grid;
+            place-content: center;
+            text-align: center;
+            line-height: 1;
+            color: var(--color-not-so-black);
+        }
+
+        &--data {
+            align-items: normal !important;
+            row-gap: var(--spacing-lg) !important;
+
+            h4 {
+                @include typography.typography("md", tertiary);
+                font-weight: 300;
+                padding-block: var(--spacing-sm);
+                text-align: center;
+                background: url(./../img/cerillo-negative.png) no-repeat 35%
+                    center / 50px;
+
+                strong {
+                    font-weight: 500;
+                }
+            }
+
+            @include mixins.data-table;
+
+            a {
+                text-decoration: none;
+            }
+
+            .button {
+                background: var(--color-not-so-white-viz-300);
+                @include typography.typography("sm", tertiary);
+                letter-spacing: normal;
+                width: max-content;
+                margin: auto;
+            }
+        }
+    }
+}

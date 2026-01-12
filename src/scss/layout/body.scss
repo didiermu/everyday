@@ -1,0 +1,15 @@
+body {
+    @import "../pages/globals";
+    @import "_header";
+    @import "_footer";
+    @import "../pages/_home";
+    @import "../pages/_physicalizing";
+    @import "../pages/_visualization";
+    @import "../pages/_periods";
+    @import "../pages/_about";
+    @import "../pages/_epilogue";
+
+    &:has(dialog[open]) {
+        overflow: hidden;
+    }
+}

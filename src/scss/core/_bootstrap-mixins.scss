@@ -1,0 +1,8 @@
+@use "sass:math";
+
+@mixin row-cols($count) {
+    > * {
+        flex: 0 0 auto;
+        width: math.div(100%, $count);
+    }
+}
