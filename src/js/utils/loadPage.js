@@ -14,25 +14,6 @@ export async function loadPage(path) {
     }
 }
 
-// async function loadScriptsFromHTML(html) {
-//     const parser = new DOMParser();
-//     const doc = parser.parseFromString(html, "text/html");
-//     const scripts = doc.querySelectorAll("script");
-//
-//     for (const script of scripts) {
-//         const newScript = document.createElement("script");
-//         if (script.src) {
-//             newScript.src = script.src;
-//         } else {
-//             newScript.textContent = script.textContent;
-//         }
-//         if (script.type) {
-//             newScript.type = script.type;
-//         }
-//         document.head.appendChild(newScript);
-//     }
-// }
-
 export function updateBodyClass(className) {
     document.body.classList.forEach((cls) => {
         if (cls.startsWith("page-")) {

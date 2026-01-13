@@ -79,7 +79,6 @@ let pendingModalViz = false;
 const handleRoute = async () => {
     let path = window.location.pathname;
 
-    // Quitar base (/everyday)
     if (BASE_PATH !== "/" && path.startsWith(BASE_PATH)) {
         path = path.slice(BASE_PATH.length);
     }
@@ -94,33 +93,7 @@ const handleRoute = async () => {
 
     await loadPage(route.page);
 
-    if (typeof route.init === "function") {
-        await route.init();
-    }
-
-    // Modal post navegación
-    if (route.page.includes("visualization") && pendingModalViz) {
-        pendingModalViz = false;
-        setTimeout(() => modalVizInit(), 0);
-    }
-
-    // Header dinámico
-    const headerPath =
-        path === "/visualization/periods"
-            ? "componets/header-interior.html"
-            : "componets/header.html";
-
-    await loadComponent("#header", headerPath);
-
-    // Cerrar offcanvas
-    const offcanvasEl = document.getElementById("offcanvasDarkNavbar");
-    if (offcanvasEl) {
-        const instance = bootstrap.Offcanvas.getInstance(offcanvasEl);
-        if (instance) instance.hide();
-    }
-
-    document.body.classList.remove("overflow-hidden");
-    document.body.removeAttribute("style");
+    if (route.init) await route.init();
 
     window.scrollTo(0, 0);
 };
