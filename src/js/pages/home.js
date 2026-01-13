@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+import { smoothScroll } from "./../utils/loadLocomotive.js";
 
 const modalVideo = () => {
     const modal = document.getElementById("modal-video");
@@ -24,7 +25,8 @@ const modalVideo = () => {
     });
 };
 
-const render = () => {
+// 🔥 Ahora render() recibe la instancia de Locomotive
+const render = (locomotiveScroll) => {
     // ----------------------
     // ESCENA
     // ----------------------
@@ -35,7 +37,7 @@ const render = () => {
     // CÁMARA (frontal)
     // ----------------------
     const camera = new THREE.PerspectiveCamera(
-        50,
+        60,
         window.innerWidth / window.innerHeight,
         0.1,
         100
@@ -52,15 +54,24 @@ const render = () => {
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    document.querySelector("main").appendChild(renderer.domElement);
+
+    // 🔥 Mejor poner el canvas fixed para que no interfiera con Locomotive
+    renderer.domElement.style.position = "fixed";
+    renderer.domElement.style.top = "-130px";
+    renderer.domElement.style.left = "30px";
+    renderer.domElement.style.pointerEvents = "none";
+
+    document
+        .querySelector("main")
+        .insertAdjacentElement("afterbegin", renderer.domElement);
 
     // ----------------------
     // LUCES
     // ----------------------
-    scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+    scene.add(new THREE.AmbientLight(0xffffff, 2));
 
     const dirLight = new THREE.DirectionalLight(0xffffff, 1.6);
-    dirLight.position.set(2, 3, 5);
+    dirLight.position.set(2, 0.3, 5);
     scene.add(dirLight);
 
     // ----------------------
@@ -100,11 +111,9 @@ const render = () => {
         })
     );
 
-    // sombra plana a cámara
     shadowPlane.rotation.x = 1;
     shadowPlane.rotation.y = -1;
     shadowPlane.rotation.z = -1;
-
     shadowPlane.position.set(0.3, 0.4, 0.1);
 
     // ----------------------
@@ -121,11 +130,13 @@ const render = () => {
         obj.scale.set(-1, 1, 1);
 
         model = obj;
-
-        // 🔥 LA CLAVE
-        model.add(shadowPlane);
-
+        // model.add(shadowPlane);
         scene.add(model);
+
+        // Actualizar Locomotive después de cargar el modelo
+        if (locomotiveScroll) {
+            setTimeout(() => locomotiveScroll.update(), 200);
+        }
     });
 
     // ----------------------
@@ -138,19 +149,40 @@ const render = () => {
 
     const maxRotationX = Math.PI * 3;
     const maxRotationY = Math.PI * 3;
-    const maxMoveY = 2.5;
+    const maxMoveY = 3;
     const maxMoveX = -1;
 
-    window.addEventListener("scroll", () => {
-        const scrollY = window.scrollY;
-        const maxScrollY = document.body.scrollHeight - window.innerHeight;
-        const progress = Math.min(scrollY / maxScrollY, 1);
+    // ✅ USAR ESTO - Escuchar eventos de Locomotive
+    if (locomotiveScroll) {
+        locomotiveScroll.on("scroll", (args) => {
+            // args.scroll.y = posición actual del scroll
+            // args.limit.y = límite máximo del scroll
+            const scrollY = args.scroll.y;
+            const maxScrollY = args.limit.y;
+            const progress =
+                maxScrollY > 0 ? Math.min(scrollY / maxScrollY, 1) : 0;
 
-        targetRotationX = progress * maxRotationX;
-        targetRotationY = progress * maxRotationY;
-        targetPosY = -progress * maxMoveY;
-        targetPosX = progress * maxMoveX;
-    });
+            targetRotationX = progress * maxRotationX;
+            targetRotationY = progress * maxRotationY;
+            targetPosY = -progress * maxMoveY;
+            targetPosX = progress * maxMoveX;
+
+            // 🔍 Debug opcional
+            // console.log('Progress:', progress, 'ScrollY:', scrollY, 'MaxScrollY:', maxScrollY);
+        });
+    } else {
+        // Fallback al scroll nativo si Locomotive no está disponible
+        window.addEventListener("scroll", () => {
+            const scrollY = window.scrollY;
+            const maxScrollY = document.body.scrollHeight - window.innerHeight;
+            const progress = Math.min(scrollY / maxScrollY, 1);
+
+            targetRotationX = progress * maxRotationX;
+            targetRotationY = progress * maxRotationY;
+            targetPosY = -progress * maxMoveY;
+            targetPosX = progress * maxMoveX;
+        });
+    }
 
     // ----------------------
     // ANIMACIÓN
@@ -186,12 +218,20 @@ const render = () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Actualizar Locomotive en resize
+        if (locomotiveScroll) {
+            locomotiveScroll.update();
+        }
     });
 };
 
 export function init() {
     modalVideo();
-    render();
-}
 
-// init();
+    // 🔥 Primero inicializa Locomotive
+    const locomotiveInstance = smoothScroll();
+
+    // 🔥 Luego pasa la instancia a render()
+    render(locomotiveInstance);
+}

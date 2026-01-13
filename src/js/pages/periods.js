@@ -1,3 +1,5 @@
+import { smoothScroll } from "./../utils/loadLocomotive.js";
+
 // Variable global para almacenar los datos
 let emotionsData = null;
 let currentHighlights = null;
@@ -46,7 +48,7 @@ function getEmotionClass(emotion) {
 // Función para crear el template del hero
 function createHeroTemplate(data) {
     return `
-        <section class="hero">
+        <section class="hero" >
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -220,7 +222,7 @@ function createPeriodsTemplate(data, currentPeriod) {
         .join("");
 
     return `
-        <section class="periods" id="period-${currentPeriod}">
+        <section class="periods" id="period-${currentPeriod}" >
             <div class="container">
                 <div class="row">
                     <div class="col-12 periods-image">
@@ -364,7 +366,7 @@ function attachRead() {
 // Función principal de periodos
 const periodos = async () => {
     // Cargar los datos desde el archivo JSON
-    emotionsData = await loadJSONFromFile("./../../json/periods.json");
+    emotionsData = await loadJSONFromFile("./../json/periods.json");
 
     if (!emotionsData) {
         console.error("No se pudieron cargar los datos");
@@ -488,6 +490,9 @@ function attachModalEvents() {
 
 export function init() {
     periodos();
+    setTimeout(() => {
+        smoothScroll();
+    }, 1000);
 }
 
 // init();

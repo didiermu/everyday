@@ -4,6 +4,8 @@ import { initRouter } from "../router/router.js";
 import "./../scss/styles.scss";
 import "bootstrap/js/dist/offcanvas";
 import "bootstrap/js/dist/collapse";
+import "@locomotive/dist/locomotive-scroll.css";
+// import "./../scss/scroll.css";
 
 // Layout
 (async () => {

@@ -7,7 +7,8 @@
     canvas {
         position: fixed;
         inset: 0;
-        margin: auto;
+        // margin: auto;
+        z-index: 9 !important;
     }
 
     .intro {

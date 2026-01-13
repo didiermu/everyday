@@ -1,5 +1,6 @@
 import Swiper from "swiper";
 import { EffectCreative } from "swiper/modules";
+import { smoothScroll } from "./../utils/loadLocomotive.js";
 
 import "swiper/css/effect-creative";
 import "swiper/css";
@@ -33,4 +34,5 @@ const slider = () => {
 
 export function init() {
     slider();
+    smoothScroll();
 }

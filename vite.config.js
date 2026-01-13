@@ -2,58 +2,55 @@ import { defineConfig } from "vite";
 import { resolve } from "path";
 import path from "path";
 
-export default {
-    root: path.resolve(__dirname, "src"),
-    base: "./",
-    publicDir: path.resolve(__dirname, "public"),
-    build: {
-        outDir: path.resolve(__dirname, "dist"),
-        rollupOptions: {
-            input: {
-                index: path.resolve(__dirname, "src/index.html"),
-                home: path.resolve(__dirname, "src/pages/home.html"),
-                about: path.resolve(__dirname, "src/pages/about.html"),
-                epilogue: path.resolve(__dirname, "src/pages/epilogue.html"),
-                periods: path.resolve(__dirname, "src/pages/periods.html"),
-                physicalizing: path.resolve(
-                    __dirname,
-                    "src/pages/physicalizing.html"
-                ),
-                visualization: path.resolve(
-                    __dirname,
-                    "src/pages/visualization.html"
-                ),
-            },
-            output: {
-                chunkFileNames: "js/[name]-[hash].js",
-                entryFileNames: "js/[name]-[hash].js",
-                manualChunks: {
-                    three: ["three"],
+export default defineConfig(({ command, mode }) => {
+    return {
+        root: path.resolve(__dirname, "src"),
+        // base: command === "serve" || mode === "preview" ? "/" : "/everyday/",
+
+        base: "./",
+        publicDir: path.resolve(__dirname, "public"),
+        build: {
+            outDir: path.resolve(__dirname, "docs"),
+            emptyOutDir: true,
+            rollupOptions: {
+                input: {
+                    index: path.resolve(__dirname, "src/index.html"),
                 },
-                assetFileNames: ({ name }) => {
-                    if (/\.(gif|jpe?g|png|svg)$/.test(name ?? "")) {
-                        return "img/[name]-[hash][extname]";
-                    }
+                output: {
+                    chunkFileNames: "js/[name]-[hash].js",
+                    entryFileNames: "js/[name]-[hash].js",
+                    manualChunks: {
+                        three: ["three"],
+                    },
+                    assetFileNames: ({ name }) => {
+                        if (/\.(gif|jpe?g|png|svg)$/.test(name ?? "")) {
+                            return "img/[name]-[hash][extname]";
+                        }
 
-                    if (/\.css$/.test(name ?? "")) {
-                        return "css/[name]-[hash][extname]";
-                    }
+                        if (/\.css$/.test(name ?? "")) {
+                            return "css/[name]-[hash][extname]";
+                        }
 
-                    // default value
-                    // ref: https://rollupjs.org/guide/en/#outputassetfilenames
-                    return "assets/[name]-[hash][extname]";
+                        // default value
+                        // ref: https://rollupjs.org/guide/en/#outputassetfilenames
+                        return "assets/[name]-[hash][extname]";
+                    },
                 },
             },
         },
-    },
-    resolve: {
-        alias: {
-            "~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
+        resolve: {
+            alias: {
+                "~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
+                "@locomotive": path.resolve(
+                    __dirname,
+                    "node_modules/locomotive-scroll"
+                ),
+            },
         },
-    },
-    server: {
-        // open: "/pages/index.html",
-        open: true,
-        hot: true,
-    },
-};
+        server: {
+            // open: "/pages/index.html",
+            open: true,
+            hot: true,
+        },
+    };
+});

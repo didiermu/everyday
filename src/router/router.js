@@ -47,10 +47,10 @@ const routes = {
         page: "pages/about.html",
         title: "About",
         bodyClass: "page-about",
-        // init: async () => {
-        //     const { init } = await import("../js/pages/periods.js");
-        //     init();
-        // },
+        init: async () => {
+            const { init } = await import("../js/pages/about.js");
+            init();
+        },
     },
     "/epilogue": {
         page: "pages/epilogue.html",
@@ -64,28 +64,47 @@ const routes = {
 };
 
 // Flag para indicar que, tras una navegación desde `.link-back`, se debe
-// abrir el modal de visualización. Se declara en el ámbito del módulo para
-// que `handleRoute` lo vea.
+// abrir el modal de visualización
 let pendingModalViz = false;
 
+// Obtener el base path una sola vez
+const getBasePath = () => {
+    const basePath = import.meta.env.BASE_URL || "/";
+    return basePath.endsWith("/") ? basePath.slice(0, -1) : basePath;
+};
+
+const BASE_PATH = getBasePath();
+
 const handleRoute = async () => {
-    const path = window.location.pathname;
+    // Obtener la ruta actual y remover el base path
+    let path = window.location.pathname;
+
+    // Remover el base path para obtener la ruta relativa
+    if (path.startsWith(BASE_PATH)) {
+        path = path.slice(BASE_PATH.length) || "/";
+    }
+
+    // Asegurar que la ruta comience con /
+    if (!path.startsWith("/")) {
+        path = "/" + path;
+    }
+
     const route = routes[path] || routes["/"];
 
     document.title = route.title;
-
     updateBodyClass(route.bodyClass);
 
     await loadPage(route.page);
+
     if (typeof route.init === "function") {
         await route.init();
     }
+
     // Si venimos de un click en `.link-back`, y la ruta cargada es visualización,
     // ejecuta la inicialización del modal de visualización.
     if (route.page && route.page.includes("visualization") && pendingModalViz) {
         pendingModalViz = false;
         if (typeof modalVizInit === "function") {
-            // Llamar después de un micro-tick para asegurar que el DOM está actualizado
             setTimeout(() => modalVizInit(), 0);
         }
     }
@@ -110,13 +129,14 @@ const handleRoute = async () => {
     // Forzar remover clases del body en caso de que no se reseteen
     document.body.classList.remove("overflow-hidden");
     document.body.removeAttribute("style");
+
+    // Scroll al inicio de la página
+    window.scrollTo(0, 0);
 };
 
 /**
  * Inicializa el router SPA
  */
-// handleRoute();
-
 export function initRouter() {
     const view = document.querySelector("[data-router-view]");
 
@@ -129,11 +149,10 @@ export function initRouter() {
      * Intercepta navegación interna
      */
     document.addEventListener("click", (e) => {
-        const link = e.target.closest("a[data-link]");
+        const link = e.target.closest("[data-link]");
         if (!link) return;
 
-        // Si el enlace tiene la clase `.link-back`, marcar el flag antes de
-        // navegar para que `handleRoute` pueda abrir el modal después.
+        // Si el enlace tiene la clase `.link-back`, marcar el flag
         if (link.classList && link.classList.contains("link-back")) {
             pendingModalViz = true;
         }
@@ -144,17 +163,22 @@ export function initRouter() {
 
         e.preventDefault();
 
-        history.pushState(null, "", url.pathname);
+        // Construir la nueva URL con el base path
+        let newPath = url.pathname;
+
+        // Si la ruta no comienza con el base path, agregarlo
+        if (!newPath.startsWith(BASE_PATH) && BASE_PATH !== "/") {
+            newPath = BASE_PATH + newPath;
+        }
+
+        history.pushState(null, "", newPath);
         handleRoute();
     });
 
-    // Escucha delegada para `.link-back` en cualquier página. Si se hace click,
-    // se marca un flag para que, al cargar la ruta de visualización, se abra el modal.
+    // Escucha delegada para `.link-back` en cualquier página
     document.addEventListener("click", (e) => {
         const lb = e.target.closest(".link-back");
         if (!lb) return;
-
-        // Marcar intención de abrir modal tras la navegación
         pendingModalViz = true;
     });
 

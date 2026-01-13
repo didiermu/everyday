@@ -47,4 +47,23 @@
     .img-cover {
         @include mixins.img-cover;
     }
+
+    [data-scroll-container] {
+        min-height: 100vh;
+        padding-bottom: 100px; /* Espacio extra al final */
+    }
+
+    //     /* Estado inicial: elemento abajo y transparente */
+    //     [data-scroll-class="appear"] {
+    //         opacity: 0;
+    //         transform: translateY(100px); /* Empieza 100px más abajo */
+    //         transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    //             transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    //     }
+    //
+    //     /* Estado final: en su posición original */
+    //     [data-scroll-class="appear"].is-inview {
+    //         opacity: 1;
+    //         transform: translateY(0); /* Vuelve a su lugar */
+    //     }
 }
