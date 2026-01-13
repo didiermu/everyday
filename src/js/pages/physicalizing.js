@@ -5,16 +5,16 @@ import { smoothScroll } from "./../utils/loadLocomotive.js";
 import "swiper/css/effect-creative";
 import "swiper/css";
 
+let locomotiveInstance = null;
+let swiperInstance = null;
+
 const slider = () => {
-    const swiper = new Swiper(".swiper", {
+    swiperInstance = new Swiper(".swiper", {
         modules: [EffectCreative],
         direction: "horizontal",
-        // loop: true,
         slidesPerView: "auto",
         grabCursor: true,
         centeredSlides: true,
-        // centerInsufficientSlides: true,
-        // centeredSlidesBounds: true,
 
         effect: "creative",
         creativeEffect: {
@@ -34,5 +34,19 @@ const slider = () => {
 
 export function init() {
     slider();
-    smoothScroll();
+    locomotiveInstance = smoothScroll();
+}
+
+export function destroy() {
+    // Destruir Swiper
+    if (swiperInstance) {
+        swiperInstance.destroy(true, true);
+        swiperInstance = null;
+    }
+
+    // Destruir Locomotive
+    if (locomotiveInstance) {
+        locomotiveInstance.destroy();
+        locomotiveInstance = null;
+    }
 }

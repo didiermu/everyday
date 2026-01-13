@@ -1,5 +1,14 @@
 import { smoothScroll } from "./../utils/loadLocomotive.js";
 
+let locomotiveInstance = null;
+
 export function init() {
-    smoothScroll();
+    locomotiveInstance = smoothScroll();
+}
+
+export function destroy() {
+    if (locomotiveInstance) {
+        locomotiveInstance.destroy();
+        locomotiveInstance = null;
+    }
 }

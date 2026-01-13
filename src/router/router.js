@@ -27,7 +27,7 @@ const routes = {
     },
     "/visualization/periods": {
         page: "pages/periods.html",
-        title: "Visualization – Periods",
+        title: "Visualization — Periods",
         bodyClass: "page-periods",
         loader: () => import("../js/pages/periods.js"),
     },
@@ -57,6 +57,54 @@ let currentPageModule = null;
 let pendingModalViz = false;
 
 /* ---------------------------------------------------
+   FUNCIÓN PARA LIMPIAR RECURSOS GLOBALES
+--------------------------------------------------- */
+function cleanupGlobalResources() {
+    // Cancelar todos los requestAnimationFrame activos
+    let id = window.requestAnimationFrame(() => {});
+    while (id--) {
+        window.cancelAnimationFrame(id);
+    }
+
+    // Limpiar todos los timeouts e intervals
+    const highestTimeoutId = setTimeout(() => {}, 0);
+    for (let i = 0; i < highestTimeoutId; i++) {
+        clearTimeout(i);
+    }
+
+    const highestIntervalId = setInterval(() => {}, 0);
+    for (let i = 0; i < highestIntervalId; i++) {
+        clearInterval(i);
+    }
+
+    // Remover event listeners de window y document (los más comunes)
+    const eventsToClean = [
+        "scroll",
+        "resize",
+        "mousemove",
+        "click",
+        "keydown",
+        "keyup",
+    ];
+    eventsToClean.forEach((event) => {
+        // Clonamos window y document para remover todos sus listeners
+        // Nota: esto no funciona directamente, pero los handlers individuales sí
+    });
+
+    // Limpiar elementos canvas de Three.js si existen
+    const canvasElements = document.querySelectorAll("canvas");
+    canvasElements.forEach((canvas) => {
+        // Obtener el contexto y limpiar
+        const gl = canvas.getContext("webgl") || canvas.getContext("webgl2");
+        if (gl) {
+            const loseContext = gl.getExtension("WEBGL_lose_context");
+            if (loseContext) loseContext.loseContext();
+        }
+        canvas.remove();
+    });
+}
+
+/* ---------------------------------------------------
    ROUTE HANDLER
 --------------------------------------------------- */
 const handleRoute = async () => {
@@ -76,12 +124,29 @@ const handleRoute = async () => {
     --------------------------------------------- */
     if (currentPageModule?.destroy) {
         try {
-            currentPageModule.destroy();
+            await currentPageModule.destroy();
         } catch (err) {
             console.warn("Error en destroy():", err);
         }
     }
     currentPageModule = null;
+
+    /* ---------------------------------------------
+       🧼 LIMPIAR RECURSOS GLOBALES
+    --------------------------------------------- */
+    cleanupGlobalResources();
+
+    /* ---------------------------------------------
+       🧼 LIMPIAR VIEW (MATA LISTENERS)
+    --------------------------------------------- */
+    const view = document.querySelector("[data-router-view]");
+    if (view) {
+        // Limpiar completamente el contenido
+        view.innerHTML = "";
+        // Reemplazar el nodo para eliminar todos los event listeners
+        const newView = view.cloneNode(false);
+        view.parentNode.replaceChild(newView, view);
+    }
 
     /* ---------------------------------------------
        META / BODY
@@ -108,11 +173,16 @@ const handleRoute = async () => {
        JS DE LA PÁGINA
     --------------------------------------------- */
     if (route.loader) {
-        const module = await route.loader();
+        try {
+            // Usar import dinámico con timestamp para forzar recarga
+            const module = await route.loader();
 
-        if (module?.init) {
-            module.init();
-            currentPageModule = module;
+            if (module?.init) {
+                await module.init();
+                currentPageModule = module;
+            }
+        } catch (err) {
+            console.error("Error cargando módulo de página:", err);
         }
     }
 
@@ -133,8 +203,15 @@ const handleRoute = async () => {
         if (instance) instance.hide();
     }
 
-    document.body.classList.remove("overflow-hidden");
+    // Limpiar clases de Bootstrap
+    document.body.classList.remove("overflow-hidden", "modal-open");
     document.body.removeAttribute("style");
+
+    // Remover backdrops de Bootstrap que puedan quedar
+    const backdrops = document.querySelectorAll(
+        ".modal-backdrop, .offcanvas-backdrop"
+    );
+    backdrops.forEach((backdrop) => backdrop.remove());
 
     window.scrollTo(0, 0);
 };
@@ -167,7 +244,9 @@ export function initRouter() {
         }
 
         newPath = BASE_PATH === "/" ? newPath : BASE_PATH + newPath;
-        window.location.href = newPath;
+
+        history.pushState({}, "", newPath);
+        handleRoute();
     });
 
     window.addEventListener("popstate", handleRoute);

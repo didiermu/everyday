@@ -1,8 +1,18 @@
 import { smoothScroll } from "./../utils/loadLocomotive.js";
 
-// Variable global para almacenar los datos
+// Variables globales para almacenar los datos y recursos
 let emotionsData = null;
 let currentHighlights = null;
+let locomotiveInstance = null;
+let popstateHandler = null;
+let paginationHandlers = [];
+let modalHandlers = {
+    story: [],
+    data: [],
+    high: [],
+    resume: [],
+    read: [],
+};
 
 // Función para cargar el JSON desde un archivo
 async function loadJSONFromFile(url) {
@@ -82,7 +92,6 @@ function normalizeHighlights(highlights) {
 }
 
 function renderHighlight(modal, item) {
-    // contenido
     modal.querySelector('[data-field="day"]').textContent = item.day;
     modal.querySelector('[data-field="emotion"]').textContent = item.emotion;
     modal.querySelector('[data-field="location"]').textContent = item.location;
@@ -91,9 +100,7 @@ function renderHighlight(modal, item) {
     modal.querySelector('[data-field="resume"]').textContent = item.resume;
     modal.querySelector('[data-field="image"]').src = `./../img/${item.image}`;
 
-    // 👉 VALIDACIÓN CORRECTA
     const milestoneBtn = modal.querySelector("figure");
-    // milestoneBtn.hidden = item.mileston !== true;
 
     if (item.botones === "3") {
         milestoneBtn.dataset.botones = "3";
@@ -108,12 +115,10 @@ function renderRings(count, activeIndex) {
     return Array.from({ length: count })
         .map(
             (_, i) => `
-            
-                <img src="./../img/ring.png" alt="" class='${
-                    i === 0 ? "active" : ""
-                }' 
-                data-ring-index="${i}">
-            
+            <img src="./../img/ring.png" alt="" class='${
+                i === 0 ? "active" : ""
+            }' 
+            data-ring-index="${i}">
         `
         )
         .join("");
@@ -280,7 +285,6 @@ function createPeriodsTemplate(data, currentPeriod) {
                     `
                 : ""
         }
-
     `;
 }
 
@@ -292,6 +296,9 @@ function fillTemplate(periodId) {
         console.error(`No se encontraron datos para el periodo: ${periodId}`);
         return;
     }
+
+    // Limpiar handlers anteriores antes de recrear elementos
+    cleanupModalHandlers();
 
     // Guardar los modales antes de reemplazar el contenido
     const modalStory = document.getElementById("modal-story");
@@ -316,7 +323,6 @@ function fillTemplate(periodId) {
     mainContainer.insertAdjacentElement("afterbegin", modalStoryClone);
     mainContainer.insertAdjacentHTML("afterbegin", modalHighHTML);
     mainContainer.insertAdjacentHTML("afterbegin", periodsHTML);
-
     mainContainer.insertAdjacentHTML("afterbegin", heroHTML);
 
     // Agregar event listeners a la paginación
@@ -328,16 +334,25 @@ function fillTemplate(periodId) {
 
 // Función para agregar eventos a los botones de paginación
 function attachPaginationEvents() {
+    // Limpiar handlers anteriores
+    paginationHandlers.forEach(({ element, handler }) => {
+        element.removeEventListener("click", handler);
+    });
+    paginationHandlers = [];
+
     const paginationButtons = document.querySelectorAll(
         ".periods--pagination a[data-period]"
     );
 
     paginationButtons.forEach((button) => {
-        button.addEventListener("click", (e) => {
+        const handler = (e) => {
             e.preventDefault();
             const period = e.target.getAttribute("data-period");
             changePeriod(period);
-        });
+        };
+
+        button.addEventListener("click", handler);
+        paginationHandlers.push({ element: button, handler });
     });
 }
 
@@ -354,12 +369,14 @@ function attachRead() {
     const button = document.querySelector("#modal-resume a");
 
     if (button) {
-        button.addEventListener("click", () => {
+        const handler = () => {
             const isOpen = text.classList.toggle("is-open");
-
             button.textContent = isOpen ? "Read less" : "Read more";
             button.setAttribute("aria-expanded", isOpen);
-        });
+        };
+
+        button.addEventListener("click", handler);
+        modalHandlers.read.push({ element: button, handler });
     }
 }
 
@@ -371,7 +388,9 @@ const periodos = async () => {
     if (!emotionsData) {
         console.error("No se pudieron cargar los datos");
         return;
-    } // Obtener el periodo de la URL o usar el primer periodo disponible
+    }
+
+    // Obtener el periodo de la URL o usar el primer periodo disponible
     const periodId = getURLParameter("period") || Object.keys(emotionsData)[0];
 
     // Si no hay parámetro en la URL, agregarlo
@@ -384,11 +403,13 @@ const periodos = async () => {
     fillTemplate(periodId);
 
     // Manejar navegación del navegador (botones atrás/adelante)
-    window.addEventListener("popstate", () => {
+    popstateHandler = () => {
         const newPeriodId =
             getURLParameter("period") || Object.keys(emotionsData)[0];
         fillTemplate(newPeriodId);
-    });
+    };
+
+    window.addEventListener("popstate", popstateHandler);
 };
 
 const modalStory = () => {
@@ -397,13 +418,16 @@ const modalStory = () => {
     const closeBtn = modal ? modal.querySelector(".close") : null;
 
     if (modal && button && closeBtn) {
-        button.addEventListener("click", () => {
-            modal.showModal();
-        });
+        const openHandler = () => modal.showModal();
+        const closeHandler = () => modal.close();
 
-        closeBtn.addEventListener("click", () => {
-            modal.close();
-        });
+        button.addEventListener("click", openHandler);
+        closeBtn.addEventListener("click", closeHandler);
+
+        modalHandlers.story.push(
+            { element: button, handler: openHandler },
+            { element: closeBtn, handler: closeHandler }
+        );
     }
 };
 
@@ -413,13 +437,16 @@ const modalData = () => {
     const closeBtn = modal ? modal.querySelector(".close") : null;
 
     if (modal && button && closeBtn) {
-        button.addEventListener("click", () => {
-            modal.showModal();
-        });
+        const openHandler = () => modal.showModal();
+        const closeHandler = () => modal.close();
 
-        closeBtn.addEventListener("click", () => {
-            modal.close();
-        });
+        button.addEventListener("click", openHandler);
+        closeBtn.addEventListener("click", closeHandler);
+
+        modalHandlers.data.push(
+            { element: button, handler: openHandler },
+            { element: closeBtn, handler: closeHandler }
+        );
     }
 };
 
@@ -427,38 +454,41 @@ const modalHigh = () => {
     const modal = document.getElementById("modal-high");
     const button = document.querySelector(".button.star");
     const closeBtn = modal ? modal.querySelector(".close") : null;
-    const milestoneBtn = modal.querySelector("figure");
 
     const idPriod = document.querySelector(".periods").getAttribute("id");
     modal.classList.add(idPriod);
 
     if (modal && button && closeBtn) {
-        button.addEventListener("click", () => {
-            modal.showModal();
-        });
+        const openHandler = () => modal.showModal();
+        const closeHandler = () => modal.close();
 
-        closeBtn.addEventListener("click", () => {
-            modal.close();
-        });
+        button.addEventListener("click", openHandler);
+        closeBtn.addEventListener("click", closeHandler);
+
+        modalHandlers.high.push(
+            { element: button, handler: openHandler },
+            { element: closeBtn, handler: closeHandler }
+        );
 
         const data = normalizeHighlights(currentHighlights);
         const ringImages = modal.querySelectorAll(".img-ring img");
-        let currentIndex = 0;
 
-        renderHighlight(modal, data[currentIndex]);
+        renderHighlight(modal, data[0]);
 
         ringImages.forEach((ring) => {
-            ring.addEventListener("click", () => {
+            const ringHandler = () => {
                 const index = Number(ring.dataset.ringIndex);
                 const item = data[index];
                 if (!item) return;
 
-                // 🔹 active ring
                 ringImages.forEach((img) => img.classList.remove("active"));
                 ring.classList.add("active");
 
                 renderHighlight(modal, item);
-            });
+            };
+
+            ring.addEventListener("click", ringHandler);
+            modalHandlers.high.push({ element: ring, handler: ringHandler });
         });
     }
 };
@@ -469,15 +499,37 @@ const modalResume = () => {
     const closeBtn = modal ? modal.querySelector(".button") : null;
 
     if (modal && button && closeBtn) {
-        button.addEventListener("click", () => {
-            modal.showModal();
-        });
+        const openHandler = () => modal.showModal();
+        const closeHandler = () => modal.close();
 
-        closeBtn.addEventListener("click", () => {
-            modal.close();
-        });
+        button.addEventListener("click", openHandler);
+        closeBtn.addEventListener("click", closeHandler);
+
+        modalHandlers.resume.push(
+            { element: button, handler: openHandler },
+            { element: closeBtn, handler: closeHandler }
+        );
     }
 };
+
+// Función para limpiar handlers de modales
+function cleanupModalHandlers() {
+    Object.values(modalHandlers).forEach((handlerArray) => {
+        handlerArray.forEach(({ element, handler }) => {
+            if (element) {
+                element.removeEventListener("click", handler);
+            }
+        });
+    });
+
+    modalHandlers = {
+        story: [],
+        data: [],
+        high: [],
+        resume: [],
+        read: [],
+    };
+}
 
 // Función para adjuntar eventos modales
 function attachModalEvents() {
@@ -490,8 +542,34 @@ function attachModalEvents() {
 
 export function init() {
     periodos();
-
-    smoothScroll();
+    locomotiveInstance = smoothScroll();
 }
 
-// init();
+export function destroy() {
+    // Limpiar Locomotive
+    if (locomotiveInstance) {
+        locomotiveInstance.destroy();
+        locomotiveInstance = null;
+    }
+
+    // Limpiar popstate handler
+    if (popstateHandler) {
+        window.removeEventListener("popstate", popstateHandler);
+        popstateHandler = null;
+    }
+
+    // Limpiar handlers de paginación
+    paginationHandlers.forEach(({ element, handler }) => {
+        if (element) {
+            element.removeEventListener("click", handler);
+        }
+    });
+    paginationHandlers = [];
+
+    // Limpiar handlers de modales
+    cleanupModalHandlers();
+
+    // Limpiar datos
+    emotionsData = null;
+    currentHighlights = null;
+}

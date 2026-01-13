@@ -2,37 +2,54 @@ import * as THREE from "three";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { smoothScroll } from "./../utils/loadLocomotive.js";
 
-let scrollHandler;
+// Variables globales para cleanup
+let locomotiveInstance = null;
+let renderer = null;
+let animationId = null;
+let resizeHandler = null;
+let model = null;
+let scene = null;
 
 const modalVideo = () => {
     const modal = document.getElementById("modal-video");
     const video = modal.querySelector("video");
 
-    document.querySelector(".btn-play").addEventListener("click", () => {
+    const playHandler = () => {
         modal.showModal();
         video.play();
-    });
+    };
 
-    document
-        .querySelector("#modal-video .close")
-        .addEventListener("click", () => {
-            video.pause();
-            video.currentTime = 0;
-            modal.close();
-        });
-
-    modal.addEventListener("close", () => {
+    const closeHandler = () => {
         video.pause();
         video.currentTime = 0;
-    });
+        modal.close();
+    };
+
+    const modalCloseHandler = () => {
+        video.pause();
+        video.currentTime = 0;
+    };
+
+    const btnPlay = document.querySelector(".btn-play");
+    const closeBtn = document.querySelector("#modal-video .close");
+
+    if (btnPlay) btnPlay.addEventListener("click", playHandler);
+    if (closeBtn) closeBtn.addEventListener("click", closeHandler);
+    if (modal) modal.addEventListener("close", modalCloseHandler);
+
+    // Retornar función de limpieza
+    return () => {
+        if (btnPlay) btnPlay.removeEventListener("click", playHandler);
+        if (closeBtn) closeBtn.removeEventListener("click", closeHandler);
+        if (modal) modal.removeEventListener("close", modalCloseHandler);
+    };
 };
 
-// 🔥 Ahora render() recibe la instancia de Locomotive
 const render = (locomotiveScroll) => {
     // ----------------------
     // ESCENA
     // ----------------------
-    const scene = new THREE.Scene();
+    scene = new THREE.Scene();
     scene.background = null;
 
     // ----------------------
@@ -50,22 +67,22 @@ const render = (locomotiveScroll) => {
     // ----------------------
     // RENDERER
     // ----------------------
-    const renderer = new THREE.WebGLRenderer({
+    renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // 🔥 Mejor poner el canvas fixed para que no interfiera con Locomotive
     renderer.domElement.style.position = "fixed";
     renderer.domElement.style.top = "-130px";
     renderer.domElement.style.left = "30px";
     renderer.domElement.style.pointerEvents = "none";
 
-    document
-        .querySelector("main")
-        .insertAdjacentElement("afterbegin", renderer.domElement);
+    const mainElement = document.querySelector("main");
+    if (mainElement) {
+        mainElement.insertAdjacentElement("afterbegin", renderer.domElement);
+    }
 
     // ----------------------
     // LUCES
@@ -121,7 +138,6 @@ const render = (locomotiveScroll) => {
     // ----------------------
     // MODELO OBJ
     // ----------------------
-    let model;
     const loader = new OBJLoader();
 
     loader.load("./render/cerillo.obj", (obj) => {
@@ -132,10 +148,8 @@ const render = (locomotiveScroll) => {
         obj.scale.set(-1, 1, 1);
 
         model = obj;
-        // model.add(shadowPlane);
         scene.add(model);
 
-        // Actualizar Locomotive después de cargar el modelo
         if (locomotiveScroll) {
             setTimeout(() => locomotiveScroll.update(), 200);
         }
@@ -154,11 +168,10 @@ const render = (locomotiveScroll) => {
     const maxMoveY = 3;
     const maxMoveX = -1;
 
-    // ✅ USAR ESTO - Escuchar eventos de Locomotive
+    let scrollHandler = null;
+
     if (locomotiveScroll) {
-        locomotiveScroll.on("scroll", (args) => {
-            // args.scroll.y = posición actual del scroll
-            // args.limit.y = límite máximo del scroll
+        scrollHandler = (args) => {
             const scrollY = args.scroll.y;
             const maxScrollY = args.limit.y;
             const progress =
@@ -168,13 +181,11 @@ const render = (locomotiveScroll) => {
             targetRotationY = progress * maxRotationY;
             targetPosY = -progress * maxMoveY;
             targetPosX = progress * maxMoveX;
+        };
 
-            // 🔍 Debug opcional
-            // console.log('Progress:', progress, 'ScrollY:', scrollY, 'MaxScrollY:', maxScrollY);
-        });
+        locomotiveScroll.on("scroll", scrollHandler);
     } else {
-        // Fallback al scroll nativo si Locomotive no está disponible
-        window.addEventListener("scroll", () => {
+        scrollHandler = () => {
             const scrollY = window.scrollY;
             const maxScrollY = document.body.scrollHeight - window.innerHeight;
             const progress = Math.min(scrollY / maxScrollY, 1);
@@ -183,32 +194,33 @@ const render = (locomotiveScroll) => {
             targetRotationY = progress * maxRotationY;
             targetPosY = -progress * maxMoveY;
             targetPosX = progress * maxMoveX;
-        });
+        };
+
+        window.addEventListener("scroll", scrollHandler);
     }
 
     // ----------------------
     // ANIMACIÓN
     // ----------------------
     function animate() {
-        requestAnimationFrame(animate);
+        animationId = requestAnimationFrame(animate);
 
         if (model) {
-            // MODELO
             model.rotation.x += (targetRotationX - model.rotation.x) * 0.2;
             model.rotation.y += (targetRotationY - model.rotation.y) * 0.2;
             model.position.y += (targetPosY - model.position.y) * 0.1;
             model.position.x += (targetPosX - model.position.x) * 0.1;
 
-            // SOMBRA → deformación orgánica
             const height = Math.abs(model.position.y);
             const stretch = THREE.MathUtils.clamp(1 + height * 0.25, 1, 1.6);
             shadowPlane.scale.set(stretch, 1, 1);
 
-            // ligera rotación visual
             shadowPlane.rotation.z = -model.rotation.y * 0.4;
         }
 
-        renderer.render(scene, camera);
+        if (renderer && scene && camera) {
+            renderer.render(scene, camera);
+        }
     }
 
     animate();
@@ -216,24 +228,115 @@ const render = (locomotiveScroll) => {
     // ----------------------
     // RESIZE
     // ----------------------
-    window.addEventListener("resize", () => {
+    resizeHandler = () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
 
-        // Actualizar Locomotive en resize
+        if (renderer) {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
         if (locomotiveScroll) {
             locomotiveScroll.update();
         }
-    });
+    };
+
+    window.addEventListener("resize", resizeHandler);
+
+    // Retornar función de limpieza
+    return {
+        scrollHandler,
+        locomotiveScroll,
+    };
 };
 
+let cleanupModal = null;
+let renderCleanup = null;
+
 export function init() {
-    modalVideo();
+    cleanupModal = modalVideo();
+    locomotiveInstance = smoothScroll();
+    renderCleanup = render(locomotiveInstance);
+}
 
-    // 🔥 Primero inicializa Locomotive
-    const locomotiveInstance = smoothScroll();
+export function destroy() {
+    // Limpiar animación
+    if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+    }
 
-    // 🔥 Luego pasa la instancia a render()
-    render(locomotiveInstance);
+    // Limpiar event listeners
+    if (resizeHandler) {
+        window.removeEventListener("resize", resizeHandler);
+        resizeHandler = null;
+    }
+
+    // Limpiar scroll handler
+    if (renderCleanup) {
+        if (renderCleanup.locomotiveScroll && renderCleanup.scrollHandler) {
+            renderCleanup.locomotiveScroll.off(
+                "scroll",
+                renderCleanup.scrollHandler
+            );
+        } else if (renderCleanup.scrollHandler) {
+            window.removeEventListener("scroll", renderCleanup.scrollHandler);
+        }
+        renderCleanup = null;
+    }
+
+    // Limpiar Locomotive
+    if (locomotiveInstance) {
+        locomotiveInstance.destroy();
+        locomotiveInstance = null;
+    }
+
+    // Limpiar Three.js
+    if (model) {
+        model.traverse((child) => {
+            if (child.geometry) child.geometry.dispose();
+            if (child.material) {
+                if (Array.isArray(child.material)) {
+                    child.material.forEach((mat) => mat.dispose());
+                } else {
+                    child.material.dispose();
+                }
+            }
+        });
+        model = null;
+    }
+
+    if (scene) {
+        scene.traverse((object) => {
+            if (object.geometry) object.geometry.dispose();
+            if (object.material) {
+                if (Array.isArray(object.material)) {
+                    object.material.forEach((mat) => {
+                        if (mat.map) mat.map.dispose();
+                        mat.dispose();
+                    });
+                } else {
+                    if (object.material.map) object.material.map.dispose();
+                    object.material.dispose();
+                }
+            }
+        });
+        scene.clear();
+        scene = null;
+    }
+
+    if (renderer) {
+        renderer.dispose();
+        renderer.forceContextLoss();
+        if (renderer.domElement && renderer.domElement.parentNode) {
+            renderer.domElement.parentNode.removeChild(renderer.domElement);
+        }
+        renderer = null;
+    }
+
+    // Limpiar modal
+    if (cleanupModal) {
+        cleanupModal();
+        cleanupModal = null;
+    }
 }
