@@ -1,14 +1,15 @@
 import { defineConfig } from "vite";
-import { resolve } from "path";
 import path from "path";
 
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ command }) => {
     return {
         root: path.resolve(__dirname, "src"),
-        // base: command === "serve" || mode === "preview" ? "/" : "/everyday/",
 
-        base: "./",
+        // 👇 CLAVE PARA GITHUB PAGES
+        base: command === "serve" ? "/" : "/everyday/",
+
         publicDir: path.resolve(__dirname, "public"),
+
         build: {
             outDir: path.resolve(__dirname, "docs"),
             emptyOutDir: true,
@@ -26,18 +27,15 @@ export default defineConfig(({ command, mode }) => {
                         if (/\.(gif|jpe?g|png|svg)$/.test(name ?? "")) {
                             return "img/[name]-[hash][extname]";
                         }
-
                         if (/\.css$/.test(name ?? "")) {
                             return "css/[name]-[hash][extname]";
                         }
-
-                        // default value
-                        // ref: https://rollupjs.org/guide/en/#outputassetfilenames
                         return "assets/[name]-[hash][extname]";
                     },
                 },
             },
         },
+
         resolve: {
             alias: {
                 "~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
@@ -47,8 +45,8 @@ export default defineConfig(({ command, mode }) => {
                 ),
             },
         },
+
         server: {
-            // open: "/pages/index.html",
             open: true,
             hot: true,
         },
