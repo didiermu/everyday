@@ -1,0 +1,1 @@
+import{s as c}from"./loadLocomotive-DUo0yfuB.js";const s=()=>{const e=document.querySelector(".hero"),o=document.querySelector(".visualization"),t=document.querySelector("#btn-viz");o&&t&&t.addEventListener("click",()=>{e.classList.add("hide"),o.classList.add("show"),c()})};function n(){s()}export{n as init};

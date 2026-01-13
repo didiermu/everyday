@@ -2,6 +2,8 @@ import * as THREE from "three";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { smoothScroll } from "./../utils/loadLocomotive.js";
 
+let scrollHandler;
+
 const modalVideo = () => {
     const modal = document.getElementById("modal-video");
     const video = modal.querySelector("video");

@@ -490,9 +490,8 @@ function attachModalEvents() {
 
 export function init() {
     periodos();
-    setTimeout(() => {
-        smoothScroll();
-    }, 1000);
+
+    smoothScroll();
 }
 
 // init();

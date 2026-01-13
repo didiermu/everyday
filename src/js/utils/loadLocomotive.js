@@ -28,6 +28,6 @@ export function smoothScroll() {
         scroll.update();
     }, 1000);
 
-    // 🔥 IMPORTANTE: Retornar la instancia de scroll
+    console.log("los");
     return scroll;
 }
