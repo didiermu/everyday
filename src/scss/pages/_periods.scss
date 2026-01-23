@@ -118,10 +118,21 @@
                 @include typography.typography("md", tertiary);
                 font-weight: 100;
             }
+        }
+
+        &--botonera {
+            display: grid;
+            row-gap: var(--spacing-lg);
 
             .button {
                 place-self: center;
                 width: 200px;
+            }
+        }
+
+        &#period-3 {
+            .button.star {
+                display: none;
             }
         }
     }
@@ -340,7 +351,7 @@
             right: 10%;
         }
 
-        &.period-3 figure .button {
+        &.period-2 figure .button {
             bottom: 3.75rem;
             left: 3rem;
         }
@@ -491,6 +502,109 @@
 
         .button {
             margin-block: var(--spacing-xl) var(--spacing-md);
+        }
+    }
+}
+
+@media (min-width: 1280px) {
+    &.page-periods {
+        .head-home {
+            display: none;
+        }
+
+        .hero {
+            background: var(--color-banana);
+            padding-block: var(--spacing-3xl);
+            padding-inline: 0;
+
+            .row {
+                flex-direction: row-reverse;
+                align-items: center;
+                justify-content: space-between;
+                column-gap: var(--spacing-3xl);
+
+                .col-12 {
+                    row-gap: 0;
+                    width: auto;
+
+                    &.hero--info {
+                        display: grid;
+                        place-items: flex-start;
+                        column-gap: var(--spacing-lg);
+                    }
+                }
+
+                h4 {
+                    @include typography.typography("10xl", primaryBold);
+                    grid-column: 1 / 2;
+                    grid-row: 1 / 4;
+                }
+
+                h1 {
+                    @include typography.typography("10xl", primary);
+                }
+            }
+
+            &__data {
+                flex-direction: column;
+                grid-column: 2 / 3;
+
+                span {
+                    @include typography.typography("lg", tertiary);
+                }
+            }
+        }
+
+        .periods {
+            .row {
+                display: grid;
+                grid-template-columns: 25% 50% 25%;
+            }
+
+            &--summary {
+                // width: 30%;
+                // order: 1;
+                padding-block-start: var(--spacing-8xl);
+                grid-column: 1 / 2;
+                grid-row: 1 / 2;
+                place-content: flex-start;
+            }
+
+            &-image {
+                // width: 30%;
+                // order: 2;
+                grid-column: 2 / 3;
+                grid-row: 1 / 4;
+            }
+
+            &--data {
+                // width: 30%;
+                order: 3;
+                grid-column: 3 / 4;
+            }
+
+            &--botonera {
+                // width: 30%;
+                order: 4;
+                grid-column: 3 / 4;
+                flex-direction: row;
+                display: flex;
+
+                .button {
+                    width: auto;
+                    padding: var(--spacing-xs) var(--spacing-sm);
+
+                    &:not(.data) {
+                        display: none;
+                    }
+                }
+            }
+
+            &--pagination {
+                // width: 30%;
+                order: 5;
+                grid-column: 3 / 4;
+            }
         }
     }
 }

@@ -9,10 +9,17 @@ let animationId = null;
 let resizeHandler = null;
 let model = null;
 let scene = null;
+const mediaQuery = window.matchMedia("(min-width:1280px)");
+
+let sizeRender = [-1, 1, 1];
+let baseRotation = 0;
 
 const modalVideo = () => {
     const modal = document.getElementById("modal-video");
     const video = modal.querySelector("video");
+    const sectionVideo = document.querySelector(".video");
+    const btnPlay = document.querySelector(".btn-play");
+    const closeBtn = document.querySelector("#modal-video .close");
 
     const playHandler = () => {
         modal.showModal();
@@ -30,22 +37,77 @@ const modalVideo = () => {
         video.currentTime = 0;
     };
 
-    const btnPlay = document.querySelector(".btn-play");
-    const closeBtn = document.querySelector("#modal-video .close");
+    // Remover listeners previos si existen
+    if (sectionVideo) sectionVideo.removeEventListener("click", playHandler);
+    if (btnPlay) btnPlay.removeEventListener("click", playHandler);
 
-    if (btnPlay) btnPlay.addEventListener("click", playHandler);
+    if (mediaQuery.matches) {
+        if (sectionVideo) sectionVideo.addEventListener("click", playHandler);
+    } else {
+        if (btnPlay) btnPlay.addEventListener("click", playHandler);
+    }
+
+    // Listeners que siempre están activos
     if (closeBtn) closeBtn.addEventListener("click", closeHandler);
     if (modal) modal.addEventListener("close", modalCloseHandler);
 
     // Retornar función de limpieza
     return () => {
+        if (sectionVideo)
+            sectionVideo.removeEventListener("click", playHandler);
         if (btnPlay) btnPlay.removeEventListener("click", playHandler);
         if (closeBtn) closeBtn.removeEventListener("click", closeHandler);
         if (modal) modal.removeEventListener("close", modalCloseHandler);
     };
 };
 
-const render = (locomotiveScroll) => {
+const videoHome = () => {
+    const video = document.querySelector(".video video");
+    const portraitSrc = "./video/Intro_video_portrait.mp4";
+    const landscapeSrc = "./video/Intro_video_landscape_no_audio.mp4";
+
+    function updateVideoSource() {
+        const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+        const newSrc = isPortrait ? portraitSrc : landscapeSrc;
+
+        // Solo cambiar si la fuente es diferente
+        if (
+            video.src !== window.location.origin + "/" + newSrc &&
+            video.currentSrc !== window.location.origin + "/" + newSrc
+        ) {
+            const currentTime = video.currentTime;
+            video.src = newSrc;
+            video.currentTime = currentTime; // Mantener la posición del video
+            video.play();
+        }
+    }
+
+    // Ejecutar al cargar la página
+    updateVideoSource();
+    window
+        .matchMedia("(orientation: portrait)")
+        .addEventListener("change", updateVideoSource);
+};
+
+function updateScale() {
+    if (mediaQuery.matches) {
+        sizeRender = [2.3, 2.3, 2.3];
+        baseRotation = -0.3;
+        renderer.domElement.style.top = "60px";
+        renderer.domElement.style.left = "-10px";
+    } else {
+        sizeRender = [-1, 1, 1];
+        renderer.domElement.style.top = "-130px";
+        renderer.domElement.style.left = "30px";
+    }
+
+    if (model) {
+        model.scale.set(...sizeRender);
+        model.rotation.z = baseRotation;
+    }
+}
+
+const render = () => {
     // ----------------------
     // ESCENA
     // ----------------------
@@ -59,7 +121,7 @@ const render = (locomotiveScroll) => {
         60,
         window.innerWidth / window.innerHeight,
         0.1,
-        100
+        100,
     );
     camera.position.set(0, 0, 6);
     camera.lookAt(0, 0, 0);
@@ -109,7 +171,7 @@ const render = (locomotiveScroll) => {
             size * 0.15,
             size / 2,
             size / 2,
-            size * 0.5
+            size * 0.5,
         );
 
         gradient.addColorStop(0, "rgba(0,0,0,0.1)");
@@ -127,7 +189,7 @@ const render = (locomotiveScroll) => {
             map: createShadowTexture(),
             transparent: true,
             depthWrite: false,
-        })
+        }),
     );
 
     shadowPlane.rotation.x = 1;
@@ -145,14 +207,10 @@ const render = (locomotiveScroll) => {
         const center = box.getCenter(new THREE.Vector3());
         obj.position.sub(center);
 
-        obj.scale.set(-1, 1, 1);
-
         model = obj;
         scene.add(model);
 
-        if (locomotiveScroll) {
-            setTimeout(() => locomotiveScroll.update(), 200);
-        }
+        updateScale();
     });
 
     // ----------------------
@@ -163,41 +221,22 @@ const render = (locomotiveScroll) => {
     let targetPosX = 0;
     let targetPosY = 0;
 
-    const maxRotationX = Math.PI * 3;
-    const maxRotationY = Math.PI * 3;
+    const maxRotationX = Math.PI * 6;
+    const maxRotationY = Math.PI * 6;
     const maxMoveY = 3;
-    const maxMoveX = -1;
+    const maxMoveX = -5;
 
-    let scrollHandler = null;
+    // ✅ Mantén el scroll nativo para Three.js
+    window.addEventListener("scroll", () => {
+        const scrollY = window.scrollY;
+        const maxScrollY = document.body.scrollHeight - window.innerHeight;
+        const progress = Math.min(scrollY / maxScrollY, 1);
 
-    if (locomotiveScroll) {
-        scrollHandler = (args) => {
-            const scrollY = args.scroll.y;
-            const maxScrollY = args.limit.y;
-            const progress =
-                maxScrollY > 0 ? Math.min(scrollY / maxScrollY, 1) : 0;
-
-            targetRotationX = progress * maxRotationX;
-            targetRotationY = progress * maxRotationY;
-            targetPosY = -progress * maxMoveY;
-            targetPosX = progress * maxMoveX;
-        };
-
-        locomotiveScroll.on("scroll", scrollHandler);
-    } else {
-        scrollHandler = () => {
-            const scrollY = window.scrollY;
-            const maxScrollY = document.body.scrollHeight - window.innerHeight;
-            const progress = Math.min(scrollY / maxScrollY, 1);
-
-            targetRotationX = progress * maxRotationX;
-            targetRotationY = progress * maxRotationY;
-            targetPosY = -progress * maxMoveY;
-            targetPosX = progress * maxMoveX;
-        };
-
-        window.addEventListener("scroll", scrollHandler);
-    }
+        targetRotationX = progress * maxRotationX;
+        targetRotationY = progress * maxRotationY;
+        targetPosY = -progress * maxMoveY;
+        targetPosX = progress * maxMoveX;
+    });
 
     // ----------------------
     // ANIMACIÓN
@@ -214,7 +253,6 @@ const render = (locomotiveScroll) => {
             const height = Math.abs(model.position.y);
             const stretch = THREE.MathUtils.clamp(1 + height * 0.25, 1, 1.6);
             shadowPlane.scale.set(stretch, 1, 1);
-
             shadowPlane.rotation.z = -model.rotation.y * 0.4;
         }
 
@@ -236,27 +274,47 @@ const render = (locomotiveScroll) => {
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
-        if (locomotiveScroll) {
-            locomotiveScroll.update();
-        }
+        updateScale();
     };
 
     window.addEventListener("resize", resizeHandler);
 
-    // Retornar función de limpieza
+    // ----------------------
+    // RETORNAR FUNCIONES PARA CONTROL EXTERNO
+    // ----------------------
     return {
-        scrollHandler,
-        locomotiveScroll,
+        updateProgress: (progress) => {
+            targetRotationX = progress * maxRotationX;
+            targetRotationY = progress * maxRotationY;
+            targetPosY = -progress * maxMoveY;
+            targetPosX = progress * maxMoveX;
+        },
+        camera,
+        scene,
+        renderer,
     };
 };
 
 let cleanupModal = null;
 let renderCleanup = null;
 
+const handleMediaChange = () => {
+    // Limpiar listeners anteriores
+    if (cleanupModal) {
+        cleanupModal();
+    }
+    // Reinicializar con la nueva configuración
+    cleanupModal = modalVideo();
+};
+
 export function init() {
     cleanupModal = modalVideo();
     locomotiveInstance = smoothScroll();
-    renderCleanup = render(locomotiveInstance);
+    renderCleanup = render();
+    videoHome();
+
+    // Escuchar cambios en el mediaQuery
+    mediaQuery.addEventListener("change", handleMediaChange);
 }
 
 export function destroy() {
@@ -277,7 +335,7 @@ export function destroy() {
         if (renderCleanup.locomotiveScroll && renderCleanup.scrollHandler) {
             renderCleanup.locomotiveScroll.off(
                 "scroll",
-                renderCleanup.scrollHandler
+                renderCleanup.scrollHandler,
             );
         } else if (renderCleanup.scrollHandler) {
             window.removeEventListener("scroll", renderCleanup.scrollHandler);

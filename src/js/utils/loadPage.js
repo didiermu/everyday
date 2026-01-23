@@ -20,7 +20,7 @@ export async function loadPage(path) {
 export function updateBodyClass(className) {
     // Remover todas las clases que empiecen con "page-"
     const classesToRemove = Array.from(document.body.classList).filter((cls) =>
-        cls.startsWith("page-")
+        cls.startsWith("page-"),
     );
 
     classesToRemove.forEach((cls) => {
@@ -31,4 +31,13 @@ export function updateBodyClass(className) {
     if (className) {
         document.body.classList.add(className);
     }
+}
+
+export function currentDate() {
+    const fechaEL = document.querySelector("#current-date");
+    const fecha = new Date();
+    const opciones = { year: "numeric", month: "long", day: "numeric" };
+    const fechaFormateada = fecha.toLocaleDateString("en-US", opciones);
+
+    fechaEL.textContent = fechaFormateada;
 }

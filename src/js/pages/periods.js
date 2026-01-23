@@ -56,15 +56,16 @@ function getEmotionClass(emotion) {
 }
 
 // Función para crear el template del hero
-function createHeroTemplate(data) {
+function createHeroTemplate(data, periodId) {
     return `
-        <section class="hero" >
+        <section class="hero">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
                         <h1 class="title">${data.title}</h1>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 hero--info">
+                        <h4>0${periodId}</h4>
                         <div class="hero__data">
                             <span><strong>${data.fecha}</strong></span>
                         </div>
@@ -119,7 +120,7 @@ function renderRings(count, activeIndex) {
                 i === 0 ? "active" : ""
             }' 
             data-ring-index="${i}">
-        `
+        `,
         )
         .join("");
 }
@@ -199,13 +200,13 @@ function createPeriodsTemplate(data, currentPeriod) {
         .map(
             (emotion) => `
         <div class="visualization--data__row ${getEmotionClass(
-            emotion.emotion
+            emotion.emotion,
         )}">
             <span>${emotion.emotion}</span>
             <span>${emotion.count}</span>
             <span>${emotion.percentage}</span>
         </div>
-    `
+    `,
         )
         .join("");
 
@@ -238,8 +239,8 @@ function createPeriodsTemplate(data, currentPeriod) {
                         }
                         <picture class="img-cover">
                             <img src="./../img/${data.imagen}" alt="${
-        data.title
-    }">
+                                data.title
+                            }">
                         </picture>
                     </div>
                     <div class="col-12 periods--pagination">
@@ -254,9 +255,11 @@ function createPeriodsTemplate(data, currentPeriod) {
                     <div class="col-12 periods--summary">
                         <h4>SUMMARY</h4>
                         <p>${data.resumen}</p>
+                    </div>
+                    <div class="col-12 periods--botonera">
                         <button class="button button-icon star">View Highlights</button>
                          ${
-                             data.hover
+                             data.fullStory
                                  ? '<button class="button button-icon read">Read full story</button>'
                                  : ""
                          }
@@ -266,7 +269,7 @@ function createPeriodsTemplate(data, currentPeriod) {
             </div>
         </section>
         ${
-            data.hover
+            data.fullStory
                 ? `
                     <dialog id="modal-resume">
                         <div class="modal--content">
@@ -288,6 +291,154 @@ function createPeriodsTemplate(data, currentPeriod) {
     `;
 }
 
+// Función para crear el template del modal-data
+function createModalDataTemplate(data, periodName) {
+    if (!data || !Array.isArray(data) || data.length === 0) return "";
+
+    // Obtener el rango de días
+    const days = data.map((item) => item.day);
+    const minDay = Math.min(...days);
+    const maxDay = Math.max(...days);
+    const totalDays = data.length;
+
+    // Obtener el rango de fechas (primera y última)
+    const firstDate = data[0].date;
+    const lastDate = data[data.length - 1].date;
+
+    // Función auxiliar para formatear la fecha
+    function formatDateRange(firstDate, lastDate) {
+        const first = new Date(firstDate);
+        const last = new Date(lastDate);
+
+        const months = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+        ];
+
+        const firstMonth = months[first.getMonth()];
+        const lastMonth = months[last.getMonth()];
+        const firstDay = first.getDate();
+        const lastDay = last.getDate();
+        const year = first.getFullYear();
+
+        return `${firstDay} ${firstMonth} - ${lastDay} ${lastMonth}, ${year}`;
+    }
+
+    // Función para generar los íconos de lágrimas
+    function generateCryIcons(count) {
+        if (!count || count === 0 || count === "") return "";
+        const numCries = parseInt(count);
+        return Array(numCries)
+            .fill("<i></i>")
+            .join("\n                                    ");
+    }
+
+    // Función para formatear la fecha en el listado (formato corto)
+    function formatShortDate(dateString) {
+        const date = new Date(dateString);
+        const months = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+        ];
+        return `${date.getDate()} ${months[date.getMonth()]}`;
+    }
+
+    // Mapear las emociones a sus clases CSS (la misma función que ya tienes)
+    function getEmotionClass(emotion) {
+        const emotionMap = {
+            "Extremely confused": "ext-confused",
+            Grateful: "gratefull",
+            "Just fine": "just-fine",
+            "Happy/Satisfied": "happy-satisfied",
+            "Happy / Satisfied": "happy-satisfied",
+            Peaceful: "peaceful",
+            Sad: "sad",
+            "Extremely Sad": "ext-sad",
+            "Excited / Motivated": "exited-motiv",
+            "Excited /Motivated": "exited-motiv",
+            Confused: "confused",
+            Inspired: "inspired",
+            "Anxious / Stressed": "anxious-stress",
+            "Anxious - Stressed": "anxious-stress",
+            "Extremely Happy": "ext-happy",
+            "Angry / Resentful": "angry-resent",
+        };
+        return emotionMap[emotion] || "";
+    }
+
+    // Generar las filas de la tabla
+    const rowsHTML = data
+        .map((item) => {
+            const cryIcons = generateCryIcons(item.timesCried);
+            const emotionClass = getEmotionClass(item.mood);
+
+            return `
+                            <div class="modal-data--row ${emotionClass}">
+                                <span>${item.day}</span>
+                                <span>${formatShortDate(item.date)}</span>
+                                <span>${item.mood}${cryIcons ? `\n                                    ${cryIcons}` : ""}
+                                </span>
+                            </div>`;
+        })
+        .join("");
+
+    return `
+        <dialog id="modal-data">
+            <div class="modal--content">
+                <button class="close"></button>
+                <section class="hero">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <h1 class="title">${periodName}</h1>
+                            </div>
+                            <div class="col-12">
+                                <div class="hero__data">
+                                    <span><strong>${formatDateRange(firstDate, lastDate)}</strong></span>
+                                </div>
+                                <div class="hero__data">
+                                    <span>Range <strong>Days ${minDay} to ${maxDay}</strong></span>
+                                    <span>Duration<strong>${totalDays} days</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 modal-data--content">
+                                <div class="modal-data--table">
+                                    <div class="modal-data--row--header">
+                                        <span>Day</span>
+                                        <span>Date</span>
+                                        <span>Mood / Emotion</span>
+                                    </div>${rowsHTML}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </dialog>
+    `;
+}
 // Función para llenar el template con los datos
 function fillTemplate(periodId) {
     const data = emotionsData[periodId];
@@ -297,38 +448,35 @@ function fillTemplate(periodId) {
         return;
     }
 
-    // Limpiar handlers anteriores antes de recrear elementos
     cleanupModalHandlers();
 
-    // Guardar los modales antes de reemplazar el contenido
     const modalStory = document.getElementById("modal-story");
-    const modalData = document.getElementById("modal-data");
+
+    // Generar el modal-data con los datos del periodo
+    const modalDataHTML = createModalDataTemplate(data.data, data.title);
+    const modalDataElement = new DOMParser().parseFromString(
+        modalDataHTML,
+        "text/html",
+    ).body.firstChild;
 
     const modalStoryClone = modalStory ? modalStory.cloneNode(true) : null;
-    const modalDataClone = modalData ? modalData.cloneNode(true) : null;
-
     const modalHighHTML = createModalHighTemplate(data.highlights);
     currentHighlights = data.highlights;
 
-    // Obtener el contenedor principal
     const mainContainer = document.querySelector("main") || document.body;
-
-    // Crear el template completo
-    const heroHTML = createHeroTemplate(data);
+    const heroHTML = createHeroTemplate(data, periodId);
     const periodsHTML = createPeriodsTemplate(data, periodId);
 
     mainContainer.innerHTML = "";
 
-    mainContainer.insertAdjacentElement("afterbegin", modalDataClone);
+    // Insertar el nuevo modal-data generado dinámicamente
+    mainContainer.insertAdjacentElement("afterbegin", modalDataElement);
     mainContainer.insertAdjacentElement("afterbegin", modalStoryClone);
     mainContainer.insertAdjacentHTML("afterbegin", modalHighHTML);
     mainContainer.insertAdjacentHTML("afterbegin", periodsHTML);
     mainContainer.insertAdjacentHTML("afterbegin", heroHTML);
 
-    // Agregar event listeners a la paginación
     attachPaginationEvents();
-
-    // Agregar event listeners a los modales después de renderizar
     attachModalEvents();
 }
 
@@ -341,7 +489,7 @@ function attachPaginationEvents() {
     paginationHandlers = [];
 
     const paginationButtons = document.querySelectorAll(
-        ".periods--pagination a[data-period]"
+        ".periods--pagination a[data-period]",
     );
 
     paginationButtons.forEach((button) => {
@@ -426,7 +574,7 @@ const modalStory = () => {
 
         modalHandlers.story.push(
             { element: button, handler: openHandler },
-            { element: closeBtn, handler: closeHandler }
+            { element: closeBtn, handler: closeHandler },
         );
     }
 };
@@ -445,7 +593,7 @@ const modalData = () => {
 
         modalHandlers.data.push(
             { element: button, handler: openHandler },
-            { element: closeBtn, handler: closeHandler }
+            { element: closeBtn, handler: closeHandler },
         );
     }
 };
@@ -467,7 +615,7 @@ const modalHigh = () => {
 
         modalHandlers.high.push(
             { element: button, handler: openHandler },
-            { element: closeBtn, handler: closeHandler }
+            { element: closeBtn, handler: closeHandler },
         );
 
         const data = normalizeHighlights(currentHighlights);
@@ -507,7 +655,7 @@ const modalResume = () => {
 
         modalHandlers.resume.push(
             { element: button, handler: openHandler },
-            { element: closeBtn, handler: closeHandler }
+            { element: closeBtn, handler: closeHandler },
         );
     }
 };

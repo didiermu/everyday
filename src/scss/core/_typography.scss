@@ -8,7 +8,7 @@ $font-families: (
     primaryDemiBold: "TTTrailers-demibold",
     secondary: "Kanit",
     tertiary: "Space Grotesk",
-    script: "Handlee",
+    script: "Caveat",
 );
 
 $font-sizes: (
@@ -71,6 +71,18 @@ $font-sizes: (
     ),
     "11xl": (
         size: 6.75rem,
+        line: 75%,
+    ),
+    "9xlDesk": (
+        size: 5.25rem,
+        line: 84%,
+    ),
+    "10xlDesk": (
+        size: 11.875rem,
+        line: 80%,
+    ),
+    "11xlDesk": (
+        size: 26.25rem,
         line: 75%,
     ),
 );

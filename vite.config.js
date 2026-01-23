@@ -6,6 +6,7 @@ export default defineConfig(({ command }) => {
         root: path.resolve(__dirname, "src"),
 
         // 👇 CLAVE PARA GITHUB PAGES
+
         base: command === "serve" ? "/" : "/everyday/",
 
         publicDir: path.resolve(__dirname, "public"),
@@ -41,7 +42,7 @@ export default defineConfig(({ command }) => {
                 "~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
                 "@locomotive": path.resolve(
                     __dirname,
-                    "node_modules/locomotive-scroll"
+                    "node_modules/locomotive-scroll",
                 ),
             },
         },

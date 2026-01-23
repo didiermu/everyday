@@ -105,6 +105,10 @@
 
         &--fondo {
             position: relative;
+
+            svg {
+                display: none;
+            }
         }
 
         &--button {
@@ -155,6 +159,273 @@
                 letter-spacing: normal;
                 width: max-content;
                 margin: auto;
+            }
+        }
+
+        .col-12.visualization--instructions {
+            display: none;
+        }
+
+        &--period {
+            &--head {
+                display: none;
+            }
+        }
+    }
+}
+
+@media (min-width: 1280px) {
+    &.page-visualization {
+        &:has(.hero.hide) {
+            .head-home {
+                display: none;
+            }
+        }
+
+        .hero {
+            height: 100dvh;
+
+            .col-12 {
+                row-gap: var(--spacing-3xl);
+            }
+
+            p {
+                @include typography.typography("xl", tertiary);
+            }
+
+            .button {
+                display: none;
+            }
+        }
+
+        .visualization {
+            display: block;
+            padding-block: 0;
+
+            &--title {
+                background: var(--color-banana);
+                padding-block: var(--spacing-3xl);
+                padding-inline: 0;
+                max-width: none;
+                z-index: 1;
+                position: relative;
+
+                .row {
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    column-gap: var(--spacing-3xl);
+                    max-width: 1280px;
+                    margin: auto;
+
+                    .col-12 {
+                        width: auto;
+                        flex: 1 0 31%;
+
+                        &:nth-child(1) {
+                            order: 2;
+                        }
+                        &:nth-child(2) {
+                            order: 1;
+                        }
+                        &:nth-child(3) {
+                            order: 3;
+                        }
+                    }
+                }
+
+                h2 {
+                    @include typography.typography("10xl", primary);
+                }
+            }
+
+            &--fondo {
+                width: 50%;
+                position: relative;
+
+                .img-cover {
+                    display: none;
+                }
+
+                svg {
+                    display: block;
+                    transform: scale(1.5) translateY(-20px);
+
+                    circle {
+                        fill: transparent;
+                        border: 1px solid red;
+                        cursor: pointer;
+                    }
+                }
+
+                a {
+                    display: none;
+                }
+            }
+
+            .col-12.visualization--instructions {
+                display: flex;
+                flex-direction: column;
+                row-gap: var(--spacing-xl);
+                width: 24%;
+                max-width: 320px;
+                z-index: 1;
+                align-items: flex-start;
+
+                h4 {
+                    @include typography.typography("md", tertiary);
+                    font-weight: 300;
+                    padding-block: var(--spacing-sm);
+                    text-align: center;
+                    background: url(./../img/cerillo-negative.png) no-repeat 35%
+                        center / 50px;
+
+                    strong {
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            &--instructions__block {
+                h5 {
+                    @include typography.typography("4xl", primaryBold);
+                }
+
+                p {
+                    @include typography.typography("sm", secondary);
+
+                    span {
+                        display: block;
+                        font-weight: 300;
+
+                        strong {
+                            font-weight: 500;
+                        }
+                    }
+                }
+            }
+
+            &--mapa {
+                padding-block: var(--spacing-5xl) 13.75rem;
+                max-width: 1920px;
+
+                .row {
+                    flex-direction: row;
+                    position: relative;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+
+            &--data {
+                width: 28%;
+                max-width: 320px;
+                // position: relative;
+                // top: 4.5rem;
+                z-index: 1;
+
+                h4,
+                a {
+                    display: none;
+                }
+            }
+
+            &--pop,
+            &--period {
+                position: fixed;
+                inset: 0;
+                margin: auto;
+                padding: 0;
+                // display: none;
+                z-index: -1;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+
+                &--hover {
+                    display: block;
+                    width: 65%;
+                    height: 70%;
+                    position: absolute;
+                    inset: 0;
+                    top: 7%;
+                    margin: auto;
+                    // border: 1px solid red;
+                }
+
+                &.show {
+                    // display: block;
+                    z-index: 9;
+                    opacity: 1;
+                    pointer-events: auto;
+                }
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            &--period {
+                // opacity: 1;
+                // z-index: 1;
+                background: var(--color-banana);
+                max-height: 100dvh;
+
+                &--head {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: var(--spacing-5xl);
+
+                    h2 {
+                        @include typography.typography("10xl", primary);
+                    }
+                }
+
+                &--content {
+                    display: grid;
+                    column-gap: var(--spacing-lg);
+
+                    h3 {
+                        @include typography.typography("10xl", primaryBold);
+                        grid-column: 1 / 2;
+                        grid-row: 1 / 4;
+                    }
+
+                    p {
+                        @include typography.typography("lg", tertiary);
+                        grid-column: 2 / 3;
+
+                        span {
+                            font-weight: 300;
+                        }
+
+                        strong {
+                            font-weight: 500;
+                        }
+
+                        &:nth-child(2) {
+                            grid-row: 1 / 2;
+                        }
+                        &:nth-child(3) {
+                            grid-row: 2 / 3;
+                        }
+                        &:nth-child(4) {
+                            grid-row: 3 / 4;
+                        }
+                    }
+                }
+
+                img {
+                    // width: 100%;
+                    // height: 100%;
+                    max-height: 70dvh;
+                    margin: auto;
+                    display: block;
+                    object-fit: contain;
+                }
             }
         }
     }

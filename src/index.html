@@ -9,8 +9,19 @@
 </head>
 
 <body>
-    <header id="header" class="header"></header>
-    <main id="app" data-router-view data-scroll-container></main>
+    <div id="head-full">
+        <section class="head-home">
+            <div class="container">
+                <div class="col-12">
+                    <p>Today is <strong id="current-date">October 11, 2025 </strong></p>
+                    <p>Every day is a gift</p>
+                    <p>Make it matter</p>
+                </div>
+            </div>
+        </section>
+        <header id="header" class="header"></header>
+    </div>
+    <main id="app" data-router-view></main>
     <script type="module" src="./js/main.js"></script>
 </body>
 

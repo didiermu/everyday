@@ -209,7 +209,7 @@ const handleRoute = async () => {
 
     // Remover backdrops de Bootstrap que puedan quedar
     const backdrops = document.querySelectorAll(
-        ".modal-backdrop, .offcanvas-backdrop"
+        ".modal-backdrop, .offcanvas-backdrop",
     );
     backdrops.forEach((backdrop) => backdrop.remove());
 

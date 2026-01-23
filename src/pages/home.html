@@ -2,8 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1 data-scroll data-scroll-speed="3" data-scroll-position="top" data-scroll-class="appear">EVERY DAY IS
-                    A GIFT You WILL Never Get Back.</h1>
+                <h1>EVERY DAY IS A GIFT You WILL Never Get Back.</h1>
                 <div class="intro--resume">
                     <p>A data physicalization and visualization about the universal pain of break ups, the fragility of
                         mental health and the path to recovery and joy. </p>
@@ -15,7 +14,10 @@
     </div>
 </section>
 <section class="video">
-    <video src="./video/Intro_video_portrait.mp4" poster="./img/intro_video_portrait.jpg" autoplay muted loop></video>
+    <video poster="./img/intro_video_portrait.jpg" autoplay muted loop>
+        <source src="./video/Intro_video_portrait.mp4" type="video/mp4" media="(orientation: portrait)">
+        <source src="./video/Intro_video_landscape_no_audio.mp4" type="video/mp4">
+    </video>
     <button class="btn-play">PLAY</button>
 </section>
 <dialog id="modal-video">

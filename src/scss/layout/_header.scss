@@ -1,5 +1,8 @@
 @use "../core/typography";
 
+.head-home {
+    display: none;
+}
 .header {
     display: flex;
     justify-content: space-between;
@@ -78,6 +81,74 @@
                         @include typography.typography("sm", secondary);
                     }
                 }
+            }
+        }
+    }
+}
+
+@media (min-width: 1280px) {
+    .head-home {
+        display: flex;
+        padding-block: var(--spacing-6xl);
+
+        .col-12 {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        p {
+            text-align: center;
+            @include typography.typography("md", secondary);
+            font-weight: 300;
+            flex-basis: 33%;
+
+            &:nth-child(1) {
+                text-align: left;
+            }
+            &:nth-child(3) {
+                text-align: right;
+            }
+
+            strong {
+                font-weight: 500;
+            }
+        }
+    }
+
+    .header {
+        position: fixed;
+        inset: 0;
+        top: auto;
+        bottom: var(--spacing-lg);
+        margin: auto;
+        width: 242px;
+        border-radius: var(--border-radius-md);
+        background: var(--color-concrate-3);
+        box-shadow:
+            0px 4px 4px -1px rgba(12, 12, 13, 0.1),
+            0px 4px 4px -1px rgba(12, 12, 13, 0.05);
+
+        #button-menu {
+            @include typography.typography("2xl", primaryBold);
+            padding-inline: var(--spacing-3xl);
+        }
+
+        .navbar {
+            img {
+                width: 74px;
+                height: 74px;
+            }
+        }
+
+        .offcanvas.offcanvas-end {
+            transform: translate(0, 100%);
+            top: auto;
+            left: 0;
+            max-width: 332px;
+
+            &.showing,
+            &.show:not(.hiding) {
+                transform: translate(0, 0);
             }
         }
     }
