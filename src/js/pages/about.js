@@ -3,12 +3,12 @@ import { smoothScroll } from "./../utils/loadLocomotive.js";
 let locomotiveInstance = null;
 
 export function init() {
-    locomotiveInstance = smoothScroll();
+    // locomotiveInstance = smoothScroll();
 }
 
-export function destroy() {
-    if (locomotiveInstance) {
-        locomotiveInstance.destroy();
-        locomotiveInstance = null;
-    }
-}
+// export function destroy() {
+//     if (locomotiveInstance) {
+//         locomotiveInstance.destroy();
+//         locomotiveInstance = null;
+//     }
+// }

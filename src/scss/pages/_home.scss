@@ -1,8 +1,11 @@
 @use "../core/typography";
 @use "../core/mixins";
 
-&.page-home {
+.page-home {
     background: var(--color-banana);
+    overflow-x: hidden;
+    padding-block-start: var(--spacing-8xl);
+
     .head-home {
         display: none;
     }
@@ -10,7 +13,8 @@
     canvas {
         position: fixed;
         inset: 0;
-        // margin: auto;
+        pointer-events: none;
+        transform: translate(30px, -130px);
         z-index: 9 !important;
     }
 
@@ -87,7 +91,7 @@
 }
 
 @media (min-width: 1280px) {
-    &.page-home {
+    .page-home {
         .intro {
             padding-block-start: 12.5rem;
             cursor:

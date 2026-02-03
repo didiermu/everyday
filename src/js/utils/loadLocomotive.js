@@ -35,3 +35,41 @@ export function smoothScroll() {
 
     return locomotiveScroll;
 }
+
+//
+// export function smoothScroll() {
+//     const scrollContainer = document.querySelector("[data-scroll-container]");
+//
+//     const locoScroll = new LocomotiveScroll({
+//         el: scrollContainer,
+//         smooth: true,
+//         multiplier: 1,
+//         smartphone: { smooth: true },
+//         tablet: { smooth: true },
+//     });
+//
+//     // ✅ ESTO SOLO EXISTE EN v4
+//     locoScroll.on("scroll", ScrollTrigger.update);
+//
+//     ScrollTrigger.scrollerProxy(scrollContainer, {
+//         scrollTop(value) {
+//             return arguments.length
+//                 ? locoScroll.scrollTo(value, { duration: 0, disableLerp: true })
+//                 : locoScroll.scroll.instance.scroll.y;
+//         },
+//         getBoundingClientRect() {
+//             return {
+//                 top: 0,
+//                 left: 0,
+//                 width: window.innerWidth,
+//                 height: window.innerHeight,
+//             };
+//         },
+//         pinType: scrollContainer.style.transform ? "transform" : "fixed",
+//     });
+//
+//     ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
+//     ScrollTrigger.refresh();
+//
+//     return locoScroll;
+// }

@@ -5,7 +5,6 @@ import { currentDate } from "./utils/loadPage.js";
 import "./../scss/styles.scss";
 import "bootstrap/js/dist/offcanvas";
 import "bootstrap/js/dist/collapse";
-import "@locomotive/dist/locomotive-scroll.css";
 
 // Layout
 (async () => {

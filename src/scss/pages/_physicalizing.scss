@@ -1,6 +1,6 @@
 @use "../core/typography";
 
-&.page-physicalizing {
+.page-physicalizing {
     background: var(--color-magic);
 
     .hero {
@@ -40,8 +40,10 @@
             position: relative;
 
             &--fondo {
-                picture {
-                    aspect-ratio: 40 / 93;
+                // aspect-ratio: 40 / 93;
+
+                img {
+                    will-change: transform, object-position;
                 }
             }
 
@@ -53,11 +55,49 @@
                 background: var(--color-magic);
                 border-radius: var(--border-radius-sm);
                 padding: var(--spacing-md);
-                margin-inline: 3.875rem;
+                margin-inline: var(--spacing-lg);
 
                 p {
                     @include typography.typography("sm", tertiary);
                 }
+            }
+        }
+    }
+
+    &--moments {
+        // height: 300dvh;
+
+        section {
+            padding-block: 0;
+        }
+
+        .expand__image {
+            margin-block-start: 0;
+            overflow: hidden;
+
+            &--fondo {
+                height: 100dvh;
+            }
+        }
+
+        .expand__image__info {
+            transition: none;
+
+            picture {
+                overflow: hidden;
+                border-radius: var(--border-radius-xs);
+            }
+
+            &:nth-child(1) {
+                margin-inline: var(--spacing-4xl);
+            }
+
+            &:nth-child(2) {
+                grid-template-columns: (70% 30%);
+            }
+
+            &:nth-child(3) {
+                bottom: var(--spacing-10xl);
             }
         }
     }
@@ -67,6 +107,20 @@
             display: flex;
             flex-direction: column;
             row-gap: var(--spacing-lg);
+        }
+
+        .carousel-all {
+            margin-block-start: var(--spacing-8xl);
+            overflow: hidden;
+
+            &--marquee {
+                display: flex;
+                width: max-content;
+            }
+
+            picture {
+                height: 400px;
+            }
         }
 
         .col-12 {
@@ -88,16 +142,28 @@
             margin-block-start: 6.25rem;
         }
 
+        video {
+            border-radius: var(--border-radius-md);
+        }
+
         .swiper {
             width: 100%;
 
             &-slide {
                 width: auto;
 
-                picture {
+                picture,
+                figure {
                     overflow: hidden;
                     border-radius: var(--border-radius-sm);
                     width: 200px;
+                    height: 303px;
+                }
+
+                video {
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
                 }
             }
         }
@@ -109,9 +175,9 @@
         }
 
         h3 {
-            @include typography.typography("6xl", primary);
-            letter-spacing: 4px;
+            @include typography.typography("6xl", primaryBold);
             text-transform: uppercase;
+            padding: 0 var(--spacing-sm);
         }
 
         &--list {
@@ -149,12 +215,13 @@
     }
 
     .link-decorated {
-        margin-block: 100px var(--spacing-4xl);
+        margin-block: 100px 0;
+        padding-block-end: var(--spacing-4xl);
     }
 }
 
 @media (min-width: 1280px) {
-    &.page-physicalizing {
+    .page-physicalizing {
         .img-cover {
             aspect-ratio: 1440 / 1024;
         }

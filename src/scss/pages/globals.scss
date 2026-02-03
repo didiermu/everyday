@@ -1,5 +1,13 @@
 @use "../core/mixins";
 
+:root {
+    scroll-behavior: smooth;
+}
+
+:target {
+    scroll-margin-block: 5lh;
+}
+
 & {
     font-family: var(--font-primaria-regular);
 
@@ -15,13 +23,14 @@
         margin: 0;
     }
 
+    div[class*="page-"] {
+        width: 100%;
+        min-height: 100vh;
+        position: relative;
+    }
+
     dialog::backdrop {
-        background-color: rgba(
-            0,
-            0,
-            0,
-            1
-        ); /* A semi-transparent black overlay */
+        background-color: rgba(0, 0, 0, 1);
     }
 
     section {
@@ -46,11 +55,6 @@
 
     .img-cover {
         @include mixins.img-cover;
-    }
-
-    [data-scroll-container] {
-        min-height: 100vh;
-        padding-bottom: 100px; /* Espacio extra al final */
     }
 
     .reveal {

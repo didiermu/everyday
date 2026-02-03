@@ -3,14 +3,17 @@
 .head-home {
     display: none;
 }
+
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     top: 0;
+    left: 0;
     width: 100%;
-    position: sticky;
+    position: fixed;
     z-index: 1030;
+    padding-block: var(--spacing-md);
 
     .link-back {
         @include typography.typography("xl", primaryBold);
@@ -36,6 +39,11 @@
 
     .navbar {
         width: 100%;
+        padding: 0;
+
+        .container {
+            justify-content: center;
+        }
 
         img {
             width: 62px;
@@ -49,6 +57,18 @@
         height: max-content;
         margin: auto;
         border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+
+        &.offcanvas-end {
+            transform: translate(0, 100%);
+            top: auto;
+            left: 0;
+            max-width: 332px;
+
+            &.showing,
+            &.show:not(.hiding) {
+                transform: translate(0, -50%);
+            }
+        }
 
         &-body {
             display: flex;
@@ -78,7 +98,11 @@
                     span {
                         display: block;
                         letter-spacing: 0;
-                        @include typography.typography("sm", secondary);
+                        text-transform: none;
+                        @include typography.typography("md", secondary);
+                        font-weight: 100;
+                        line-height: 1;
+                        transform: translateY(-5px);
                     }
                 }
             }
@@ -137,18 +161,6 @@
             img {
                 width: 74px;
                 height: 74px;
-            }
-        }
-
-        .offcanvas.offcanvas-end {
-            transform: translate(0, 100%);
-            top: auto;
-            left: 0;
-            max-width: 332px;
-
-            &.showing,
-            &.show:not(.hiding) {
-                transform: translate(0, 0);
             }
         }
     }

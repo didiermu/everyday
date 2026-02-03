@@ -10,38 +10,20 @@ const routes = {
     "/": {
         page: "pages/home.html",
         title: "Home",
-        bodyClass: "page-home",
-        loader: () => import("../js/pages/home.js"),
-    },
-    "/physicalizing-emotions": {
-        page: "pages/physicalizing.html",
-        title: "Physicalizing Emotions",
-        bodyClass: "page-physicalizing",
-        loader: () => import("../js/pages/physicalizing.js"),
-    },
-    "/visualization": {
-        page: "pages/visualization.html",
-        title: "Visualization",
-        bodyClass: "page-visualization",
-        loader: () => import("../js/pages/visualization.js"),
+        loader: () =>
+            Promise.all([
+                import("../js/pages/home.js"),
+                import("../js/pages/physicalizing.js"),
+                // import("../js/pages/visualization.js"),
+                import("../js/pages/about.js"),
+                import("../js/pages/epilogue.js"),
+            ]),
     },
     "/visualization/periods": {
         page: "pages/periods.html",
         title: "Visualization — Periods",
-        bodyClass: "page-periods",
+
         loader: () => import("../js/pages/periods.js"),
-    },
-    "/about": {
-        page: "pages/about.html",
-        title: "About",
-        bodyClass: "page-about",
-        loader: () => import("../js/pages/about.js"),
-    },
-    "/epilogue": {
-        page: "pages/epilogue.html",
-        title: "Epilogue",
-        bodyClass: "page-epilogue",
-        loader: () => import("../js/pages/epilogue.js"),
     },
 };
 
@@ -122,19 +104,19 @@ const handleRoute = async () => {
     /* ---------------------------------------------
        🔥 DESTROY PÁGINA ANTERIOR
     --------------------------------------------- */
-    if (currentPageModule?.destroy) {
-        try {
-            await currentPageModule.destroy();
-        } catch (err) {
-            console.warn("Error en destroy():", err);
-        }
-    }
-    currentPageModule = null;
+    // if (currentPageModule?.destroy) {
+    //     try {
+    //         await currentPageModule.destroy();
+    //     } catch (err) {
+    //         console.warn("Error en destroy():", err);
+    //     }
+    // }
+    // currentPageModule = null;
 
     /* ---------------------------------------------
        🧼 LIMPIAR RECURSOS GLOBALES
     --------------------------------------------- */
-    cleanupGlobalResources();
+    // cleanupGlobalResources();
 
     /* ---------------------------------------------
        🧼 LIMPIAR VIEW (MATA LISTENERS)
@@ -174,13 +156,17 @@ const handleRoute = async () => {
     --------------------------------------------- */
     if (route.loader) {
         try {
-            // Usar import dinámico con timestamp para forzar recarga
-            const module = await route.loader();
+            const result = await route.loader();
+            const modules = Array.isArray(result) ? result : [result];
 
-            if (module?.init) {
-                await module.init();
-                currentPageModule = module;
-            }
+            modules.forEach((mod) => {
+                if (typeof mod.init === "function") {
+                    mod.init();
+                }
+            });
+
+            currentPageModule = modules;
+            // console.log("Loaded modules:", modules);
         } catch (err) {
             console.error("Error cargando módulo de página:", err);
         }

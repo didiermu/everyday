@@ -1,7 +1,7 @@
 @use "../core/typography";
 @use "../core/mixins";
 
-&.page-visualization {
+.page-visualization {
     background: var(--color-banana);
 
     &:has(.visualization.show) {
@@ -45,11 +45,6 @@
         background: var(--color-not-so-white-viz-300);
         padding-block-start: var(--spacing-xl);
         padding-block-end: var(--spacing-3xl);
-        display: none;
-
-        &.show {
-            display: block;
-        }
 
         .row {
             row-gap: var(--spacing-md);
@@ -175,7 +170,7 @@
 }
 
 @media (min-width: 1280px) {
-    &.page-visualization {
+    .page-visualization {
         &:has(.hero.hide) {
             .head-home {
                 display: none;

@@ -1,9 +1,13 @@
 import * as THREE from "three";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { smoothScroll } from "./../utils/loadLocomotive.js";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger.js";
+// import smoothScroll from "./../utils/loadLocomotive.js";
+gsap.registerPlugin(ScrollTrigger);
 
 // Variables globales para cleanup
-let locomotiveInstance = null;
+
 let renderer = null;
 let animationId = null;
 let resizeHandler = null;
@@ -13,6 +17,115 @@ const mediaQuery = window.matchMedia("(min-width:1280px)");
 
 let sizeRender = [-1, 1, 1];
 let baseRotation = 0;
+
+const scrollGsap = () => {
+    const paneles = () => {
+        const panels = gsap.utils.toArray(".panel");
+        panels.forEach((panel, i) => {
+            if (i < panels.length - 1) {
+                ScrollTrigger.create({
+                    trigger: panel,
+                    start: "bottom bottom",
+                    pin: true,
+                    pinSpacing: false,
+                    end: "bottom top",
+                    invalidateOnRefresh: true,
+                });
+            }
+        });
+    };
+
+    const pinCards = () => {
+        const section = document.querySelector(".page-physicalizing--moments");
+        const items = gsap.utils.toArray(".expand__image__info");
+        const image = document.querySelector(".expand__image--fondo img");
+
+        gsap.set(items, { autoAlpha: 0, y: 20 });
+        gsap.set(items[0], { autoAlpha: 1, y: 0 });
+
+        const cameraSettings = [
+            { scale: 1.0, x: 90, y: 0 },
+            { scale: 2, x: 85, y: 20 },
+            { scale: 1.2, x: 0, y: -30 },
+            { scale: 1.2, x: 0, y: -30 },
+        ];
+
+        gsap.set(items, { autoAlpha: 0, y: 20 });
+        gsap.set(items[0], { autoAlpha: 1, y: 0 });
+        // Set inicial de la imagen
+        gsap.set(image, {
+            scale: cameraSettings[0].scale,
+            objectPosition: `${cameraSettings[0].x}% ${cameraSettings[0].y}%`,
+        });
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: section,
+                start: "top top",
+                end: "+=200%",
+                pin: true,
+                pinSpacing: true,
+                scrub: 1,
+                // markers: true,
+                onUpdate: (self) => {
+                    // Lógica de clases precisa según el progreso
+                    const step = Math.min(
+                        Math.ceil(self.progress * items.length) || 1,
+                        items.length,
+                    );
+                    section.className = section.className.replace(
+                        /\bis-step-\d+/g,
+                        "",
+                    );
+                    section.classList.add(`is-step-${step}`);
+                },
+            },
+        });
+
+        tl.to({}, { duration: 2 });
+
+        items.forEach((item, i) => {
+            if (i < items.length - 1) {
+                const nextCam = cameraSettings[i + 1];
+                const label = `step${i}`;
+
+                tl.to(
+                    item,
+                    {
+                        autoAlpha: 0,
+                        y: -20,
+                        duration: 1.5,
+                    },
+                    label,
+                )
+                    .to(
+                        items[i + 1],
+                        {
+                            autoAlpha: 1,
+                            y: 0,
+                            duration: 1.5,
+                        },
+                        label,
+                    )
+                    .to(
+                        image,
+                        {
+                            scale: nextCam.scale,
+                            // Animamos el objectPosition dinámicamente
+                            objectPosition: `${nextCam.x}% ${nextCam.y}px`,
+                            duration: 2,
+                            ease: "power2.inOut",
+                        },
+                        label,
+                    )
+                    .to({}, { duration: 2.5 }); // Pausa de lectura
+            }
+        });
+    };
+
+    // paneles();
+    pinCards();
+};
 
 const modalVideo = () => {
     const modal = document.getElementById("modal-video");
@@ -93,12 +206,14 @@ function updateScale() {
     if (mediaQuery.matches) {
         sizeRender = [2.3, 2.3, 2.3];
         baseRotation = -0.3;
-        renderer.domElement.style.top = "60px";
-        renderer.domElement.style.left = "-10px";
+        // renderer.domElement.style.top = "60px";
+        // renderer.domElement.style.left = "-10px";
+        // renderer.domElement.style.transform = "translate(-10px, 60px)";
     } else {
         sizeRender = [-1, 1, 1];
-        renderer.domElement.style.top = "-130px";
-        renderer.domElement.style.left = "30px";
+        // renderer.domElement.style.top = "-130px";
+        // renderer.domElement.style.left = "30px";
+        // renderer.domElement.style.transform = "translate(30px, -130px)";
     }
 
     if (model) {
@@ -135,13 +250,9 @@ const render = () => {
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // renderer.domElement.style.transform = "translate(30px, -130px)";
 
-    renderer.domElement.style.position = "fixed";
-    renderer.domElement.style.top = "-130px";
-    renderer.domElement.style.left = "30px";
-    renderer.domElement.style.pointerEvents = "none";
-
-    const mainElement = document.querySelector("main");
+    const mainElement = document.querySelector(".page-home");
     if (mainElement) {
         mainElement.insertAdjacentElement("afterbegin", renderer.domElement);
     }
@@ -295,26 +406,17 @@ const render = () => {
     };
 };
 
-let cleanupModal = null;
-let renderCleanup = null;
-
-const handleMediaChange = () => {
-    // Limpiar listeners anteriores
-    if (cleanupModal) {
-        cleanupModal();
-    }
-    // Reinicializar con la nueva configuración
-    cleanupModal = modalVideo();
-};
-
 export function init() {
-    cleanupModal = modalVideo();
-    locomotiveInstance = smoothScroll();
-    renderCleanup = render();
-    videoHome();
+    render();
+    modalVideo();
 
-    // Escuchar cambios en el mediaQuery
-    mediaQuery.addEventListener("change", handleMediaChange);
+    smoothScroll();
+
+    scrollGsap();
+    // no borrar
+    // videoHome();
+    // no borrar
+    //     // mediaQuery.addEventListener("change", modalVideo);
 }
 
 export function destroy() {
@@ -341,12 +443,6 @@ export function destroy() {
             window.removeEventListener("scroll", renderCleanup.scrollHandler);
         }
         renderCleanup = null;
-    }
-
-    // Limpiar Locomotive
-    if (locomotiveInstance) {
-        locomotiveInstance.destroy();
-        locomotiveInstance = null;
     }
 
     // Limpiar Three.js
@@ -390,11 +486,5 @@ export function destroy() {
             renderer.domElement.parentNode.removeChild(renderer.domElement);
         }
         renderer = null;
-    }
-
-    // Limpiar modal
-    if (cleanupModal) {
-        cleanupModal();
-        cleanupModal = null;
     }
 }

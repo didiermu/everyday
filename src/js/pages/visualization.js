@@ -72,7 +72,6 @@ export function init() {
     modalViz();
     hoverRings();
     hoverPeriods();
-    locomotiveInstance = smoothScroll();
 }
 
 export function destroy() {
