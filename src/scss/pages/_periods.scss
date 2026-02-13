@@ -8,7 +8,7 @@
         background: var(--color-not-so-white-viz-300);
     }
 
-    .hero {
+    .head-period {
         padding-block-start: var(--spacing-lg);
 
         .row {
@@ -22,8 +22,15 @@
             row-gap: var(--spacing-xs);
         }
 
+        &--info {
+            h4 {
+                display: none;
+            }
+        }
+
         .title {
-            @include typography.typography("8xl", primary);
+            @include typography.typography("9xl", primary);
+            margin-bottom: var(--spacing-sm);
         }
 
         &__data {
@@ -32,7 +39,7 @@
             column-gap: var(--spacing-sm);
 
             span {
-                @include typography.typography("xs", tertiary);
+                @include typography.typography("sm", tertiary);
                 display: flex;
                 align-items: center;
                 column-gap: var(--spacing-xs);
@@ -52,31 +59,6 @@
             row-gap: var(--spacing-md);
         }
 
-        &--pagination {
-            display: flex;
-            justify-content: center;
-            column-gap: var(--spacing-md);
-
-            a {
-                @include typography.typography("sm", tertiary);
-                width: 32px;
-                height: 32px;
-                border-radius: var(--border-radius-full);
-                border: 1px solid var(--color-not-so-black);
-                text-decoration: none;
-                display: grid;
-                place-items: center;
-                color: var(--color-not-so-black);
-                cursor: pointer;
-                flex: 0 0 32px;
-
-                &.active {
-                    background: var(--color-not-so-black);
-                    color: var(--color-not-so-white);
-                }
-            }
-        }
-
         &--data {
             padding-block-start: var(--spacing-sm);
             @include mixins.data-table;
@@ -84,6 +66,7 @@
 
         .periods-image {
             position: relative;
+            margin-block-end: var(--spacing-5xl);
         }
 
         .periods-hover {
@@ -123,6 +106,7 @@
         &--botonera {
             display: grid;
             row-gap: var(--spacing-lg);
+            margin-block-start: var(--spacing-lg);
 
             .button {
                 place-self: center;
@@ -133,6 +117,39 @@
         &#period-3 {
             .button.star {
                 display: none;
+            }
+        }
+    }
+
+    .swiper-pagination {
+        display: flex;
+        justify-content: center;
+        column-gap: var(--spacing-md);
+        inset: 0;
+        position: absolute;
+        top: calc(500px + 760 * (100vw - 360px) / 768);
+        margin: 0 auto;
+        height: max-content;
+        z-index: 9;
+
+        &-bullet {
+            @include typography.typography("sm", tertiary);
+            width: 32px;
+            height: 32px;
+            border-radius: var(--border-radius-full);
+            border: 1px solid var(--color-not-so-black);
+            text-decoration: none;
+            display: grid;
+            place-items: center;
+            color: var(--color-not-so-black);
+            cursor: pointer;
+            flex: 0 0 32px;
+            background: var(--color-not-so-white-viz-300);
+            opacity: 1;
+
+            &-active {
+                background: var(--color-not-so-black);
+                color: var(--color-not-so-white);
             }
         }
     }
@@ -164,6 +181,7 @@
         .close {
             background: var(--icon-close-white) no-repeat center/0.4em
                 var(--color-not-so-black);
+            filter: none;
         }
 
         p {
@@ -176,6 +194,30 @@
 
         .modal--content {
             width: 100%;
+
+            .title {
+                @include typography.typography("9xl", primary);
+                margin-block-end: var(--spacing-md);
+            }
+
+            .hero__data {
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                column-gap: var(--spacing-xs);
+
+                span {
+                    @include typography.typography("md", tertiary);
+                    font-weight: 300;
+                    display: flex;
+                    justify-content: center;
+                    column-gap: var(--spacing-xxs);
+
+                    strong {
+                        font-weight: 500;
+                    }
+                }
+            }
         }
 
         .modal-data--table {
@@ -239,18 +281,60 @@
         .close {
             background: var(--icon-close-white) no-repeat center/0.4em
                 var(--color-not-so-black);
+            filter: none;
         }
 
         section {
             padding-block: 6.25rem var(--spacing-4xl);
         }
 
+        .modal-high--content {
+            margin-block-start: var(--spacing-3xl);
+
+            p {
+                justify-self: flex-start;
+            }
+        }
+
+        .swiper {
+            width: 100%;
+
+            .swiper-pagination {
+                top: calc(520px + 760 * (100vw - 360px) / 768);
+                column-gap: var(--spacing-xs);
+            }
+
+            .swiper-pagination-bullet {
+                background: url(./img/ring.png) no-repeat center / contain;
+                width: 14px;
+                height: 14px;
+                border: 0;
+                opacity: 0.3;
+
+                &-active {
+                    opacity: 1;
+                }
+            }
+        }
+
         .modal--content {
             background: var(--color-not-so-white-viz-300);
             height: 100dvh;
+            width: 100%;
 
             .row {
                 row-gap: var(--spacing-lg);
+            }
+
+            h5 {
+                span {
+                    &:first-child {
+                        @include typography.typography("md", tertiary);
+                    }
+                    &:nth-child(2) {
+                        @include typography.typography("2xl", script);
+                    }
+                }
             }
         }
 
@@ -345,75 +429,6 @@
             }
         }
 
-        &.period-1 figure .button,
-        &.period-4 figure .button {
-            top: 5%;
-            right: 10%;
-        }
-
-        &.period-2 figure .button {
-            bottom: 3.75rem;
-            left: 3rem;
-        }
-
-        &.period-5 figure {
-            &[data-botones="3"] {
-                #btn-viz {
-                    bottom: 6.25rem;
-                    left: 0rem;
-                    top: auto;
-                    z-index: 0;
-                }
-                #btn-miles {
-                    bottom: 15%;
-                    left: 15%;
-                    top: auto;
-                    z-index: 0;
-                }
-            }
-
-            .button {
-                bottom: 15%;
-                left: 15%;
-            }
-        }
-
-        &.period-6 figure {
-            &[data-botones="3"] {
-                #btn-viz {
-                    right: 0%;
-                    top: 20%;
-                    z-index: 1;
-                }
-                #btn-miles {
-                    right: 10%;
-                    top: 3%;
-                }
-            }
-            .button {
-                right: 10%;
-                top: 3%;
-            }
-        }
-        &.period-7 figure {
-            &[data-botones="3"] {
-                #btn-viz {
-                    right: 7%;
-                    bottom: 10%;
-                    z-index: 1;
-                }
-                #btn-miles {
-                    bottom: 24%;
-                    right: 19%;
-                    left: auto;
-                }
-            }
-            .button {
-                right: 7%;
-                bottom: 10%;
-            }
-        }
-
         h5 {
             text-align: center;
             display: grid;
@@ -459,7 +474,7 @@
         }
 
         h3 {
-            @include typography.typography("md", script);
+            @include typography.typography("2xl", script);
             letter-spacing: 2px;
         }
 

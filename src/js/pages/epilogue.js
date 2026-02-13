@@ -11,18 +11,13 @@ let tabInstances = [];
 const botonera = async () => {
     const btnTools = document.getElementById("btn-tools");
     const btnLessons = document.getElementById("btn-lessons");
-    const heroSection = document.querySelector(".hero");
+    const heroSection = document.querySelector(".page-epilogue .hero");
     const panelsSection = document.querySelector(".panels");
 
     if (btnTools) {
         const toolsHandler = () => {
             heroSection.style.display = "none";
             panelsSection.style.display = "block";
-
-            // Destruir y reinicializar Locomotive
-            if (locomotiveInstance) {
-                locomotiveInstance.destroy();
-            }
         };
 
         btnTools.addEventListener("click", toolsHandler);
@@ -74,7 +69,9 @@ const slider = () => {
     });
 };
 
-export async function init() {
+const init = async () => {
     slider();
-    await botonera();
-}
+    botonera();
+};
+
+init();

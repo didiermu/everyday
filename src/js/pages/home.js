@@ -9,10 +9,16 @@ gsap.registerPlugin(ScrollTrigger);
 // Variables globales para cleanup
 
 let renderer = null;
+let rendererShadow = null;
 let animationId = null;
+let animationIdShadow = null;
 let resizeHandler = null;
+let resizeHandlerShadow = null;
 let model = null;
+let modelShadow = null;
 let scene = null;
+let sceneShadow = null;
+let shadowModel = null;
 const mediaQuery = window.matchMedia("(min-width:1280px)");
 
 let sizeRender = [-1, 1, 1];
@@ -21,6 +27,7 @@ let baseRotation = 0;
 const scrollGsap = () => {
     const paneles = () => {
         const panels = gsap.utils.toArray(".panel");
+        const panelContent = gsap.utils.toArray(".panel__content");
         panels.forEach((panel, i) => {
             if (i < panels.length - 1) {
                 ScrollTrigger.create({
@@ -33,6 +40,35 @@ const scrollGsap = () => {
                 });
             }
         });
+
+        const updatePanelClass = (index) => {
+            panelContent.forEach((_, idx) => {
+                document.body.classList.remove(`panel-${idx}`);
+            });
+            document.body.classList.add(`panel-${index}`);
+        };
+
+        panelContent.forEach((panel, i) => {
+            ScrollTrigger.create({
+                trigger: panel,
+                start: "-=200 top",
+                end: "bottom bottom",
+                toogleActions: "restart pause reverse pause",
+
+                onEnter: () => updatePanelClass(i),
+                onEnterBack: () => updatePanelClass(i),
+                onLeave: () => {
+                    if (i < panels.length - 2) {
+                        updatePanelClass(i + 1);
+                    }
+                },
+                onLeaveBack: () => {
+                    if (i > 0) {
+                        updatePanelClass(i - 1);
+                    }
+                },
+            });
+        });
     };
 
     const pinCards = () => {
@@ -44,7 +80,7 @@ const scrollGsap = () => {
         gsap.set(items[0], { autoAlpha: 1, y: 0 });
 
         const cameraSettings = [
-            { scale: 1.0, x: 90, y: 0 },
+            { scale: 1.0, x: -110, y: 0 },
             { scale: 2, x: 85, y: 20 },
             { scale: 1.2, x: 0, y: -30 },
             { scale: 1.2, x: 0, y: -30 },
@@ -53,10 +89,10 @@ const scrollGsap = () => {
         gsap.set(items, { autoAlpha: 0, y: 20 });
         gsap.set(items[0], { autoAlpha: 1, y: 0 });
         // Set inicial de la imagen
-        gsap.set(image, {
-            scale: cameraSettings[0].scale,
-            objectPosition: `${cameraSettings[0].x}% ${cameraSettings[0].y}%`,
-        });
+        // gsap.set(image, {
+        //     scale: cameraSettings[0].scale,
+        //     objectPosition: `${cameraSettings[0].x}vw ${cameraSettings[0].y}%`,
+        // });
 
         const tl = gsap.timeline({
             scrollTrigger: {
@@ -64,7 +100,7 @@ const scrollGsap = () => {
                 start: "top top",
                 end: "+=200%",
                 pin: true,
-                pinSpacing: true,
+                pinSpacing: false,
                 scrub: 1,
                 // markers: true,
                 onUpdate: (self) => {
@@ -110,9 +146,9 @@ const scrollGsap = () => {
                     .to(
                         image,
                         {
-                            scale: nextCam.scale,
+                            // scale: nextCam.scale,
                             // Animamos el objectPosition dinámicamente
-                            objectPosition: `${nextCam.x}% ${nextCam.y}px`,
+                            // objectPosition: `${nextCam.x}% ${nextCam.y}px`,
                             duration: 2,
                             ease: "power2.inOut",
                         },
@@ -123,7 +159,7 @@ const scrollGsap = () => {
         });
     };
 
-    // paneles();
+    paneles();
     pinCards();
 };
 
@@ -134,9 +170,29 @@ const modalVideo = () => {
     const btnPlay = document.querySelector(".btn-play");
     const closeBtn = document.querySelector("#modal-video .close");
 
-    const playHandler = () => {
+    const playHandler = async () => {
         modal.showModal();
         video.play();
+
+        try {
+            await video.requestFullscreen();
+            // Forzar orientación horizontal
+            if (screen.orientation && screen.orientation.lock) {
+                await screen.orientation.lock("landscape");
+            }
+        } catch (error) {
+            console.log("Error al activar pantalla completa:", error);
+        }
+
+        // if (video.requestFullscreen) {
+        //     video.requestFullscreen();
+        // } else if (video.webkitRequestFullscreen) {
+        //     // Safari
+        //     video.webkitRequestFullscreen();
+        // } else if (video.msRequestFullscreen) {
+        //     // IE11
+        //     video.msRequestFullscreen();
+        // }
     };
 
     const closeHandler = () => {
@@ -203,26 +259,26 @@ const videoHome = () => {
 };
 
 function updateScale() {
+    baseRotation = -0.05;
+
     if (mediaQuery.matches) {
         sizeRender = [2.3, 2.3, 2.3];
-        baseRotation = -0.3;
-        // renderer.domElement.style.top = "60px";
-        // renderer.domElement.style.left = "-10px";
-        // renderer.domElement.style.transform = "translate(-10px, 60px)";
     } else {
         sizeRender = [-1, 1, 1];
-        // renderer.domElement.style.top = "-130px";
-        // renderer.domElement.style.left = "30px";
-        // renderer.domElement.style.transform = "translate(30px, -130px)";
     }
 
     if (model) {
         model.scale.set(...sizeRender);
         model.rotation.z = baseRotation;
     }
+
+    if (modelShadow) {
+        modelShadow.scale.set(...sizeRender);
+        modelShadow.rotation.z = baseRotation;
+    }
 }
 
-const render = () => {
+const render = async () => {
     // ----------------------
     // ESCENA
     // ----------------------
@@ -232,13 +288,14 @@ const render = () => {
     // ----------------------
     // CÁMARA (frontal)
     // ----------------------
+
     const camera = new THREE.PerspectiveCamera(
-        60,
+        50,
         window.innerWidth / window.innerHeight,
-        0.1,
+        1,
         100,
     );
-    camera.position.set(0, 0, 6);
+    camera.position.set(0, 0, 10);
     camera.lookAt(0, 0, 0);
 
     // ----------------------
@@ -249,7 +306,7 @@ const render = () => {
         alpha: true,
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
     // renderer.domElement.style.transform = "translate(30px, -130px)";
 
     const mainElement = document.querySelector(".page-home");
@@ -262,51 +319,11 @@ const render = () => {
     // ----------------------
     scene.add(new THREE.AmbientLight(0xffffff, 2));
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.6);
-    dirLight.position.set(2, 0.3, 5);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(10, -9, 3);
+    // .set(17.8, 4.3, 6.6)
+    dirLight.intensity = 4;
     scene.add(dirLight);
-
-    // ----------------------
-    // SOMBRA FAKE (TEXTURA)
-    // ----------------------
-    function createShadowTexture() {
-        const size = 256;
-        const canvas = document.createElement("canvas");
-        canvas.width = size;
-        canvas.height = size;
-
-        const ctx = canvas.getContext("2d");
-        const gradient = ctx.createRadialGradient(
-            size / 2,
-            size / 2,
-            size * 0.15,
-            size / 2,
-            size / 2,
-            size * 0.5,
-        );
-
-        gradient.addColorStop(0, "rgba(0,0,0,0.1)");
-        gradient.addColorStop(1, "rgba(0,0,0,0)");
-
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, size, size);
-
-        return new THREE.CanvasTexture(canvas);
-    }
-
-    const shadowPlane = new THREE.Mesh(
-        new THREE.PlaneGeometry(1, 0.5),
-        new THREE.MeshBasicMaterial({
-            map: createShadowTexture(),
-            transparent: true,
-            depthWrite: false,
-        }),
-    );
-
-    shadowPlane.rotation.x = 1;
-    shadowPlane.rotation.y = -1;
-    shadowPlane.rotation.z = -1;
-    shadowPlane.position.set(0.3, 0.4, 0.1);
 
     // ----------------------
     // MODELO OBJ
@@ -319,32 +336,42 @@ const render = () => {
         obj.position.sub(center);
 
         model = obj;
+        model.rotation.set(targetRotationX, targetRotationY, targetRotationZ);
         scene.add(model);
 
         updateScale();
+
+        // initReplicaControls();
     });
 
     // ----------------------
     // SCROLL → TRANSFORM
     // ----------------------
-    let targetRotationX = 0;
-    let targetRotationY = 0;
+    let targetRotationX = -1.5;
+    let targetRotationY = -1;
+    let targetRotationZ = -0.1;
     let targetPosX = 0;
     let targetPosY = 0;
 
-    const maxRotationX = Math.PI * 6;
-    const maxRotationY = Math.PI * 6;
-    const maxMoveY = 3;
-    const maxMoveX = -5;
+    const maxRotationX = Math.PI * 3;
+    const maxRotationY = Math.PI * 1;
+    const maxRotationZ = Math.PI * 3;
+    const maxMoveY = 6;
+    const maxMoveX = 0;
 
     // ✅ Mantén el scroll nativo para Three.js
     window.addEventListener("scroll", () => {
         const scrollY = window.scrollY;
-        const maxScrollY = document.body.scrollHeight - window.innerHeight;
+        const maxScrollY =
+            document.querySelector(".page-home").scrollHeight -
+            window.innerHeight;
         const progress = Math.min(scrollY / maxScrollY, 1);
 
         targetRotationX = progress * maxRotationX;
         targetRotationY = progress * maxRotationY;
+        targetRotationZ = progress * maxRotationZ;
+
+        // Estos valores mueven al cerillo, y ahora la sombra los usará de referencia
         targetPosY = -progress * maxMoveY;
         targetPosX = progress * maxMoveX;
     });
@@ -356,15 +383,12 @@ const render = () => {
         animationId = requestAnimationFrame(animate);
 
         if (model) {
+            // 1. Movimiento del Cerillo
             model.rotation.x += (targetRotationX - model.rotation.x) * 0.2;
             model.rotation.y += (targetRotationY - model.rotation.y) * 0.2;
+            model.rotation.z += (targetRotationZ - model.rotation.z) * 0.2;
             model.position.y += (targetPosY - model.position.y) * 0.1;
             model.position.x += (targetPosX - model.position.x) * 0.1;
-
-            const height = Math.abs(model.position.y);
-            const stretch = THREE.MathUtils.clamp(1 + height * 0.25, 1, 1.6);
-            shadowPlane.scale.set(stretch, 1, 1);
-            shadowPlane.rotation.z = -model.rotation.y * 0.4;
         }
 
         if (renderer && scene && camera) {
@@ -381,9 +405,9 @@ const render = () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
 
-        if (renderer) {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
+        // if (renderer) {
+        //     renderer.setSize(window.innerWidth, window.innerHeight);
+        // }
 
         updateScale();
     };
@@ -406,85 +430,178 @@ const render = () => {
     };
 };
 
-export function init() {
-    render();
-    modalVideo();
+const renderShadow = async () => {
+    // ----------------------
+    // ESCENA
+    // ----------------------
+    sceneShadow = new THREE.Scene();
+    sceneShadow.background = null;
 
+    // ----------------------
+    // CÁMARA (frontal)
+    // ----------------------
+
+    const camera = new THREE.PerspectiveCamera(
+        50,
+        window.innerWidth / window.innerHeight,
+        1,
+        100,
+    );
+    camera.position.set(0, 0, 12);
+    camera.lookAt(0.2, 0, 0);
+
+    // ----------------------
+    // RENDERER
+    // ----------------------
+    rendererShadow = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+    });
+    rendererShadow.setSize(window.innerWidth, window.innerHeight);
+    rendererShadow.setPixelRatio(Math.min(window.devicePixelRatio, 1));
+
+    const mainElement = document.querySelector(".page-home");
+    if (mainElement) {
+        mainElement.insertAdjacentElement(
+            "afterbegin",
+            rendererShadow.domElement,
+        );
+    }
+
+    // ----------------------
+    // MODELO OBJ (Versión Sombra)
+    // ----------------------
+    const loader = new OBJLoader();
+
+    loader.load("./render/cerillo.obj", (obj) => {
+        const box = new THREE.Box3().setFromObject(obj);
+        const center = box.getCenter(new THREE.Vector3());
+        obj.position.sub(center);
+
+        modelShadow = obj;
+
+        // --- FORZAR MATERIAL DE SOMBRA ---
+        modelShadow.traverse((child) => {
+            if (child.isMesh) {
+                child.material = new THREE.MeshBasicMaterial({
+                    color: 0x000000, // Negro puro
+                    transparent: true,
+                    opacity: 0.1, // Controla qué tan tenue es la sombra
+                });
+            }
+        });
+
+        modelShadow.rotation.set(
+            targetRotationX,
+            targetRotationY,
+            targetRotationZ,
+        );
+
+        sceneShadow.add(modelShadow);
+        updateScale();
+    });
+
+    // ----------------------
+    // SCROLL → TRANSFORM
+    // ----------------------
+    let targetRotationX = -1.5;
+    let targetRotationY = -1;
+    let targetRotationZ = -0.1;
+    let targetPosX = 0;
+    let targetPosY = 0;
+
+    const maxRotationX = Math.PI * 3;
+    const maxRotationY = Math.PI * 1;
+    const maxRotationZ = Math.PI * 3;
+    const maxMoveY = 7;
+    const maxMoveX = 0;
+
+    // ✅ Mantén el scroll nativo para Three.js
+    window.addEventListener("scroll", () => {
+        const scrollY = window.scrollY;
+        const maxScrollY =
+            document.querySelector(".page-home").scrollHeight -
+            window.innerHeight;
+        const progress = Math.min(scrollY / maxScrollY, 1);
+
+        targetRotationX = progress * maxRotationX;
+        targetRotationY = progress * maxRotationY;
+        targetRotationZ = progress * maxRotationZ;
+
+        // Estos valores mueven al cerillo, y ahora la sombra los usará de referencia
+        targetPosY = -progress * maxMoveY;
+        targetPosX = progress * maxMoveX;
+    });
+
+    // ----------------------
+    // ANIMACIÓN
+    // ----------------------
+    function animate() {
+        animationIdShadow = requestAnimationFrame(animate);
+
+        if (modelShadow) {
+            // 1. Movimiento del Cerillo
+            modelShadow.rotation.x +=
+                (targetRotationX - modelShadow.rotation.x) * 0.2;
+            modelShadow.rotation.y +=
+                (targetRotationY - modelShadow.rotation.y) * 0.2;
+            modelShadow.rotation.z +=
+                (targetRotationZ - modelShadow.rotation.z) * 0.2;
+            modelShadow.position.y +=
+                (targetPosY - modelShadow.position.y) * 0.1;
+            modelShadow.position.x +=
+                (targetPosX - modelShadow.position.x) * 0.1;
+        }
+
+        if (rendererShadow && sceneShadow && camera) {
+            rendererShadow.render(sceneShadow, camera);
+        }
+    }
+
+    animate();
+
+    // ----------------------
+    // RESIZE
+    // ----------------------
+    resizeHandlerShadow = () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        // if (renderer) {
+        //     renderer.setSize(window.innerWidth, window.innerHeight);
+        // }
+
+        updateScale();
+    };
+
+    window.addEventListener("resize", resizeHandlerShadow);
+
+    // ----------------------
+    // RETORNAR FUNCIONES PARA CONTROL EXTERNO
+    // ----------------------
+    return {
+        updateProgress: (progress) => {
+            targetRotationX = progress * maxRotationX;
+            targetRotationY = progress * maxRotationY;
+            targetPosY = -progress * maxMoveY;
+            targetPosX = progress * maxMoveX;
+        },
+        camera,
+        sceneShadow,
+        rendererShadow,
+    };
+};
+
+const init = async () => {
+    await render();
+    await renderShadow();
+    modalVideo();
+    scrollGsap();
     smoothScroll();
 
-    scrollGsap();
-    // no borrar
-    // videoHome();
-    // no borrar
-    //     // mediaQuery.addEventListener("change", modalVideo);
-}
+    videoHome();
 
-export function destroy() {
-    // Limpiar animación
-    if (animationId) {
-        cancelAnimationFrame(animationId);
-        animationId = null;
-    }
+    mediaQuery.addEventListener("change", modalVideo);
+};
 
-    // Limpiar event listeners
-    if (resizeHandler) {
-        window.removeEventListener("resize", resizeHandler);
-        resizeHandler = null;
-    }
-
-    // Limpiar scroll handler
-    if (renderCleanup) {
-        if (renderCleanup.locomotiveScroll && renderCleanup.scrollHandler) {
-            renderCleanup.locomotiveScroll.off(
-                "scroll",
-                renderCleanup.scrollHandler,
-            );
-        } else if (renderCleanup.scrollHandler) {
-            window.removeEventListener("scroll", renderCleanup.scrollHandler);
-        }
-        renderCleanup = null;
-    }
-
-    // Limpiar Three.js
-    if (model) {
-        model.traverse((child) => {
-            if (child.geometry) child.geometry.dispose();
-            if (child.material) {
-                if (Array.isArray(child.material)) {
-                    child.material.forEach((mat) => mat.dispose());
-                } else {
-                    child.material.dispose();
-                }
-            }
-        });
-        model = null;
-    }
-
-    if (scene) {
-        scene.traverse((object) => {
-            if (object.geometry) object.geometry.dispose();
-            if (object.material) {
-                if (Array.isArray(object.material)) {
-                    object.material.forEach((mat) => {
-                        if (mat.map) mat.map.dispose();
-                        mat.dispose();
-                    });
-                } else {
-                    if (object.material.map) object.material.map.dispose();
-                    object.material.dispose();
-                }
-            }
-        });
-        scene.clear();
-        scene = null;
-    }
-
-    if (renderer) {
-        renderer.dispose();
-        renderer.forceContextLoss();
-        if (renderer.domElement && renderer.domElement.parentNode) {
-            renderer.domElement.parentNode.removeChild(renderer.domElement);
-        }
-        renderer = null;
-    }
-}
+init();

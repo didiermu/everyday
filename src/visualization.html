@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+    <title>boilerplate</title>
+</head>
+
+<body class="page-visualization page-periods">
+    <div id="head-full">
+        <section class="head-home">
+            <div class="container">
+                <div class="col-12">
+                    <p>Today is <strong id="current-date">October 11, 2025 </strong></p>
+                    <p>Every day is a gift</p>
+                    <p>Make it matter</p>
+                </div>
+            </div>
+        </section>
+        <header id="header" class="header"></header>
+    </div>
+    <main id="app" data-scroll-container>
+        <section class="visualization">
+            <div class="container visualization--title">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>The Visualization</h2>
+                    </div>
+                    <div class="col-12">
+                        <div class="visualization__data">
+                            <div class="visualization__group">
+                                <span>Range</span>
+                                <span><strong>1 Jan</strong></span>
+                            </div>
+                            <span>-</span>
+                            <div class="visualization__group">
+                                <span><strong>31 Dec, 2024</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="visualization__data">
+                            <span>Duration</span>
+                            <span><strong>366 days</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container visualization--mapa">
+                <div class="row">
+                    <div class="col-12 visualization--instructions">
+                        <h4>1 Match <strong>1 Day lived</strong></h4>
+                        <div class="visualization--instructions__block">
+                            <h5>INNER RING</h5>
+                            <p>
+                                <span><strong>1 Jan - 29 Feb, 2024</strong></span>
+                                <span>Range<strong> Days 01 to 60</strong></span>
+                                <span>Duration<strong> 60 days</strong></span>
+                            </p>
+                        </div>
+                        <div class="visualization--instructions__block">
+                            <h5>MIDDLE RING</h5>
+                            <p>
+                                <span><strong>1 Mar - 30 Jun, 2024</strong></span>
+                                <span>Range<strong> Days 61 to 182</strong></span>
+                                <span>Duration<strong> 122 days</strong></span>
+                            </p>
+                        </div>
+                        <div class="visualization--instructions__block">
+                            <h5>OUTER RING</h5>
+                            <p>
+                                <span><strong>30 Jun - 31 Dec, 2024</strong></span>
+                                <span>Range<strong> Days 183 to 366</strong></span>
+                                <span>Duration<strong> 184 days</strong></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-12 visualization--fondo">
+                        <svg viewBox="0 0 980 1000" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Imagen de fondo -->
+                            <image href="./img/viz-desk.jpg" width="980" height="1000" x="0" y="0"></image>
+                            <!-- Puntos amarillos grandes (aproximados según la imagen) -->
+                            <circle class="yellow-dot" cx="253" cy="385" r="10" id="period-01"></circle>
+                            <circle class="yellow-dot" cx="317" cy="460" r="10" id="period-02"></circle>
+                            <circle class="yellow-dot" cx="436" cy="417" r="10" id="period-03"></circle>
+                            <circle class="yellow-dot" cx="565" cy="514" r="10" id="period-04"></circle>
+                            <circle class="yellow-dot" cx="658" cy="493" r="10" id="period-05">
+                            </circle>
+                            <circle class="yellow-dot" cx="732" cy="393" r="10" id="period-06"></circle>
+                            <circle class="yellow-dot" cx="406" cy="717" r="10" id="period-07"></circle>
+                            <!-- Puntos dorados pequeños (borde exterior) -->
+                            <circle class="gold-dot" cx="446" cy="190" r="6" data-zone="Borde Superior" id="nodo-1">
+                            </circle>
+                            <circle class="gold-dot" cx="459" cy="188" r="6" data-zone="Borde Superior" id="nodo-2">
+                            </circle>
+                            <circle class="gold-dot" cx="548" cy="196" r="6" data-zone="Borde Superior Derecho"
+                                id="nodo-3">
+                            </circle>
+                            <circle class="gold-dot" cx="647" cy="226" r="6" data-zone="Borde Derecho Superior"
+                                id="nodo-4">
+                            </circle>
+                            <circle class="gold-dot" cx="708" cy="275" r="6" data-zone="Borde Derecho" id="nodo-5">
+                            </circle>
+                            <circle class="gold-dot" cx="640" cy="325" r="6" data-zone="Borde Derecho Superior"
+                                id="nodo-6">
+                            </circle>
+                            <circle class="gold-dot" cx="777" cy="397" r="6" data-zone="Borde Derecho Medio"
+                                id="nodo-7">
+                            </circle>
+                            <circle class="gold-dot" cx="756" cy="623" r="6" data-zone="Borde Derecho Inferior"
+                                id="nodo-8">
+                            </circle>
+                            <circle class="gold-dot" cx="570" cy="576" r="6" data-zone="Espiral Interior" id="nodo-9">
+                            </circle>
+                            <circle class="gold-dot" cx="710" cy="680" r="6" data-zone="Espiral Media" id="nodo-10">
+                            </circle>
+                            <circle class="gold-dot" cx="693" cy="702" r="6" data-zone="Borde Izquierdo" id="nodo-11">
+                            </circle>
+                            <circle class="gold-dot" cx="682" cy="711" r="6" data-zone="Borde Inferior Izquierdo"
+                                id="nodo-12">
+                            </circle>
+                            <circle class="gold-dot" cx="501" cy="779" r="6" data-zone="Borde Inferior" id="nodo-13">
+                            </circle>
+                            <circle class="gold-dot" cx="470" cy="782" r="6" data-zone="Borde Izquierdo Superior"
+                                id="nodo-14">
+                            </circle>
+                            <circle class="gold-dot" cx="451" cy="685" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-15">
+                            </circle>
+                            <circle class="gold-dot" cx="301" cy="714" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-16">
+                            </circle>
+                            <circle class="gold-dot" cx="268" cy="688" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-17">
+                            </circle>
+                            <circle class="gold-dot" cx="371" cy="514" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-18">
+                            </circle>
+                            <circle class="gold-dot" cx="368" cy="500" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-19">
+                            </circle>
+                            <circle class="gold-dot" cx="205" cy="592" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-20">
+                            </circle>
+                            <circle class="gold-dot" cx="201" cy="571" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-21">
+                            </circle>
+                            <circle class="gold-dot" cx="376" cy="435" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-22">
+                            </circle>
+                            <circle class="gold-dot" cx="359" cy="311" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-23">
+                            </circle>
+                            <circle class="gold-dot" cx="249" cy="313" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-24">
+                            </circle>
+                            <circle class="gold-dot" cx="255" cy="303" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-25">
+                            </circle>
+                            <circle class="gold-dot" cx="407" cy="284" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-26">
+                            </circle>
+                            <circle class="gold-dot" cx="407" cy="284" r="6" data-zone="Espiral Superior Derecha"
+                                id="nodo-27">
+                            </circle>
+                        </svg>
+                        <picture class="img-cover">
+                            <img src="./img/viz.jpg" alt="">
+                        </picture>
+                        <span class="visualization--button"> CLICK <br> TO SEE <br> PERIODS </span>
+                    </div>
+                    <div class="col-12 visualization--data">
+                        <h4>1 Match <strong>1 Day lived</strong></h4>
+                        <div class="visualization--data--table">
+                            <div class="visualization--data__row ext-confused">
+                                <span>Extremely confused</span>
+                                <span>6</span>
+                                <span>1.6%</span>
+                            </div>
+                            <div class="visualization--data__row gratefull">
+                                <span>Grateful</span>
+                                <span>6</span>
+                                <span>1.6%</span>
+                            </div>
+                            <div class="visualization--data__row just-fine">
+                                <span>Just fine</span>
+                                <span>84</span>
+                                <span>22.9%</span>
+                            </div>
+                            <div class="visualization--data__row happy-satisfied">
+                                <span>Happy/Satisfied</span>
+                                <span>62</span>
+                                <span>16.9%</span>
+                            </div>
+                            <div class="visualization--data__row peaceful">
+                                <span>Peaceful</span>
+                                <span>60</span>
+                                <span>16.3%</span>
+                            </div>
+                            <div class="visualization--data__row sad">
+                                <span>Sad</span>
+                                <span>41</span>
+                                <span>11.2%</span>
+                            </div>
+                            <div class="visualization--data__row ext-sad">
+                                <span>Extremely Sad</span>
+                                <span>29</span>
+                                <span>7.9%</span>
+                            </div>
+                            <div class="visualization--data__row exited-motiv">
+                                <span>Excited / Motivated</span>
+                                <span>27</span>
+                                <span>7.3%</span>
+                            </div>
+                            <div class="visualization--data__row confused">
+                                <span>Confused</span>
+                                <span>20</span>
+                                <span>5.4%</span>
+                            </div>
+                            <div class="visualization--data__row inspired">
+                                <span>Inspired</span>
+                                <span>12</span>
+                                <span>3.2%</span>
+                            </div>
+                            <div class="visualization--data__row anxious-stress">
+                                <span>Anxious / Stressed</span>
+                                <span>9</span>
+                                <span>2.4%</span>
+                            </div>
+                            <div class="visualization--data__row ext-happy">
+                                <span>Extremely Happy</span>
+                                <span>8</span>
+                                <span>2.1%</span>
+                            </div>
+                            <div class="visualization--data__row ext-confused">
+                                <span>Extremely confused</span>
+                                <span>6</span>
+                                <span>1.6%</span>
+                            </div>
+                            <div class="visualization--data__row gratefull">
+                                <span>Grateful</span>
+                                <span>6</span>
+                                <span>1.6%</span>
+                            </div>
+                            <div class="visualization--data__row angry-resent">
+                                <span>Angry / Resentful</span>
+                                <span>2</span>
+                                <span>.6%</span>
+                            </div>
+                            <div class="visualization--data__row">
+                                <span><strong>Total</strong></span>
+                                <span>366</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                        <button class="button button-tertiary" id="btn-explore">Explore Periods</button>
+                    </div>
+                    <div class="visualization--pop">
+                        <span class="visualization--pop--hover"></span>
+                        <img src="./img/ring-01.png" alt="">
+                    </div>
+                    <div class="visualization--period">
+                        <div class="visualization--period--head">
+                            <div class="visualization--period--content">
+                                <h3>01</h3>
+                                <p><strong>1 Jan - 11 Feb, 2024</strong></p>
+                                <p><span>Range </span><strong>Days 01 to 42</strong></p>
+                                <p><span>Duration </span><strong>42 days</strong></p>
+                            </div>
+                            <h2>A Promising Year Ahead</h2>
+                        </div>
+                        <a href="/visualization/periods" data-link>
+                            <span class="visualization--period--hover"></span>
+                            <img src="./img/period-01.png" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <dialog id="modal-periods">
+            <div class="swiper swiper-periods">
+                <div class="swiper-pagination">
+                </div>
+                <div class="swiper-wrapper">
+                </div>
+            </div>
+        </dialog>
+        <dialog id="modal-story">
+            <div class="modal--content">
+                <button class="close"></button>
+                <section class="hero">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <h1 class="title">The Crisis. Where is My Mind?</h1>
+                            </div>
+                            <div class="col-12">
+                                <div class="hero__data">
+                                    <span><strong>~ 4 May - 18 Jun, 2024</strong></span>
+                                </div>
+                                <div class="hero__data">
+                                    <span>Range <strong>Days 125 to 170</strong></span>
+                                    <span>Duration<strong>∼ 46 days</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 modal--story--content">
+                                <p>The period I referred to as "hell" was one of the darkest times in my life. I was
+                                    consumed by relentless guilt and felt mentally unwell, tormented by obsessive
+                                    thoughts that plagued me from morning until night.</p>
+                                <p>It all began with a painful breakup that triggered a mental health crisis, one that
+                                    had been quietly building up for years. The accumulation of anxiety and unprocessed
+                                    emotions finally caught up with me. Healing from that experience turned out to be a
+                                    deeply transformative journey, one I’ve chosen to share through this project.</p>
+                                <p>As I was having a hard time trying to heal from the weirdest breakup in my life and
+                                    being close to divorce. I wanted to make something meaningful with the experience,
+                                    something that let me explore the nuances of healing and learning how to become
+                                    mentally and spiritually stronger.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </dialog>
+    </main>
+    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/pages/visualization.js"></script>
+    <script type="module" src="./js/pages/periods.js"></script>
+</body>
+
+</html>

@@ -5,6 +5,7 @@ $font-family-base: "TTTrailers-regular";
 $font-families: (
     primary: "TTTrailers-regular",
     primaryBold: "TTTrailers-bold",
+    primaryBlack: "TTTrailers-black",
     primaryDemiBold: "TTTrailers-demibold",
     secondary: "Kanit",
     tertiary: "Space Grotesk",
@@ -22,7 +23,7 @@ $font-sizes: (
     ),
     "md": (
         size: 1.125rem,
-        line: 120%,
+        line: 1.5,
     ),
     "lg": (
         size: 1.25rem,

@@ -1,50 +1,25 @@
 @use "../core/typography";
 @use "../core/mixins";
 
-.page-visualization {
-    background: var(--color-banana);
+&.page-visualization {
+    padding-block-start: var(--spacing-6xl);
+    background: var(--color-not-so-white-viz-300);
 
-    &:has(.visualization.show) {
+    #button-menu {
         background: var(--color-not-so-white-viz-300);
     }
 
-    .hero {
-        padding-block-end: 100px;
+    // &:has(.visualization.show) {
+    //     background: var(--color-not-so-white-viz-300);
+    // }
+
+    .visualization {
+        background: var(--color-not-so-white-viz-300);
+        padding-block: var(--spacing-2xl) var(--spacing-6xl);
 
         &.hide {
             display: none;
         }
-
-        .col-12 {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            row-gap: var(--spacing-lg);
-        }
-
-        p {
-            @include typography.typography("lg", tertiary);
-            text-align: center;
-        }
-
-        .title {
-            span {
-                background: var(--color-magic);
-            }
-        }
-
-        .button {
-            @include typography.typography("sm", tertiary);
-            letter-spacing: 0;
-            width: max-content;
-            padding: var(--spacing-sm) var(--spacing-lg);
-        }
-    }
-
-    .visualization {
-        background: var(--color-not-so-white-viz-300);
-        padding-block-start: var(--spacing-xl);
-        padding-block-end: var(--spacing-3xl);
 
         .row {
             row-gap: var(--spacing-md);
@@ -123,6 +98,7 @@
             text-align: center;
             line-height: 1;
             color: var(--color-not-so-black);
+            cursor: pointer;
         }
 
         &--data {
@@ -154,6 +130,7 @@
                 letter-spacing: normal;
                 width: max-content;
                 margin: auto;
+                margin-block-start: var(--spacing-lg);
             }
         }
 
@@ -161,9 +138,98 @@
             display: none;
         }
 
-        &--period {
-            &--head {
-                display: none;
+        &--period,
+        &--pop {
+            display: none;
+            // &--head {
+            // }
+        }
+    }
+
+    #modal-periods {
+        inset: auto;
+        top: 0;
+        overflow-y: scroll;
+        justify-content: flex-start;
+        background: var(--color-not-so-white-viz-300);
+        padding-block-start: var(--spacing-8xl);
+
+        &.show {
+            display: block;
+        }
+
+        .swiper-slide-visible {
+            z-index: 9;
+        }
+
+        .swiper-slide {
+            &[data-period="1"] figure .button,
+            &[data-period="4"] figure .button {
+                top: 5%;
+                right: 10%;
+            }
+
+            &[data-period="2"] figure .button {
+                bottom: 3.75rem;
+                left: 3rem;
+            }
+
+            &[data-period="5"] figure {
+                &[data-botones="3"] {
+                    #btn-viz {
+                        bottom: 6.25rem;
+                        left: 0rem;
+                        top: auto;
+                        z-index: 0;
+                    }
+                    #btn-miles {
+                        bottom: 15%;
+                        left: 15%;
+                        top: auto;
+                        z-index: 0;
+                    }
+                }
+
+                .button {
+                    bottom: 15%;
+                    left: 15%;
+                }
+            }
+
+            &[data-period="6"] figure {
+                &[data-botones="3"] {
+                    #btn-viz {
+                        right: 0%;
+                        top: 20%;
+                        z-index: 1;
+                    }
+                    #btn-miles {
+                        right: 10%;
+                        top: 3%;
+                    }
+                }
+                .button {
+                    right: 10%;
+                    top: 3%;
+                }
+            }
+            &[data-period="7"] figure {
+                &[data-botones="3"] {
+                    #btn-viz {
+                        right: 7%;
+                        bottom: 10%;
+                        z-index: 1;
+                    }
+                    #btn-miles {
+                        bottom: 24%;
+                        right: 19%;
+                        left: auto;
+                    }
+                }
+                .button {
+                    right: 7%;
+                    bottom: 10%;
+                }
             }
         }
     }

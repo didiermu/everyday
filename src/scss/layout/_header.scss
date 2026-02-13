@@ -1,5 +1,21 @@
 @use "../core/typography";
 
+&.panel-1,
+&.panel-2,
+&.panel-5 {
+    #button-menu {
+        background: var(--color-magic);
+    }
+}
+&.panel-4 {
+    #button-menu {
+        background: var(--color-not-so-black);
+        color: var(--color-magic);
+        border-color: var(--color-magic);
+        filter: drop-shadow(3px 6px var(--color-magic));
+    }
+}
+
 .head-home {
     display: none;
 }
@@ -35,6 +51,7 @@
 
     #button-menu {
         padding-inline: 20px;
+        transition: background 0.3s ease-in-out;
     }
 
     .navbar {

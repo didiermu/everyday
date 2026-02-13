@@ -45,11 +45,11 @@ const slider = () => {
     const swiperGaleria = new Swiper(el, {
         modules: [EffectCreative],
         direction: "horizontal",
-        slidesPerView: "auto",
+        slidesPerView: 1.8,
         centeredSlides: true,
         loop: true,
         effect: "creative",
-        grabCursor: true,
+        // cssMode: true,
         creativeEffect: {
             prev: {
                 translate: ["-130%", 40, -200],
@@ -193,24 +193,12 @@ const videoSection = () => {
     });
 };
 
-export function init() {
+const initPsych = () => {
     videoSection();
     slider();
     duplicateSlides(".marquee", 10);
     createMarquee({ container: ".expand__image", speed: 20 });
     createMarqueeImg({ container: ".carousel-all", speed: 60 });
-}
+};
 
-export function destroy() {
-    // Destruir Swiper
-    if (swiperInstance) {
-        swiperInstance.destroy(true, true);
-        swiperInstance = null;
-    }
-
-    // Destruir Locomotive
-    if (locomotiveInstance) {
-        locomotiveInstance.destroy();
-        locomotiveInstance = null;
-    }
-}
+initPsych();

@@ -10,7 +10,7 @@
     }
 
     .hero {
-        padding-block: var(--spacing-4xl);
+        padding-block: var(--spacing-10xl) var(--spacing-4xl);
 
         .row {
             row-gap: var(--spacing-2xl);
@@ -40,6 +40,7 @@
 
     .panels {
         display: none;
+        padding-block: var(--spacing-10xl) var(--spacing-4xl);
 
         .nav {
             justify-content: center;
@@ -98,7 +99,7 @@
 
                 hr {
                     display: inline-block;
-                    border-top: 1px solid var(--color-not-so-black);
+                    border-top: 2px solid var(--color-not-so-black);
                     width: 40px;
                     margin: 0;
                 }

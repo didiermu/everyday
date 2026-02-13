@@ -25,6 +25,18 @@
 }
 
 @font-face {
+    font-family: "TTTrailers-black";
+    src: url(../fonts/TTTrailers-Black.eot);
+    src:
+        local("@"),
+        url(../fonts/TTTrailers-Black.ttf) format("truetype"),
+        url(../fonts/TTTrailers-Black.otf) format("opentype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
     font-family: "TTTrailers-demibold";
     src: url(../fonts/TTTrailers-DemiBold.eot);
     src:

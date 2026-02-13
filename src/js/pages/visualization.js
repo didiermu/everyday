@@ -1,7 +1,36 @@
+import { loadComponent } from "./../utils/loadComponent.js";
 import { smoothScroll } from "./../utils/loadLocomotive.js";
 
 let locomotiveInstance = null;
 let buttonHandler = null;
+let linkHandler = null;
+let linkBack;
+
+const modalExplore = () => {
+    const hero = document.querySelector(".visualization");
+    const modal = document.querySelector("#modal-periods");
+    const button = document.querySelector("#btn-explore");
+    const linkExplore = document.querySelector(".visualization--button");
+
+    if (modal && button) {
+        buttonHandler = () => {
+            hero.classList.add("hide");
+            modal.classList.add("show");
+            loadComponent("#header", "componets/header-interior.html");
+            linkBack = document.querySelector(".link-back");
+            linkBack.addEventListener("click", linkHandler);
+        };
+
+        linkHandler = () => {
+            hero.classList.remove("hide");
+            modal.classList.remove("show");
+            loadComponent("#header", "componets/header.html");
+        };
+
+        button.addEventListener("click", buttonHandler);
+        linkExplore.addEventListener("click", buttonHandler);
+    }
+};
 
 const modalViz = () => {
     const hero = document.querySelector(".hero");
@@ -68,25 +97,11 @@ const hoverPeriods = () => {
         });
 };
 
-export function init() {
+const init = () => {
+    modalExplore();
     modalViz();
     hoverRings();
     hoverPeriods();
-}
+};
 
-export function destroy() {
-    // Limpiar Locomotive
-    if (locomotiveInstance) {
-        locomotiveInstance.destroy();
-        locomotiveInstance = null;
-    }
-
-    // Limpiar event listener del botón
-    if (buttonHandler) {
-        const button = document.querySelector("#btn-viz");
-        if (button) {
-            button.removeEventListener("click", buttonHandler);
-        }
-        buttonHandler = null;
-    }
-}
+init();
