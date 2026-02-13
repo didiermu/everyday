@@ -8,21 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Variables globales para cleanup
 
-let renderer = null;
-let rendererShadow = null;
-let animationId = null;
-let animationIdShadow = null;
-let resizeHandler = null;
-let resizeHandlerShadow = null;
-let model = null;
-let modelShadow = null;
-let scene = null;
-let sceneShadow = null;
-let shadowModel = null;
 const mediaQuery = window.matchMedia("(min-width:1280px)");
-
-let sizeRender = [-1, 1, 1];
-let baseRotation = 0;
 
 const scrollGsap = () => {
     const paneles = () => {
@@ -173,26 +159,6 @@ const modalVideo = () => {
     const playHandler = async () => {
         modal.showModal();
         video.play();
-
-        try {
-            await video.requestFullscreen();
-            // Forzar orientación horizontal
-            if (screen.orientation && screen.orientation.lock) {
-                await screen.orientation.lock("landscape");
-            }
-        } catch (error) {
-            console.log("Error al activar pantalla completa:", error);
-        }
-
-        // if (video.requestFullscreen) {
-        //     video.requestFullscreen();
-        // } else if (video.webkitRequestFullscreen) {
-        //     // Safari
-        //     video.webkitRequestFullscreen();
-        // } else if (video.msRequestFullscreen) {
-        //     // IE11
-        //     video.msRequestFullscreen();
-        // }
     };
 
     const closeHandler = () => {
@@ -257,6 +223,25 @@ const videoHome = () => {
         .matchMedia("(orientation: portrait)")
         .addEventListener("change", updateVideoSource);
 };
+
+let renderer = null;
+let rendererShadow = null;
+let animationId = null;
+let animationIdShadow = null;
+let resizeHandler = null;
+let resizeHandlerShadow = null;
+let model = null;
+let modelShadow = null;
+let scene = null;
+let sceneShadow = null;
+let shadowModel = null;
+let targetRotationX = -1;
+let targetRotationY = -1;
+let targetRotationZ = -0.5;
+let targetPosX = 0;
+let targetPosY = 0;
+let sizeRender = [-1, 1, 1];
+let baseRotation = 0;
 
 function updateScale() {
     baseRotation = -0.05;
@@ -347,16 +332,11 @@ const render = async () => {
     // ----------------------
     // SCROLL → TRANSFORM
     // ----------------------
-    let targetRotationX = -1.5;
-    let targetRotationY = -1;
-    let targetRotationZ = -0.1;
-    let targetPosX = 0;
-    let targetPosY = 0;
 
     const maxRotationX = Math.PI * 3;
     const maxRotationY = Math.PI * 1;
     const maxRotationZ = Math.PI * 3;
-    const maxMoveY = 6;
+    const maxMoveY = 3;
     const maxMoveX = 0;
 
     // ✅ Mantén el scroll nativo para Three.js
@@ -365,15 +345,15 @@ const render = async () => {
         const maxScrollY =
             document.querySelector(".page-home").scrollHeight -
             window.innerHeight;
+
         const progress = Math.min(scrollY / maxScrollY, 1);
 
-        targetRotationX = progress * maxRotationX;
-        targetRotationY = progress * maxRotationY;
-        targetRotationZ = progress * maxRotationZ;
+        targetRotationX = -1 + progress * maxRotationX;
+        targetRotationY = -1 + progress * maxRotationY;
+        targetRotationZ = -0.1 + progress * maxRotationZ;
 
-        // Estos valores mueven al cerillo, y ahora la sombra los usará de referencia
-        targetPosY = -progress * maxMoveY;
-        targetPosX = progress * maxMoveX;
+        targetPosY = 0 - progress * maxMoveY;
+        targetPosX = 0 + progress * maxMoveX;
     });
 
     // ----------------------
@@ -385,9 +365,13 @@ const render = async () => {
         if (model) {
             // 1. Movimiento del Cerillo
             model.rotation.x += (targetRotationX - model.rotation.x) * 0.2;
+
             model.rotation.y += (targetRotationY - model.rotation.y) * 0.2;
-            model.rotation.z += (targetRotationZ - model.rotation.z) * 0.2;
+
+            // model.rotation.z += (targetRotationZ - model.rotation.z) * 0.2;
+
             model.position.y += (targetPosY - model.position.y) * 0.1;
+
             model.position.x += (targetPosX - model.position.x) * 0.1;
         }
 
@@ -504,16 +488,11 @@ const renderShadow = async () => {
     // ----------------------
     // SCROLL → TRANSFORM
     // ----------------------
-    let targetRotationX = -1.5;
-    let targetRotationY = -1;
-    let targetRotationZ = -0.1;
-    let targetPosX = 0;
-    let targetPosY = 0;
 
     const maxRotationX = Math.PI * 3;
     const maxRotationY = Math.PI * 1;
     const maxRotationZ = Math.PI * 3;
-    const maxMoveY = 7;
+    const maxMoveY = 3;
     const maxMoveX = 0;
 
     // ✅ Mantén el scroll nativo para Three.js
@@ -524,13 +503,12 @@ const renderShadow = async () => {
             window.innerHeight;
         const progress = Math.min(scrollY / maxScrollY, 1);
 
-        targetRotationX = progress * maxRotationX;
-        targetRotationY = progress * maxRotationY;
-        targetRotationZ = progress * maxRotationZ;
+        targetRotationX = -1 + progress * maxRotationX;
+        targetRotationY = -1 + progress * maxRotationY;
+        targetRotationZ = -0.1 + progress * maxRotationZ;
 
-        // Estos valores mueven al cerillo, y ahora la sombra los usará de referencia
-        targetPosY = -progress * maxMoveY;
-        targetPosX = progress * maxMoveX;
+        targetPosY = 0 - progress * maxMoveY;
+        targetPosX = 0 + progress * maxMoveX;
     });
 
     // ----------------------
@@ -543,10 +521,13 @@ const renderShadow = async () => {
             // 1. Movimiento del Cerillo
             modelShadow.rotation.x +=
                 (targetRotationX - modelShadow.rotation.x) * 0.2;
+
             modelShadow.rotation.y +=
                 (targetRotationY - modelShadow.rotation.y) * 0.2;
-            modelShadow.rotation.z +=
-                (targetRotationZ - modelShadow.rotation.z) * 0.2;
+
+            // modelShadow.rotation.z +=
+            //     (targetRotationZ - modelShadow.rotation.z) * 0.2;
+
             modelShadow.position.y +=
                 (targetPosY - modelShadow.position.y) * 0.1;
             modelShadow.position.x +=
@@ -593,13 +574,13 @@ const renderShadow = async () => {
 };
 
 const init = async () => {
-    await render();
-    await renderShadow();
+    render();
+    renderShadow();
     modalVideo();
     scrollGsap();
     smoothScroll();
 
-    videoHome();
+    // videoHome();
 
     mediaQuery.addEventListener("change", modalVideo);
 };

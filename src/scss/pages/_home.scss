@@ -21,6 +21,14 @@
         z-index: 9 !important;
     }
 
+    #modal-video {
+        .modal--content {
+            overflow: hidden;
+            width: 100dvw;
+            height: 100dvh;
+        }
+    }
+
     .intro {
         background: var(--color-banana);
         padding-block: var(--spacing-4xl) 0;
@@ -54,6 +62,7 @@
     .video {
         position: relative;
         z-index: 9;
+        margin-block-end: var(--spacing-4xl);
 
         video {
             display: block;

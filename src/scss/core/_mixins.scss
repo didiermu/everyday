@@ -154,9 +154,13 @@ $container-sizes: (
 
             video {
                 display: block;
-                width: 100%;
-                height: 100%;
+                width: 100dvh;
+                height: 100dvw;
                 object-fit: contain;
+                transform: rotate(90deg);
+                position: absolute;
+                inset: -100%;
+                margin: auto;
             }
         }
     }

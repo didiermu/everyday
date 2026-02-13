@@ -20,9 +20,9 @@ export async function smoothScroll() {
     });
 
     // Forzar actualización después de inicializar
-    setTimeout(() => {
-        scroll.update();
-    }, 500);
+    // setTimeout(() => {
+    //     scroll.update();
+    // }, 500);
 
     return scroll;
 }
