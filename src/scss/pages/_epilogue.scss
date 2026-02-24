@@ -75,6 +75,11 @@
                 flex-direction: column;
             }
 
+            .panel--contenido {
+                display: grid;
+                row-gap: var(--spacing-md);
+            }
+
             .container {
                 display: grid;
                 row-gap: var(--spacing-md);
@@ -139,8 +144,6 @@
         }
 
         &__tools {
-            border-top: 1px solid var(--color-not-so-black);
-            padding-block: var(--spacing-lg);
             display: grid;
             align-items: center;
             row-gap: var(--spacing-2xl);
@@ -148,6 +151,8 @@
             h5 {
                 @include typography.typography("lg", tertiary);
                 font-weight: 300;
+                border-top: 1px solid var(--color-not-so-black);
+                padding-block: var(--spacing-md);
             }
 
             .swiper {
@@ -172,7 +177,7 @@
 
             &__card {
                 scroll-snap-align: start;
-                background: var(--color-banana);
+                background: var(--color-magic-strong);
                 border-radius: var(--border-radius-md);
                 padding: var(--spacing-lg);
                 box-shadow:
@@ -183,6 +188,7 @@
                 display: grid;
                 place-content: space-between;
                 min-width: 245px;
+                transition: 0.3s ease-in-out all;
 
                 h4 {
                     @include typography.typography("7xl", primary);
@@ -193,6 +199,173 @@
                 span {
                     @include typography.typography("sm", tertiary);
                     font-weight: 300;
+                }
+
+                @media (hover: hover) {
+                    &:hover {
+                        background: var(--color-banana);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 1280px) {
+    .page-epilogue {
+        padding-block-end: 12.5rem;
+
+        .hero {
+            .row {
+                justify-content: center;
+                row-gap: var(--spacing-6xl);
+            }
+
+            h1 {
+                margin-block-end: var(--spacing-2xl);
+            }
+
+            p {
+                @include typography.typography("xl", tertiary);
+            }
+
+            .buttons {
+                flex-direction: row;
+                column-gap: var(--spacing-lg);
+                justify-content: center;
+            }
+
+            .button {
+                @include typography.typography("2xl", tertiary);
+            }
+        }
+
+        .panels {
+            // padding-block: 12.5rem 0;
+            padding-block: var(--spacing-5xl) 0;
+
+            // & > .container {
+            //     position: sticky;
+            //     top: 160px;
+            //     z-index: 9;
+            // }
+
+            .nav {
+                border-bottom: none;
+                column-gap: var(--spacing-2xl);
+                justify-content: flex-start;
+            }
+
+            .nav-item {
+                flex: 0 1 250px;
+
+                button {
+                    @include typography.typography("2xl", primaryBold);
+                    border-radius: var(--border-radius-full);
+                    box-shadow: none;
+                    padding: var(--spacing-sm) var(--spacing-lg);
+                    border: 1px solid var(--color-not-so-black);
+                    letter-spacing: 2px;
+                    filter: drop-shadow(3px 6px var(--color-not-so-black));
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: var(--color-magic);
+
+                    &.active {
+                        background: var(--color-banana);
+                        color: var(--color-not-so-black);
+                    }
+                }
+            }
+
+            .tab-content {
+                padding-block-start: 12.5rem;
+
+                h2 {
+                    @include typography.typography("7xl", primaryBold);
+                    line-height: 1;
+                }
+
+                #profile-tab-pane {
+                    .panel--contenido {
+                        grid-template-columns: 55% 45%;
+
+                        & > div {
+                            &:first-child {
+                                order: 1;
+                            }
+
+                            &:last-child {
+                                order: 2;
+                                padding-inline-start: var(--spacing-10xl);
+                            }
+                        }
+                    }
+                }
+
+                .panel--contenido {
+                    grid-template-columns: 45% 55%;
+                    padding-block-end: var(--spacing-6xl);
+
+                    & > div {
+                        padding-inline: 0;
+                        max-width: none;
+
+                        &:first-child {
+                            order: 2;
+                            row-gap: var(--spacing-lg);
+                        }
+
+                        &:last-child {
+                            order: 1;
+                            place-content: flex-start;
+                        }
+                    }
+                }
+
+                .container {
+                    & > h4 {
+                        @include typography.typography("10xl", primary);
+                    }
+
+                    span {
+                        margin-block-end: var(--spacing-2xl);
+                    }
+                }
+
+                p {
+                    @include typography.typography("xl", tertiary);
+                }
+
+                picture {
+                    aspect-ratio: 16 / 9;
+                }
+
+                .panel--contenido {
+                    p {
+                        @include typography.typography("lg", tertiary);
+                    }
+                }
+            }
+
+            &__tools {
+                &__card {
+                    height: 220px;
+                }
+
+                .swiper {
+                    max-width: none;
+                    padding-inline: 64px;
+
+                    &-wrapper {
+                        column-gap: var(--spacing-xl);
+                    }
+
+                    &-slide {
+                        padding-inline: 0 !important;
+                    }
                 }
             }
         }

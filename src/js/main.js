@@ -8,7 +8,12 @@ import "bootstrap/js/dist/collapse";
 
 // Layout
 (async () => {
-    await loadComponent("#header", "componets/header.html");
+    if (document.querySelector("main").classList.contains("main-periods")) {
+        await loadComponent("#header", "componets/header-interior.html");
+    } else {
+        await loadComponent("#header", "componets/header.html");
+    }
+
     // initRouter();
     currentDate();
 })();

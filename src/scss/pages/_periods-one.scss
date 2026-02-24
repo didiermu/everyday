@@ -3,7 +3,10 @@
 
 .page-periods {
     background: var(--color-not-so-white-viz-300);
-    padding-block-start: var(--spacing-6xl);
+
+    .panel__content {
+        padding-block-start: var(--spacing-6xl);
+    }
 
     #button-menu {
         background: var(--color-not-so-white-viz-300);
@@ -361,7 +364,7 @@
         }
     }
 
-    #modal-high {
+    .modal-high {
         z-index: 9999;
         justify-content: flex-start;
         overflow-y: scroll;

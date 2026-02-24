@@ -62,6 +62,11 @@ const slider = () => {
                 scale: 0.8,
             },
         },
+        breakpoints: {
+            1280: {
+                slidesPerView: 3,
+            },
+        },
         on: {
             init(swiper) {
                 // Al iniciar, nos aseguramos de que el primero suene/se mueva
@@ -197,8 +202,8 @@ const initPsych = () => {
     videoSection();
     slider();
     duplicateSlides(".marquee", 10);
-    createMarquee({ container: ".expand__image", speed: 20 });
-    createMarqueeImg({ container: ".carousel-all", speed: 60 });
+    // createMarquee({ container: ".expand__image", speed: 20 });
+    // createMarqueeImg({ container: ".carousel-all", speed: 60 });
 };
 
 initPsych();

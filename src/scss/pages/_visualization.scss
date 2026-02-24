@@ -1,24 +1,35 @@
 @use "../core/typography";
 @use "../core/mixins";
 
-&.page-visualization {
+.page-visualization {
     padding-block-start: var(--spacing-6xl);
-    background: var(--color-not-so-white-viz-300);
+    background: var(--color-banana);
 
-    #button-menu {
+    &:has(.main-periods.show),
+    &:has(.visualization.show) {
         background: var(--color-not-so-white-viz-300);
     }
 
-    // &:has(.visualization.show) {
-    //     background: var(--color-not-so-white-viz-300);
-    // }
+    .main-periods {
+        display: none;
+        padding-block: 0;
+
+        &.show {
+            display: block;
+        }
+    }
 
     .visualization {
         background: var(--color-not-so-white-viz-300);
-        padding-block: var(--spacing-2xl) var(--spacing-6xl);
+        padding-block: var(--spacing-10xl) var(--spacing-6xl);
+        display: none;
 
         &.hide {
             display: none;
+        }
+
+        &.show {
+            display: block;
         }
 
         .row {
@@ -146,93 +157,7 @@
         }
     }
 
-    #modal-periods {
-        inset: auto;
-        top: 0;
-        overflow-y: scroll;
-        justify-content: flex-start;
-        background: var(--color-not-so-white-viz-300);
-        padding-block-start: var(--spacing-8xl);
-
-        &.show {
-            display: block;
-        }
-
-        .swiper-slide-visible {
-            z-index: 9;
-        }
-
-        .swiper-slide {
-            &[data-period="1"] figure .button,
-            &[data-period="4"] figure .button {
-                top: 5%;
-                right: 10%;
-            }
-
-            &[data-period="2"] figure .button {
-                bottom: 3.75rem;
-                left: 3rem;
-            }
-
-            &[data-period="5"] figure {
-                &[data-botones="3"] {
-                    #btn-viz {
-                        bottom: 6.25rem;
-                        left: 0rem;
-                        top: auto;
-                        z-index: 0;
-                    }
-                    #btn-miles {
-                        bottom: 15%;
-                        left: 15%;
-                        top: auto;
-                        z-index: 0;
-                    }
-                }
-
-                .button {
-                    bottom: 15%;
-                    left: 15%;
-                }
-            }
-
-            &[data-period="6"] figure {
-                &[data-botones="3"] {
-                    #btn-viz {
-                        right: 0%;
-                        top: 20%;
-                        z-index: 1;
-                    }
-                    #btn-miles {
-                        right: 10%;
-                        top: 3%;
-                    }
-                }
-                .button {
-                    right: 10%;
-                    top: 3%;
-                }
-            }
-            &[data-period="7"] figure {
-                &[data-botones="3"] {
-                    #btn-viz {
-                        right: 7%;
-                        bottom: 10%;
-                        z-index: 1;
-                    }
-                    #btn-miles {
-                        bottom: 24%;
-                        right: 19%;
-                        left: auto;
-                    }
-                }
-                .button {
-                    right: 7%;
-                    bottom: 10%;
-                }
-            }
-        }
-    }
+    /// modal periods se quitó a periods.scss
 }
 
 @media (min-width: 1280px) {
@@ -243,11 +168,16 @@
             }
         }
 
-        .hero {
+        .hero-viz {
             height: 100dvh;
+            display: grid;
 
-            .col-12 {
-                row-gap: var(--spacing-3xl);
+            .container {
+                align-self: center;
+            }
+
+            .row {
+                justify-content: center;
             }
 
             p {
@@ -257,6 +187,11 @@
             .button {
                 display: none;
             }
+        }
+
+        .page-periods {
+            display: block;
+            padding: 0;
         }
 
         .visualization {
@@ -368,7 +303,7 @@
 
             &--mapa {
                 padding-block: var(--spacing-5xl) 13.75rem;
-                max-width: 1920px;
+                // max-width: 1920px;
 
                 .row {
                     flex-direction: row;
@@ -379,7 +314,7 @@
             }
 
             &--data {
-                width: 28%;
+                width: 26%;
                 max-width: 320px;
                 // position: relative;
                 // top: 4.5rem;
@@ -393,7 +328,7 @@
 
             &--pop,
             &--period {
-                position: fixed;
+                position: absolute;
                 inset: 0;
                 margin: auto;
                 padding: 0;
@@ -428,9 +363,22 @@
                 }
             }
 
+            &--pop {
+                opacity: 1;
+                z-index: 1;
+                display: block;
+
+                picture {
+                    width: 500px;
+                    display: block;
+                }
+            }
+
             &--period {
                 // opacity: 1;
                 // z-index: 1;
+                // display: block;
+
                 background: var(--color-banana);
                 max-height: 100dvh;
 

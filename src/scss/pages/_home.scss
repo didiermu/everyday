@@ -1,24 +1,28 @@
 @use "../core/typography";
 @use "../core/mixins";
 
+canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    // height: 100%;
+    // width: 100%;
+    // transform: translate(
+    //     calc(-10px + 400 * (100vw - 360px) / 768),
+    //     calc(-330px + 400 * (100vw - 360px) / 768)
+    // );
+    // transform: translate(-10px, -200px);
+    z-index: 9;
+}
+
 .page-home {
     background: var(--color-banana);
     overflow-x: hidden;
     padding-block-start: var(--spacing-8xl);
+    overflow: hidden;
 
     .head-home {
         display: none;
-    }
-
-    canvas {
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        transform: translate(
-            calc(-10px + 400 * (100vw - 360px) / 768),
-            calc(-330px + 400 * (100vw - 360px) / 768)
-        );
-        z-index: 9 !important;
     }
 
     #modal-video {
@@ -68,6 +72,7 @@
             display: block;
             width: 100%;
             object-fit: cover;
+            pointer-events: none;
             // aspect-ratio: 9 / 16;
         }
 
@@ -146,8 +151,14 @@
 
 @media (min-width: 1280px) {
     .page-home {
+        padding-block-start: 200px;
+        // canvas {
+        //     transform: translate(-30px, -150px);
+        // }
+
         .intro {
-            padding-block-start: 12.5rem;
+            // padding-block-start: 12.5rem;
+
             cursor:
                 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><defs><filter id="shadow"><feDropShadow dx="3" dy="6" stdDeviation="0" flood-color="%23333"/></filter></defs><circle cx="60" cy="60" r="52" fill="%23a8b5ff" stroke="%23000" stroke-width="2" filter="url(%23shadow)"/><text x="60" y="68" font-family="TTTrailers-bold" font-size="28" letter-spacing="2px" text-anchor="middle" fill="%23000">SCROLL</text></svg>')
                     60 60,
@@ -177,6 +188,8 @@
         }
 
         .video {
+            margin-block-end: 0;
+
             cursor:
                 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><defs><filter id="shadow"><feDropShadow dx="3" dy="6" stdDeviation="0" flood-color="%23333"/></filter></defs><circle cx="60" cy="60" r="52" fill="%23a8b5ff" stroke="%23000" stroke-width="2" filter="url(%23shadow)"/><text x="60" y="68" font-family="TTTrailers-bold" font-size="28" letter-spacing="2px" text-anchor="middle" fill="%23000">PLAY</text></svg>')
                     60 60,

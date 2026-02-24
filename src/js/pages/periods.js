@@ -1,8 +1,12 @@
 import Swiper from "swiper";
 import { Pagination, EffectFade } from "swiper/modules";
 import "swiper/css";
-import { smoothScroll } from "./../utils/loadLocomotive.js";
-
+// import { smoothScroll } from "./../utils/loadLocomotive.js";
+import {
+    getScrollInstance,
+    destroyScroll,
+    smoothScroll,
+} from "./../utils/loadLocomotive.js";
 // Variables globales para almacenar los datos y recursos
 let emotionsData = null;
 let swiperInstance = null;
@@ -160,7 +164,7 @@ function createModalHighTemplate(highlights) {
         .join("");
 
     return `
-        <dialog id="modal-high">
+        <dialog class="modal-high">
             <div class="modal--content">
                 <button class="close"></button>
                 <div class="swiper swiper-high">
@@ -382,13 +386,15 @@ function createSlideContent(data, periodId) {
 
 // Función para inicializar Swiper
 async function initSwiper() {
-    const swiperWrapper = document.querySelector(".swiper-wrapper");
-    const swiperContainer = document.querySelector(".swiper");
+    const swiperContainer = document.querySelector(".swiper-periods");
+    const swiperWrapper = swiperContainer.querySelector(".swiper-wrapper");
 
     if (!swiperWrapper) {
         console.error("No se encontró .swiper-wrapper");
         return;
     }
+
+    swiperWrapper.innerHTML = "";
 
     // Generar todos los slides
     Object.keys(emotionsData).forEach((periodId) => {
@@ -399,6 +405,11 @@ async function initSwiper() {
         slide.innerHTML = createSlideContent(data, periodId);
         swiperWrapper.appendChild(slide);
     });
+
+    // const dialogs = document.querySelectorAll(".modal-high");
+    // dialogs.forEach((dialog) => {
+    //     document.body.appendChild(dialog);
+    // });
 
     // Inicializar Swiper
     swiperInstance = new Swiper(".swiper-periods", {
@@ -435,20 +446,35 @@ async function initSwiper() {
             },
         },
     });
+
+    return swiperInstance;
 }
 
 // Función para adjuntar eventos modales en un slide específico
 async function attachModalEvents(slide) {
     const modalData = slide.querySelector("#modal-data");
-    const modalHigh = slide.querySelector("#modal-high");
+    const modalHigh = slide.querySelector(".modal-high");
     const modalResume = slide.querySelector("#modal-resume");
+    const scroll = getScrollInstance();
 
     // Modal Data
     const dataButton = slide.querySelector(".button.data");
     if (modalData && dataButton) {
         const closeBtn = modalData.querySelector(".close");
-        dataButton.onclick = () => modalData.showModal();
-        if (closeBtn) closeBtn.onclick = () => modalData.close();
+
+        dataButton.onclick = () => {
+            modalData.showModal();
+            destroyScroll();
+        };
+
+        if (closeBtn)
+            closeBtn.onclick = () => {
+                modalData.close();
+
+                if (scroll) {
+                    smoothScroll();
+                }
+            };
     }
 
     // Modal High
@@ -465,9 +491,12 @@ async function attachModalEvents(slide) {
             closeBtn.onclick = () => {
                 modalHigh.close();
 
-                // 🔓 Reactivar swiper principal
                 if (swiperInstance) {
                     swiperInstance.allowTouchMove = true;
+                }
+
+                if (scroll) {
+                    smoothScroll();
                 }
             };
         }
@@ -502,6 +531,8 @@ async function attachModalEvents(slide) {
                     },
                 );
             }
+
+            destroyScroll();
         };
 
         const highlights = normalizeHighlights(data.highlights);
@@ -525,8 +556,19 @@ async function attachModalEvents(slide) {
     const readButton = slide.querySelector(".button.read");
     if (modalResume && readButton) {
         const closeBtn = modalResume.querySelector(".button");
-        readButton.onclick = () => modalResume.showModal();
-        if (closeBtn) closeBtn.onclick = () => modalResume.close();
+
+        readButton.onclick = () => {
+            modalResume.showModal();
+            destroyScroll();
+        };
+
+        if (closeBtn)
+            closeBtn.onclick = () => {
+                modalResume.close();
+                if (scroll) {
+                    smoothScroll();
+                }
+            };
 
         const text = modalResume.querySelector("p");
         const readMoreBtn = modalResume.querySelector("a");
@@ -560,9 +602,9 @@ const periodos = async () => {
     }
 };
 
-const init = async () => {
+export async function initPeriods() {
     await periodos();
-    initSwiper();
+    return initSwiper();
 
     // document.querySelectorAll(".swiper-slide").forEach((el) => {
     // attachModalEvents(el);
@@ -570,6 +612,6 @@ const init = async () => {
     //     console.log(el);
     // });
     // });
-};
+}
 
-init();
+// init();

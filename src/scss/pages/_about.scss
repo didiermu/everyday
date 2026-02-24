@@ -47,7 +47,10 @@
         h2 {
             @include typography.typography("8xl", primaryDemiBold);
             text-transform: uppercase;
-            // font-size: 3.375rem;
+
+            br {
+                display: none;
+            }
         }
 
         h3 {
@@ -67,6 +70,49 @@
             filter: drop-shadow(3px 6px var(--color-magic));
             @include typography.typography("md", tertiary);
             letter-spacing: 0;
+        }
+    }
+}
+
+@media (min-width: 1280px) {
+    .page-about {
+        padding-block-end: var(--spacing-10xl);
+
+        .hero {
+            .row {
+                justify-content: center;
+            }
+            p {
+                @include typography.typography("xl", tertiary);
+            }
+
+            .img-cover {
+                aspect-ratio: 16 / 9;
+            }
+        }
+        .regular {
+            .row {
+                justify-content: center;
+            }
+            p {
+                @include typography.typography("xl", tertiary);
+            }
+
+            h2 {
+                @include typography.typography("9xl", primaryBold);
+
+                br {
+                    display: block;
+                }
+            }
+
+            .button-primary {
+                @include typography.typography("2xl", tertiary);
+
+                &::after {
+                    background-image: var(--icon-arrow-magic);
+                }
+            }
         }
     }
 }

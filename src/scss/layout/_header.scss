@@ -3,11 +3,25 @@
 &.panel-1,
 &.panel-2,
 &.panel-5 {
-    #button-menu {
+    #button-menu,
+    .head-home {
         background: var(--color-magic);
     }
 }
+
+&.panel-3:has(.visualization.show),
+&.panel-3:has(.main-periods.show) {
+    #button-menu {
+        background: var(--color-not-so-white);
+    }
+}
+
 &.panel-4 {
+    .head-home {
+        background: var(--color-not-so-black);
+        color: var(--color-magic);
+    }
+
     #button-menu {
         background: var(--color-not-so-black);
         color: var(--color-magic);
@@ -18,6 +32,7 @@
 
 .head-home {
     display: none;
+    transition: 0.3s ease-in-out all;
 }
 
 .header {
@@ -131,6 +146,11 @@
     .head-home {
         display: flex;
         padding-block: var(--spacing-6xl);
+        background: var(--color-banana);
+        position: fixed;
+        top: 0;
+        z-index: 9;
+        width: 100%;
 
         .col-12 {
             display: flex;
@@ -175,6 +195,11 @@
         }
 
         .navbar {
+            & > .container {
+                flex-direction: row;
+                padding-inline: 0;
+            }
+
             img {
                 width: 74px;
                 height: 74px;

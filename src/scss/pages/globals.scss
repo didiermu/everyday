@@ -71,6 +71,10 @@
 
 @media (min-width: 1280px) {
     & {
+        div[class*="page-"] {
+            min-height: calc(100vh - 8.4375rem);
+        }
+
         section {
             padding-block: var(--spacing-10xl) 0;
         }

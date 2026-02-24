@@ -1,39 +1,13 @@
 import { loadComponent } from "./../utils/loadComponent.js";
-import { smoothScroll } from "./../utils/loadLocomotive.js";
+import { ScrollTrigger } from "gsap/ScrollTrigger.js";
+import { initPeriods } from "./periods.js";
 
-let locomotiveInstance = null;
 let buttonHandler = null;
 let linkHandler = null;
 let linkBack;
 
-const modalExplore = () => {
-    const hero = document.querySelector(".visualization");
-    const modal = document.querySelector("#modal-periods");
-    const button = document.querySelector("#btn-explore");
-    const linkExplore = document.querySelector(".visualization--button");
-
-    if (modal && button) {
-        buttonHandler = () => {
-            hero.classList.add("hide");
-            modal.classList.add("show");
-            loadComponent("#header", "componets/header-interior.html");
-            linkBack = document.querySelector(".link-back");
-            linkBack.addEventListener("click", linkHandler);
-        };
-
-        linkHandler = () => {
-            hero.classList.remove("hide");
-            modal.classList.remove("show");
-            loadComponent("#header", "componets/header.html");
-        };
-
-        button.addEventListener("click", buttonHandler);
-        linkExplore.addEventListener("click", buttonHandler);
-    }
-};
-
 const modalViz = () => {
-    const hero = document.querySelector(".hero");
+    const hero = document.querySelector(".hero-viz");
     const modal = document.querySelector(".visualization");
     const button = document.querySelector("#btn-viz");
 
@@ -42,14 +16,62 @@ const modalViz = () => {
             hero.classList.add("hide");
             modal.classList.add("show");
 
-            // Destruir y reinicializar Locomotive después del cambio
-            if (locomotiveInstance) {
-                locomotiveInstance.destroy();
-            }
-            locomotiveInstance = smoothScroll();
+            ScrollTrigger.refresh();
+            document.querySelector("body").className = "panel-3";
+            // console.log("viz");
         };
 
         button.addEventListener("click", buttonHandler);
+    }
+};
+
+const modalExplore = () => {
+    const swiperEl = document.querySelector(".swiper-periods");
+    const hero = document.querySelector(".visualization");
+    const heroViz = document.querySelector(".hero-viz");
+    const modal = document.querySelector(".main-periods");
+    const button = document.querySelector("#btn-explore");
+    const linkExplore = document.querySelector(".visualization--button");
+
+    let swiperInstance = null; // 👈 guardamos referencia
+
+    if (modal && button) {
+        const buttonHandler = async () => {
+            hero.classList.remove("show");
+            hero.classList.add("hide");
+            modal.classList.add("show");
+
+            loadComponent("#header", "componets/header-interior.html");
+
+            const linkBack = document.querySelector(".link-back");
+            linkBack.addEventListener("click", linkHandler);
+
+            // 👇 inicializamos y guardamos instancia
+            swiperInstance = await initPeriods();
+
+            setTimeout(() => {
+                ScrollTrigger.refresh();
+                document.querySelector("body").className = "panel-3";
+            }, 500);
+        };
+
+        const linkHandler = () => {
+            hero.classList.add("show");
+            modal.classList.remove("show");
+
+            // ✅ destruir swiper correctamente
+            if (swiperInstance) {
+                swiperInstance.destroy(true, true);
+                swiperInstance = null;
+            }
+
+            loadComponent("#header", "componets/header.html");
+
+            ScrollTrigger.refresh();
+        };
+
+        button.addEventListener("click", buttonHandler);
+        linkExplore.addEventListener("click", buttonHandler);
     }
 };
 
@@ -98,10 +120,12 @@ const hoverPeriods = () => {
 };
 
 const init = () => {
-    modalExplore();
     modalViz();
+    modalExplore();
     hoverRings();
     hoverPeriods();
 };
 
 init();
+
+// alert("limpiar conentedor slide periods");
