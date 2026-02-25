@@ -594,7 +594,7 @@ async function attachModalEvents(slide) {
 
 // Función principal de periodos
 const periodos = async () => {
-    emotionsData = await loadJSONFromFile("./../json/periods.json");
+    emotionsData = await loadJSONFromFile("./json/periods.json");
 
     if (!emotionsData) {
         console.error("No se pudieron cargar los datos");

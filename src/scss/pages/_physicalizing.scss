@@ -2,6 +2,7 @@
 
 .page-physicalizing {
     background: var(--color-magic);
+    min-height: auto !important;
 
     .hero {
         .col-12 {
@@ -73,22 +74,26 @@
     }
 
     &--moments {
-        height: 200dvh;
+        // height: 200dvh;
+        // height: 150vh;
+        height: 2000px;
 
         &.is-step-1 {
             .expand__image--fondo img {
-                object-position: calc(-380px + 2000 * (100vw - 360px) / 640) 0px;
+                object-position: calc(-440px + 2000 * (100vw - 360px) / 640) 0px;
             }
         }
         &.is-step-2 {
             .expand__image--fondo img {
-                object-position: calc(-380px + 2000 * (100vw - 360px) / 640) 0px;
+                object-position: calc(
+                        -450px + 2000 * (100vw - 360px) / 640
+                    ) -70px;
                 transform: scale(1.5);
             }
         }
         &.is-step-3 {
             .expand__image--fondo img {
-                object-position: calc(0px + 400 * (100vw - 360px) / 640) 0px;
+                object-position: calc(-140px + 400 * (100vw - 360px) / 640) 0px;
                 transform: scale(1.2);
             }
         }

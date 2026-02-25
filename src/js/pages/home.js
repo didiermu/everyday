@@ -7,6 +7,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger.js";
 import GUI from "lil-gui";
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({
+    ignoreMobileResize: true,
+});
+
+ScrollTrigger.defaults({
+    invalidateOnRefresh: false,
+});
 
 // Variables globales para cleanup
 
@@ -27,6 +34,7 @@ const scrollGsap = () => {
                     pinSpacing: false,
                     end: "bottom top",
                     invalidateOnRefresh: true,
+                    ignoreMobileResize: true,
                     // markers: true,
                 });
             }
@@ -46,7 +54,7 @@ const scrollGsap = () => {
                 end: "bottom bottom",
                 toogleActions: "restart pause reverse pause",
 
-                onEnter: () => updatePanelClass(i),
+                // onEnter: () => updatePanelClass(i),
                 onEnterBack: () => updatePanelClass(i),
                 onLeave: () => {
                     if (i < panels.length - 2) {
@@ -67,6 +75,7 @@ const scrollGsap = () => {
                 trigger: ".page-periods",
                 start: "-=200 top",
                 end: "bottom bottom",
+
                 // markers: true,
                 onEnter: () => (headerHome.style.opacity = "0"),
                 onEnterBack: () => (headerHome.style.opacity = "0"),
@@ -84,41 +93,21 @@ const scrollGsap = () => {
         gsap.set(items, { autoAlpha: 0, y: 20 });
         gsap.set(items[0], { autoAlpha: 1, y: 0 });
 
-        const cameraSettings = [
-            { scale: 1.0, x: -110, y: 0 },
-            { scale: 2, x: 85, y: 20 },
-            { scale: 1.2, x: 0, y: -30 },
-            { scale: 1.2, x: 0, y: -30 },
-        ];
-
-        gsap.set(items, { autoAlpha: 0, y: 20 });
-        gsap.set(items[0], { autoAlpha: 1, y: 0 });
-        // Set inicial de la imagen
-        // gsap.set(image, {
-        //     scale: cameraSettings[0].scale,
-        //     objectPosition: `${cameraSettings[0].x}vw ${cameraSettings[0].y}%`,
-        // });
-
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: section,
-                start: "-=135px top",
-                end: "+=100%",
+                start: "top top",
+                end: "+=200%",
                 pin: true,
                 pinSpacing: false,
                 scrub: 1,
                 // markers: true,
                 onUpdate: (self) => {
-                    let step;
-
-                    if (self.progress < 0.33) {
-                        step = 1;
-                    } else if (self.progress < 0.66) {
-                        step = 2;
-                    } else {
-                        step = 3;
-                    }
-
+                    // Lógica de clases precisa según el progreso
+                    const step = Math.min(
+                        Math.ceil(self.progress * items.length) || 1,
+                        items.length,
+                    );
                     section.className = section.className.replace(
                         /\bis-step-\d+/g,
                         "",
@@ -134,14 +123,6 @@ const scrollGsap = () => {
             if (i < items.length - 1) {
                 const label = `step${i}`;
 
-                tl.add(() => {
-                    section.className = section.className.replace(
-                        /\bis-step-\d+/g,
-                        "",
-                    );
-                    section.classList.add(`is-step-${i + 1}`);
-                }, label);
-
                 tl.to(
                     item,
                     {
@@ -151,7 +132,6 @@ const scrollGsap = () => {
                     },
                     label,
                 )
-
                     .to(
                         items[i + 1],
                         {
@@ -161,8 +141,18 @@ const scrollGsap = () => {
                         },
                         label,
                     )
-
-                    .to({}, { duration: 2.5 });
+                    .to(
+                        image,
+                        {
+                            // scale: nextCam.scale,
+                            // Animamos el objectPosition dinámicamente
+                            // objectPosition: `${nextCam.x}% ${nextCam.y}px`,
+                            duration: 2,
+                            ease: "power2.inOut",
+                        },
+                        label,
+                    )
+                    .to({}, { duration: 2.5 }); // Pausa de lectura
             }
         });
     };
@@ -175,6 +165,7 @@ const scrollGsap = () => {
             end: mediaQuery.matches ? "55% bottom" : "90% bottom",
             // markers: true,
             scrub: true,
+
             onUpdate: (self) => {
                 const progress = self.progress;
                 const base = currentConfig.baseRotation;
@@ -243,8 +234,8 @@ const modalVideo = () => {
 
 const videoHome = () => {
     const video = document.querySelector(".video video");
-    const portraitSrc = "./video/Intro_video_portrait.mp4";
-    const landscapeSrc = "./video/Intro_video_landscape_no_audio.mp4";
+    const portraitSrc = "./video/Intro_video_portrait.webm";
+    const landscapeSrc = "./video/Intro_video_landscape_no_audio.webm";
 
     function updateVideoSource() {
         const isPortrait = window.matchMedia("(orientation: portrait)").matches;
@@ -762,14 +753,14 @@ function initDebugControls(camera, dirLight) {
 }
 
 const init = async () => {
-    smoothScroll();
     render();
     renderShadow();
-    modalVideo();
+    smoothScroll();
     scrollGsap();
+    modalVideo();
 
     videoHome();
-    ScrollTrigger.refresh();
+    // ScrollTrigger.refresh();
     mediaQuery.addEventListener("change", modalVideo);
 };
 
