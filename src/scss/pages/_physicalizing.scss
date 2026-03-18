@@ -401,9 +401,11 @@
 
         &--moments {
             // z-index: 9;
+            height: 400dvh;
 
             .expand__image {
                 &--fondo {
+                    height: calc(100vh - 135px);
                     img {
                         object-position: calc(
                                 -20px + 2000 * (100vw - 1280px) / 1440

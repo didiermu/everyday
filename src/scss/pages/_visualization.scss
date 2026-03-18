@@ -149,6 +149,10 @@
             display: none;
         }
 
+        &--period--head {
+            display: none;
+        }
+
         &--period,
         &--pop {
             display: none;
@@ -162,6 +166,11 @@
 
 @media (min-width: 1280px) {
     .page-visualization {
+        &:has(.main-periods.show),
+        &:has(.visualization.show) {
+            background: var(--color-banana);
+        }
+
         &:has(.hero.hide) {
             .head-home {
                 display: none;
@@ -197,6 +206,84 @@
         .visualization {
             display: block;
             padding-block: 0;
+            width: 100%;
+            height: 100%;
+            // position: absolute;
+            // top: 0;
+            // opacity: 0;
+
+            &.hover {
+                background: #fcfcfc;
+
+                .visualization--instructions,
+                .visualization--data,
+                .visualization--button {
+                    opacity: 0;
+                }
+
+                .visualization--title {
+                    background: #fcfcfc;
+
+                    & > .row {
+                        opacity: 0;
+                    }
+                }
+
+                .visualization--ring--head {
+                    opacity: 1;
+                }
+
+                svg {
+                    z-index: 2;
+                }
+            }
+
+            &.hoverYellow {
+                background: var(--color-banana);
+
+                .visualization--instructions,
+                .visualization--data,
+                .visualization--button {
+                    opacity: 0;
+                }
+
+                .visualization--title {
+                    & > .row {
+                        opacity: 0;
+                    }
+                }
+
+                .visualization--period--head {
+                    opacity: 1;
+                }
+            }
+
+            &--period--head {
+                opacity: 0;
+                position: absolute;
+                width: 100%;
+                top: 0;
+                transition: 0.3s ease-in-out all;
+            }
+
+            &--ring--head {
+                opacity: 0;
+                position: absolute;
+                width: 100%;
+                top: 0;
+                padding: var(--spacing-4xl);
+                // bottom: 0;
+                transition: 0.3s ease-in-out all;
+                display: flex;
+                column-gap: var(--spacing-sm);
+                justify-content: center;
+                align-items: center;
+                background: #fcfcfc;
+
+                span {
+                    @include typography.typography("md", tertiary);
+                }
+            }
 
             &--title {
                 background: var(--color-banana);
@@ -213,6 +300,7 @@
                     column-gap: var(--spacing-3xl);
                     max-width: 1280px;
                     margin: auto;
+                    transition: 0.3s ease-in-out all;
 
                     .col-12 {
                         width: auto;
@@ -235,6 +323,11 @@
                 }
             }
 
+            &--button {
+                transition: 0.3s ease-in-out;
+                display: none;
+            }
+
             &--fondo {
                 width: 50%;
                 position: relative;
@@ -245,11 +338,22 @@
 
                 svg {
                     display: block;
-                    transform: scale(1.5) translateY(-20px);
+                    // transform: scale(1.84);
+                    transform: scale(2.2);
+                    transition: 0.3s ease-in-out all;
+
+                    .hover-ring {
+                        // display: none;
+                        opacity: 0;
+                        transition: 0.3s ease-in-out all;
+
+                        &.show {
+                            opacity: 1;
+                        }
+                    }
 
                     circle {
                         fill: transparent;
-                        border: 1px solid red;
                         cursor: pointer;
                     }
                 }
@@ -267,6 +371,7 @@
                 max-width: 320px;
                 z-index: 1;
                 align-items: flex-start;
+                transition: 0.3s ease-in-out;
 
                 h4 {
                     @include typography.typography("md", tertiary);
@@ -316,19 +421,19 @@
             &--data {
                 width: 26%;
                 max-width: 320px;
-                // position: relative;
-                // top: 4.5rem;
                 z-index: 1;
+                transition: 0.3s ease-in-out;
 
                 h4,
-                a {
+                a,
+                #btn-explore {
                     display: none;
                 }
             }
 
             &--pop,
             &--period {
-                position: absolute;
+                position: fixed;
                 inset: 0;
                 margin: auto;
                 padding: 0;
@@ -350,7 +455,7 @@
                 }
 
                 &.show {
-                    // display: block;
+                    display: block;
                     z-index: 9;
                     opacity: 1;
                     pointer-events: auto;
@@ -364,12 +469,13 @@
             }
 
             &--pop {
-                opacity: 1;
-                z-index: 1;
-                display: block;
+                // opacity: 1;
+                // z-index: 1;
+                // display: block;
+                background: var(--color-not-so-white);
 
                 picture {
-                    width: 500px;
+                    width: 100%;
                     display: block;
                 }
             }
@@ -386,7 +492,7 @@
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    padding: var(--spacing-5xl);
+                    padding: var(--spacing-5xl) 64px;
 
                     h2 {
                         @include typography.typography("10xl", primary);
@@ -434,6 +540,52 @@
                     margin: auto;
                     display: block;
                     object-fit: contain;
+                }
+            }
+
+            &--resume {
+                position: absolute;
+                width: 290px;
+                height: max-content;
+                margin: auto;
+                opacity: 0;
+                transition: 0.3s ease-in-out opacity;
+
+                p {
+                    @include typography.typography("md", tertiary);
+                }
+
+                &.show {
+                    opacity: 1;
+                    z-index: 2;
+                }
+
+                &.resume-12,
+                &.resume-22,
+                &.resume-16,
+                &.resume-17 {
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                }
+
+                &.resume-24 {
+                    bottom: 0;
+                    right: 0;
+                }
+                &.resume-23,
+                &.resume-19,
+                &.resume-20,
+                &.resume-3,
+                &.resume-4,
+                &.resume-5,
+                &.resume-6,
+                &.resume-7,
+                &.resume-9,
+                &.resume-10 {
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
                 }
             }
         }

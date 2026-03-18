@@ -10,7 +10,9 @@ import {
 // Variables globales para almacenar los datos y recursos
 let emotionsData = null;
 let swiperInstance = null;
+let swiperActive;
 let locomotiveInstance = null;
+const mediaQuery = window.matchMedia("(min-width:1280px)");
 
 // Función para cargar el JSON desde un archivo
 async function loadJSONFromFile(url) {
@@ -51,7 +53,16 @@ function getEmotionClass(emotion) {
 function createHeroTemplate(data, periodId) {
     return `
         <section class="head-period">
-            <div class="container">
+            <div class="container head-period--map">
+                <div class="row">
+                    <span class="head-day">Day <strong>${data.day}</strong></span>
+                    <span class="head-date">Date <strong>${data.date}</strong></span>
+                    <span class="head-emotion">Emotion/Mood <strong>${data.emotion}</strong></span>
+                    <span class="head-location">Location <strong>${data.location}</strong></span>
+                </div>
+            </div>
+            
+            <div class="container head-period--content">
                 <div class="row">
                     <div class="col-12">
                         <h1 class="title">${data.title}</h1>
@@ -59,11 +70,11 @@ function createHeroTemplate(data, periodId) {
                     <div class="col-12 head-period--info">
                         <h4>0${periodId}</h4>
                         <div class="head-period__data">
-                            <span><strong>${data.fecha}</strong></span>
+                            <span class="head-period__data--fecha"><strong>${data.fecha}</strong></span>
                         </div>
                         <div class="head-period__data">
-                            <span>Range <strong>${data.rango}</strong></span>
-                            <span>Duration<strong>${data.duracion}</strong></span>
+                            <span class="head-period__data--rango">Range <strong>${data.rango}</strong></span>
+                            <span class="head-period__data--duracion">Duration<strong>${data.duracion}</strong></span>
                         </div>
                     </div>
                 </div>
@@ -82,32 +93,11 @@ function normalizeHighlights(highlights) {
     return list;
 }
 
-// function renderHighlight(modal, item) {
-//     modal.querySelector('[data-field="day"]').textContent = item.day;
-//     modal.querySelector('[data-field="emotion"]').textContent = item.emotion;
-//     modal.querySelector('[data-field="location"]').textContent = item.location;
-//     modal.querySelector('[data-field="date"]').textContent = item.date;
-//     modal.querySelector('[data-field="title"]').innerHTML = item.title;
-//     modal.querySelector('[data-field="resume"]').textContent = item.resume;
-//     modal.querySelector('[data-field="image"]').src = `./../img/${item.image}`;
-//
-//     const milestoneBtn = modal.querySelector("figure");
-//     if (item.botones === "3") {
-//         milestoneBtn.dataset.botones = "3";
-//     } else if (item.botones === "2") {
-//         milestoneBtn.dataset.botones = "2";
-//     } else if (item.botones === "1") {
-//         milestoneBtn.dataset.botones = "1";
-//     }
-// }
-
 function renderRings(count, activeIndex) {
     return Array.from({ length: count })
         .map(
             (_, i) => `
-            <img src="./../img/ring.png" alt="" class='${
-                i === 0 ? "active" : ""
-            }' 
+            <img src="./img/ring.webp" alt="" class='${i === 0 ? "active" : ""}' 
             data-ring-index="${i}">
         `,
         )
@@ -143,7 +133,7 @@ function createModalHighTemplate(highlights) {
                                             milestone
                                         </button>
                                         <picture class="img-cover">
-                                            <img src="./../img/${item.image}" alt="">
+                                            <img src="./img/${item.image}" alt="">
                                         </picture>
                                         
                                     </figure>
@@ -202,18 +192,45 @@ function createPeriodsTemplate(data, currentPeriod) {
     `
         : "";
 
+    const mapHTML = data.map
+        .map(
+            (mapa, i) => `
+            <image href="/img/${mapa.image}" class="map-hover map-hover${i + 1}" width="980" height="1000" x="0" y="0"></image>
+        `,
+        )
+        .join("");
+
+    const dotHTML = data.map
+        .map(
+            (mapa, i) => `
+            <circle class="yellow-dot" data-map="map-${i + 1}" cx="${mapa.x}" cy="${mapa.y}" r="5"></circle>
+        `,
+        )
+        .join("");
+
     return `
         <section class="periods" id="period-${currentPeriod}">
             <div class="container">
                 <div class="row">
+                    <p class="periods--parrafo"></p>
                     <div class="col-12 periods-image">
                         ${data.hover ? '<span class="periods-hover"></span>' : ""}
-                        <picture class="img-cover">
-                            <img src="./../img/${data.imagen}" alt="${data.title}">
-                        </picture>
+                        <svg viewBox="0 0 980 1000" xmlns="http://www.w3.org/2000/svg">
+                            <image href="/img/${
+                                data.imagenDesk
+                                    ? mediaQuery.matches
+                                        ? data.imagenDesk
+                                        : data.imagen
+                                    : data.imagen
+                            }" width="980" height="1000" x="0" y="0"></image>
+                            ${mapHTML}
+                            ${dotHTML}
+                        </svg>
+                        
                     </div>
                    
                     <div class="col-12 periods--data">
+                        <h4>Emotion Stats</h4>
                         <div class="visualization--data--table">
                             ${emotionsHTML}
                             ${totalHTML}
@@ -232,7 +249,7 @@ function createPeriodsTemplate(data, currentPeriod) {
             </div>
         </section>
         ${
-            data.fullStory
+            data.story
                 ? `
                     <dialog id="modal-resume">
                         <div class="modal--content">
@@ -293,9 +310,7 @@ function createModalDataTemplate(data, periodName) {
     function generateCryIcons(count) {
         if (!count || count === 0 || count === "") return "";
         const numCries = parseInt(count);
-        return Array(numCries)
-            .fill("<i></i>")
-            .join("\n                                    ");
+        return Array(numCries).fill("<i></i>").join("\n");
     }
 
     function formatShortDate(dateString) {
@@ -341,7 +356,7 @@ function createModalDataTemplate(data, periodName) {
                             <div class="col-12">
                                 <h1 class="title">${periodName}</h1>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 hero--meta">
                                 <div class="hero__data">
                                     <span><strong>${formatDateRange(firstDate, lastDate)}</strong></span>
                                 </div>
@@ -381,6 +396,7 @@ function createSlideContent(data, periodId) {
         ${periodsHTML}
         ${modalHighHTML}
         ${modalDataHTML}
+        
     `;
 }
 
@@ -405,6 +421,9 @@ async function initSwiper() {
         slide.innerHTML = createSlideContent(data, periodId);
         swiperWrapper.appendChild(slide);
     });
+
+    layout();
+    mediaQuery.addEventListener("change", layout);
 
     // const dialogs = document.querySelectorAll(".modal-high");
     // dialogs.forEach((dialog) => {
@@ -435,14 +454,24 @@ async function initSwiper() {
                 );
             },
         },
-        on: {
-            slideChange: function () {
-                const activeSlide = this.slides[this.activeIndex];
-                attachModalEvents(activeSlide);
+        breakpoints: {
+            1280: {
+                allowTouchMove: false,
+                autoHeight: false,
             },
+        },
+        on: {
             init: function () {
                 const activeSlide = this.slides[this.activeIndex];
                 attachModalEvents(activeSlide);
+
+                swiperActive = this.activeIndex + 1;
+            },
+            slideChange: function () {
+                const activeSlide = this.slides[this.activeIndex];
+                attachModalEvents(activeSlide);
+
+                swiperActive = this.activeIndex + 1;
             },
         },
     });
@@ -455,6 +484,7 @@ async function attachModalEvents(slide) {
     const modalData = slide.querySelector("#modal-data");
     const modalHigh = slide.querySelector(".modal-high");
     const modalResume = slide.querySelector("#modal-resume");
+    const modalStory = document.querySelector("#modal-story");
     const scroll = getScrollInstance();
 
     // Modal Data
@@ -554,13 +584,33 @@ async function attachModalEvents(slide) {
 
     // Modal Resume (Read full story)
     const readButton = slide.querySelector(".button.read");
-    if (modalResume && readButton) {
-        const closeBtn = modalResume.querySelector(".button");
+    const closeBtnStory = modalStory.querySelector(".close");
 
+    if (modalStory && readButton) {
         readButton.onclick = () => {
-            modalResume.showModal();
+            updateStory(swiperActive);
+            modalStory.showModal();
             destroyScroll();
         };
+
+        if (closeBtnStory)
+            closeBtnStory.onclick = () => {
+                modalStory.close();
+                if (scroll) {
+                    smoothScroll();
+                }
+            };
+    }
+
+    if (modalResume) {
+        const closeBtn = modalResume.querySelector(".button");
+
+        // no borra aun
+        // readButton.onclick = () => {
+        //     // modalResume.showModal();
+        //     modalStory.showModal();
+        //     destroyScroll();
+        // };
 
         if (closeBtn)
             closeBtn.onclick = () => {
@@ -590,6 +640,10 @@ async function attachModalEvents(slide) {
             }
         };
     }
+
+    if (mediaQuery.matches) {
+        hoverMap();
+    }
 }
 
 // Función principal de periodos
@@ -602,8 +656,130 @@ const periodos = async () => {
     }
 };
 
+const layout = () => {
+    const periods = document.querySelectorAll(".swiper-periods .periods");
+
+    periods.forEach((period) => {
+        const botonera = period.querySelector(".periods--botonera");
+        const data = period.querySelector(".periods--data");
+        const resume = period.querySelector(".periods--summary");
+        const btnRead = period.querySelector(".button.read");
+
+        if (mediaQuery.matches) {
+            data.insertAdjacentElement("beforeend", botonera);
+
+            if (btnRead) resume.insertAdjacentElement("beforeend", btnRead);
+        } else {
+            period
+                .querySelector(".row")
+                .insertAdjacentElement("beforeend", botonera);
+
+            if (btnRead) botonera.insertAdjacentElement("beforeend", btnRead);
+        }
+    });
+
+    ///
+};
+
+const hoverMap = () => {
+    const rings = document.querySelectorAll(".periods .yellow-dot");
+    const visualizationSection = document.querySelector(".visualization");
+    const dataImage = document.querySelector(".periods-image image");
+    const dataTitle = document.querySelectorAll(".head-period--content");
+    const dataHead = document.querySelectorAll(".head-period--map");
+    const dataResume = document.querySelectorAll(".periods--summary");
+    const paginador = document.querySelectorAll(".swiper-pagination");
+    const dataMap = document.querySelectorAll(".periods--data");
+    const resumeMap = document.querySelectorAll(".periods--parrafo");
+
+    const updateRingHead = (periodNumber) => {
+        const data =
+            emotionsData[swiperActive].highlights[periodNumber - 1][
+                periodNumber
+            ];
+
+        dataHead.forEach((element) => {
+            element.querySelector(".head-day").innerHTML =
+                `Day <strong>${data.day}</strong>`;
+            element.querySelector(".head-date").innerHTML =
+                `Date <strong>${data.date}</strong>`;
+            element.querySelector(".head-emotion").innerHTML =
+                `Emotion/Mood <strong>${data.emotion}</strong>`;
+            element.querySelector(".head-location").innerHTML =
+                `Location <strong>${data.location}</strong>`;
+        });
+    };
+
+    const updateResume = (periodNumber) => {
+        const data =
+            emotionsData[swiperActive].highlights[periodNumber - 1][
+                periodNumber
+            ];
+        const dataMap = emotionsData[swiperActive].map[periodNumber - 1];
+
+        resumeMap.forEach((element) => {
+            element.innerHTML = `${dataMap.resume ? dataMap.resume : ""}`;
+            element.classList.add(`show`, `parrafo-${periodNumber}`);
+        });
+    };
+
+    rings.forEach((element) => {
+        let idRing = element.dataset.map.replace("map-", "");
+        // let idHover = document.querySelector(`#ring${idRing}`);
+
+        element.addEventListener("mouseenter", () => {
+            // visualizationSection.classList.add("hover");
+            // idHover.classList.add("show");
+            document.querySelectorAll(`.map-hover${idRing}`).forEach((map) => {
+                map.classList.add("show");
+            });
+            dataTitle.forEach((map) => map.classList.add("hide"));
+            dataHead.forEach((map) => map.classList.add("show"));
+            dataResume.forEach((map) => map.classList.add("hide"));
+            dataMap.forEach((map) => map.classList.add("hide"));
+            paginador.forEach((map) => map.classList.add("hide"));
+
+            updateRingHead(parseInt(idRing));
+            updateResume(parseInt(idRing));
+        });
+
+        element.addEventListener("mouseleave", () => {
+            document.querySelectorAll(`.map-hover${idRing}`).forEach((map) => {
+                map.classList.remove("show");
+            });
+            document.querySelectorAll(`.periods--parrafo`).forEach((map) => {
+                map.className = "periods--parrafo";
+            });
+            dataTitle.forEach((map) => map.classList.remove("hide"));
+            dataHead.forEach((map) => map.classList.remove("show"));
+            dataResume.forEach((map) => map.classList.remove("hide"));
+            dataMap.forEach((map) => map.classList.remove("hide"));
+            paginador.forEach((map) => map.classList.remove("hide"));
+        });
+    });
+};
+
+const updateStory = (periodNumber) => {
+    const modalStory = document.querySelector("#modal-story");
+    const modalMeta = document.querySelector(".modal--story--meta");
+    const storyContent = document.querySelector(".modal--story--content");
+    const data = emotionsData[periodNumber];
+
+    modalStory.querySelector(".title").innerHTML = data.title;
+    modalMeta.innerHTML = `<div class="hero__data"><span><strong>${data.fecha}</strong></span></div>
+                            <div class="hero__data">
+                                <span>Range <strong>${data.rango}</strong></span>
+                                <span>Duration<strong>${data.duracion}</strong></span>
+                            </div>`;
+
+    storyContent.innerHTML = data.modalStory;
+
+    // storyContent;
+};
+
 export async function initPeriods() {
     await periodos();
+
     return initSwiper();
 
     // document.querySelectorAll(".swiper-slide").forEach((el) => {

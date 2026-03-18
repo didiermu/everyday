@@ -19,6 +19,8 @@ ScrollTrigger.defaults({
 
 const mediaQuery = window.matchMedia("(min-width:1280px)");
 
+//// HEADER
+
 const scrollGsap = () => {
     const paneles = () => {
         const panels = gsap.utils.toArray(".panel");
@@ -96,8 +98,8 @@ const scrollGsap = () => {
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: section,
-                start: "top top",
-                end: "+=200%",
+                start: mediaQuery.matches ? "-=130" : "top top",
+                end: "+=300%",
                 pin: true,
                 pinSpacing: false,
                 scrub: 1,
@@ -753,8 +755,8 @@ function initDebugControls(camera, dirLight) {
 }
 
 const init = async () => {
-    render();
-    renderShadow();
+    // render();
+    // renderShadow();
     smoothScroll();
     scrollGsap();
     modalVideo();
