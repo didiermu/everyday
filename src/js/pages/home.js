@@ -104,7 +104,7 @@ const scrollGsap = async () => {
             scrollTrigger: {
                 trigger: section,
                 start: mediaQuery.matches ? "-=130" : "top top",
-                end: "+=300%",
+                end: "+=200%",
                 pin: true,
                 pinSpacing: false,
                 scrub: 1,

@@ -195,7 +195,7 @@ function createPeriodsTemplate(data, currentPeriod) {
     const mapHTML = data.map
         .map(
             (mapa, i) => `
-            <image href="/img/${mapa.image}" class="map-hover map-hover${i + 1}" width="980" height="1000" x="0" y="0"></image>
+            <image href="./img/${mapa.image}" class="map-hover map-hover${i + 1}" width="980" height="1000" x="0" y="0"></image>
         `,
         )
         .join("");
@@ -216,7 +216,7 @@ function createPeriodsTemplate(data, currentPeriod) {
                     <div class="col-12 periods-image">
                         ${data.hover ? '<span class="periods-hover"></span>' : ""}
                         <svg viewBox="0 0 980 1000" xmlns="http://www.w3.org/2000/svg">
-                            <image href="/img/${
+                            <image href="./img/${
                                 data.imagenDesk
                                     ? mediaQuery.matches
                                         ? data.imagenDesk
