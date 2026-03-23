@@ -1,6 +1,11 @@
 import * as THREE from "three";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { smoothScroll } from "./../utils/loadLocomotive.js";
+// import { smoothScroll } from "./../utils/loadLocomotive.js";
+import {
+    getScrollInstance,
+    destroyScroll,
+    smoothScroll,
+} from "./../utils/loadLocomotive.js";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger.js";
 // import smoothScroll from "./../utils/loadLocomotive.js";
@@ -21,7 +26,7 @@ const mediaQuery = window.matchMedia("(min-width:1280px)");
 
 //// HEADER
 
-const scrollGsap = () => {
+const scrollGsap = async () => {
     const paneles = () => {
         const panels = gsap.utils.toArray(".panel");
         const panelContent = gsap.utils.toArray(".panel__content");
@@ -164,24 +169,76 @@ const scrollGsap = () => {
             trigger: ".page-home",
             scroller: window,
             start: mediaQuery.matches ? "-=2%" : "+=2%",
-            end: mediaQuery.matches ? "55% bottom" : "90% bottom",
+            end: mediaQuery.matches ? "80% bottom" : "90% bottom",
             // markers: true,
             scrub: true,
 
             onUpdate: (self) => {
                 const progress = self.progress;
                 const base = currentConfig.baseRotation;
+                const largoScroll = mediaQuery.matches ? 5.8 : 4;
 
                 targetRotationX = base.x + progress * (Math.PI * 3);
                 targetRotationY = base.y + progress * (Math.PI * 1);
                 // targetRotationZ = base.z + progress * (Math.PI * 3);
 
-                targetPosY = -progress * 4;
+                targetPosY = -progress * largoScroll;
                 targetPosX = progress * 0;
             },
         });
     };
 
+    const scrollViz = async () => {
+        const pageViz = document.querySelector(".page-visualization");
+        const visualizationHeroViz = document.querySelector(".hero-viz");
+        const visualizationSection = document.querySelector(".visualization");
+        const mainPeriods = document.querySelector(".main-periods");
+
+        if (mediaQuery.matches) {
+            visualizationSection.classList.add("panel");
+            pageViz.insertAdjacentElement("afterend", visualizationSection);
+
+            setTimeout(() => {
+                visualizationSection.insertAdjacentElement(
+                    "afterend",
+                    mainPeriods,
+                );
+            }, 1000);
+        } else {
+            visualizationSection.insertAdjacentElement(
+                "afterend",
+                visualizationHeroViz,
+            );
+            mainPeriods.insertAdjacentElement("afterend", visualizationHeroViz);
+        }
+
+        // ScrollTrigger.refresh();
+
+        ScrollTrigger.create({
+            trigger: ".visualization",
+            start: "-=150 top",
+            end: "120% bottom",
+            // markers: true,
+            onEnter: () => {
+                document.querySelector("#head-full").classList.add("viz-show");
+            },
+            onEnterBack: () => {
+                document.querySelector("#head-full").classList.add("viz-show");
+            },
+            onLeave: () => {
+                document
+                    .querySelector("#head-full")
+                    .classList.remove("viz-show");
+            },
+            onLeaveBack: () => {
+                document
+                    .querySelector("#head-full")
+                    .classList.remove("viz-show");
+            },
+        });
+    };
+
+    await scrollViz();
     paneles();
     pinCards();
     setupThreeAnimation();
@@ -303,7 +360,7 @@ const CONFIG = {
         camaraShadow: [0, 0, 16],
     },
     desktop: {
-        baseRotation: { x: -0.8, y: -2.1, z: -0.3 },
+        baseRotation: { x: -1.5, y: 4, z: -0.3 },
         scale: [-1, 1, 1],
         position: [0, -8, 0],
         camara: [0, 0, 19.65],
@@ -408,50 +465,6 @@ const render = async () => {
     });
 
     /* ==============================
-       SCROLL → TRANSFORM
-    ============================== */
-
-    // const maxRotationX = Math.PI * 3;
-    // const maxRotationY = Math.PI * 1;
-    // const maxRotationZ = Math.PI * 3;
-    // const maxMoveY = 4;
-    // const maxMoveX = 0;
-
-    //     window.addEventListener("scroll", () => {
-    //         if (!mainElement) return;
-    //
-    //         const rect = mainElement.getBoundingClientRect();
-    //         const containerHeight = mainElement.offsetHeight;
-    //         const viewportHeight = window.innerHeight;
-    //
-    //         const totalScroll = containerHeight - viewportHeight;
-    //         const startOffset = mediaQuery.matches ? 4600 : 4600;
-    //         // desktop empieza 300px antes
-    //
-    //         const scrolled = -rect.top + startOffset;
-    //
-    //         const scrollFactor = mediaQuery.matches ? 1.5 : 1;
-    //         const progress = THREE.MathUtils.clamp(
-    //             (scrolled / totalScroll) * scrollFactor,
-    //             0,
-    //             1,
-    //         );
-    //
-    //         // const progress = scrollY / (containerHeight * scrollFactor);
-    //
-    //         // console.log(progress);
-    //
-    //         const base = currentConfig.baseRotation;
-    //
-    //         targetRotationX = base.x + progress * maxRotationX;
-    //         targetRotationY = base.y + progress * maxRotationY;
-    //         targetRotationZ = base.z + progress * maxRotationZ;
-    //
-    //         targetPosY = -progress * maxMoveY;
-    //         targetPosX = progress * maxMoveX;
-    //     });
-
-    /* ==============================
        ANIMACIÓN
     ============================== */
 
@@ -472,13 +485,6 @@ const render = async () => {
 
         model.position.y += (targetPosY - model.position.y) * positionSpeed;
         model.position.x += (targetPosX - model.position.x) * positionSpeed;
-
-        //         model.rotation.x += (targetRotationX - model.rotation.x) * 0.2;
-        //         model.rotation.y += (targetRotationY - model.rotation.y) * 0.2;
-        //         model.rotation.z += (targetRotationZ - model.rotation.z) * 0.2;
-        //
-        //         model.position.y += (targetPosY - model.position.y) * 0.1;
-        //         model.position.x += (targetPosX - model.position.x) * 0.1;
 
         renderer.render(scene, camera);
     }
@@ -594,38 +600,6 @@ const renderShadow = async () => {
     });
 
     // ----------------------
-    // SCROLL → TRANSFORM
-    // ----------------------
-
-    //     const maxRotationX = Math.PI * 3;
-    //     const maxRotationY = Math.PI * 1;
-    //     const maxRotationZ = Math.PI * 3;
-    //     const maxMoveY = 4;
-    //     const maxMoveX = 0;
-    //
-    //     window.addEventListener("scroll", () => {
-    //         if (!mainElement) return;
-    //
-    //         const rect = mainElement.getBoundingClientRect();
-    //         const containerHeight = mainElement.offsetHeight;
-    //         const viewportHeight = window.innerHeight;
-    //
-    //         const totalScroll = containerHeight - viewportHeight;
-    //         const scrolled = -rect.top;
-    //
-    //         const progress = THREE.MathUtils.clamp(scrolled / totalScroll, 0, 1);
-    //
-    //         const base = currentConfig.baseRotation;
-    //
-    //         targetRotationX = base.x + progress * maxRotationX;
-    //         targetRotationY = base.y + progress * maxRotationY;
-    //         targetRotationZ = base.z + progress * maxRotationZ;
-    //
-    //         targetPosY = -progress * maxMoveY;
-    //         targetPosX = progress * maxMoveX;
-    //     });
-
-    // ----------------------
     // ANIMACIÓN
     // ----------------------
     function animate() {
@@ -692,10 +666,10 @@ function initDebugControls(camera, dirLight) {
         lightIntensity: dirLight.intensity,
         ambientIntensity: 2,
 
-        cameraZ: camera.position.z,
-
-        smoothRot: 0.2,
-        smoothPos: 0.1,
+        //         cameraZ: camera.position.z,
+        //
+        //         smoothRot: 0.2,
+        //         smoothPos: 0.1,
     };
 
     // ROTACIÓN
@@ -741,22 +715,22 @@ function initDebugControls(camera, dirLight) {
     });
 
     // CÁMARA
-    const folderCamera = gui.addFolder("Camera");
-    folderCamera.add(controls, "cameraZ", 1, 50, 0.1).onChange((v) => {
-        camera.position.z = v;
-    });
-
-    // SMOOTH
-    const folderSmooth = gui.addFolder("Smoothing");
-    folderSmooth.add(controls, "smoothRot", 0.01, 1, 0.01);
-    folderSmooth.add(controls, "smoothPos", 0.01, 1, 0.01);
+    //     const folderCamera = gui.addFolder("Camera");
+    //     folderCamera.add(controls, "cameraZ", 1, 50, 0.1).onChange((v) => {
+    //         camera.position.z = v;
+    //     });
+    //
+    //     // SMOOTH
+    //     const folderSmooth = gui.addFolder("Smoothing");
+    //     folderSmooth.add(controls, "smoothRot", 0.01, 1, 0.01);
+    //     folderSmooth.add(controls, "smoothPos", 0.01, 1, 0.01);
 
     return controls;
 }
 
 const init = async () => {
-    // render();
-    // renderShadow();
+    render();
+    renderShadow();
     smoothScroll();
     scrollGsap();
     modalVideo();

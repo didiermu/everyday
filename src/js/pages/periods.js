@@ -434,7 +434,7 @@ async function initSwiper() {
     swiperInstance = new Swiper(".swiper-periods", {
         modules: [Pagination, EffectFade],
         effect: "fade",
-        autoHeight: true,
+        // autoHeight: true,
         fadeEffect: {
             crossFade: true,
         },

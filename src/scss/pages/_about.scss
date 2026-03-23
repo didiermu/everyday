@@ -47,10 +47,6 @@
         h2 {
             @include typography.typography("8xl", primaryDemiBold);
             text-transform: uppercase;
-
-            br {
-                display: none;
-            }
         }
 
         h3 {
@@ -100,10 +96,6 @@
 
             h2 {
                 @include typography.typography("9xl", primaryBold);
-
-                br {
-                    display: block;
-                }
             }
 
             .button-primary {

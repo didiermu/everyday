@@ -429,7 +429,7 @@
             }
 
             .swiper-pagination-bullet {
-                background: url(./img/ring.png) no-repeat center / contain;
+                background: url(./img/ring.webp) no-repeat center / contain;
                 width: 14px;
                 height: 14px;
                 border: 0;
@@ -773,6 +773,9 @@
                 transition: 0.3s ease-in-out all;
                 z-index: 1;
 
+                width: 290px;
+                height: max-content;
+
                 &.hide {
                     opacity: 0;
                 }
@@ -797,7 +800,7 @@
                 padding-block-start: var(--spacing-lg);
 
                 svg {
-                    transform: scale(2);
+                    transform: scale(2.2);
 
                     image {
                         transform: scale(1);
@@ -826,7 +829,8 @@
                 grid-column: 3 / 4;
                 // height: max-content;
                 margin-block-start: 0;
-                flex: 0 0 24%;
+                flex: 0 0 26%;
+                max-width: 320px;
                 align-self: center;
                 z-index: 1;
                 transition: 0.3s ease-in-out all;
@@ -1117,6 +1121,18 @@
 
                 span:nth-child(3) {
                     @include typography.typography("lg", tertiary);
+                }
+            }
+        }
+
+        #modal-resume {
+            .modal--content {
+                max-width: 400px;
+                border-radius: var(--spacing-lg);
+                padding: var(--spacing-lg);
+
+                .container {
+                    padding: 0;
                 }
             }
         }

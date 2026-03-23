@@ -195,20 +195,6 @@ canvas {
                     60 60,
                 auto;
 
-            &::after {
-                content: "";
-                width: 90%;
-                height: 80px;
-                background: var(--color-magic);
-                border-radius: var(--border-radius-lg) var(--border-radius-lg) 0
-                    0;
-                position: absolute;
-                margin: auto;
-                bottom: 0;
-                left: 0;
-                right: 0;
-            }
-
             button {
                 display: none;
             }

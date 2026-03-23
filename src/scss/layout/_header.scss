@@ -144,6 +144,21 @@
 }
 
 @media (min-width: 1280px) {
+    #head-full.viz-show {
+        .head-home {
+            opacity: 0;
+        }
+
+        #header {
+            button {
+                background: var(--color-banana);
+                color: var(--color-not-so-black);
+                border-color: var(--color-not-so-black);
+                filter: drop-shadow(3px 6px var(--color-not-so-black));
+            }
+        }
+    }
+
     .head-home {
         display: flex;
         padding-block: var(--spacing-6xl);

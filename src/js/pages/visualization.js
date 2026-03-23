@@ -1,10 +1,17 @@
 import { loadComponent } from "./../utils/loadComponent.js";
 import { ScrollTrigger } from "gsap/ScrollTrigger.js";
 import { initPeriods } from "./periods.js";
+import {
+    getScrollInstance,
+    destroyScroll,
+    smoothScroll,
+} from "./../utils/loadLocomotive.js";
 
 let buttonHandler = null;
 let linkHandler = null;
 let linkBack;
+const mediaQuery = window.matchMedia("(min-width:1280px)");
+let swiperInstance = null;
 
 const modalViz = () => {
     const hero = document.querySelector(".hero-viz");
@@ -18,7 +25,6 @@ const modalViz = () => {
 
             ScrollTrigger.refresh();
             document.querySelector("body").className = "panel-3";
-            // console.log("viz");
         };
 
         button.addEventListener("click", buttonHandler);
@@ -27,7 +33,6 @@ const modalViz = () => {
 
 const headerLayout = () => {
     const btnHome = document.querySelector(".link-back");
-    const mediaQuery = window.matchMedia("(min-width:1280px)");
 
     mediaQuery.matches
         ? (btnHome.innerHTML = "Back to Visualization")
@@ -42,7 +47,7 @@ const modalExplore = () => {
     const button = document.querySelector("#btn-explore");
     const linkExplore = document.querySelector(".visualization--button");
 
-    let swiperInstance = null; // 👈 guardamos referencia
+    // let swiperInstance = null; // 👈 guardamos referencia
 
     if (modal && button) {
         const buttonHandler = async () => {
@@ -56,6 +61,7 @@ const modalExplore = () => {
             linkBack.addEventListener("click", linkHandler);
 
             swiperInstance = await initPeriods();
+            // swiperInstance = callPeriodos;
 
             setTimeout(() => {
                 ScrollTrigger.refresh();
@@ -173,11 +179,17 @@ const openExplore = async (idRing) => {
     const heroViz = document.querySelector(".hero-viz");
     const modal = document.querySelector(".main-periods");
     const periodHead = document.querySelector(".visualization--period--head");
-    let swiperInstance = null; // 👈 guardamos referencia
+    swiperInstance = await initPeriods();
 
-    hero.classList.remove("show");
-    hero.classList.add("hide");
-    modal.classList.add("show");
+    if (mediaQuery.matches) {
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+        destroyScroll();
+    } else {
+        hero.classList.remove("show");
+        hero.classList.add("hide");
+        modal.classList.add("show");
+    }
 
     loadComponent("#header", "componets/header-interior.html");
 
@@ -185,9 +197,12 @@ const openExplore = async (idRing) => {
     window.addEventListener("change", headerLayout);
 
     // 👇 inicializamos y guardamos instancia
-    swiperInstance = await initPeriods();
+    // swiperInstance = await initPeriods();
 
-    swiperInstance.slideTo(parseInt(idRing) - 1, 1);
+    // swiperInstance.slideTo(parseInt(idRing) - 1, 1);
+    swiperInstance.slideTo(parseInt(idRing) - 1);
+    // console.log(swiperInstance);
+    // console.log(idRing);
 
     setTimeout(() => {
         // ScrollTrigger.refresh();
@@ -199,12 +214,15 @@ const openExplore = async (idRing) => {
         modal.classList.remove("show");
 
         // ✅ destruir swiper correctamente
-        if (swiperInstance) {
-            swiperInstance.destroy(true, true);
-            swiperInstance = null;
-        }
+        // if (swiperInstance) {
+        //     swiperInstance.destroy(true, true);
+        //     swiperInstance = null;
+        // }
 
         loadComponent("#header", "componets/header.html");
+
+        document.body.style.overflow = "auto";
+        smoothScroll();
 
         // ScrollTrigger.refresh();
     };
@@ -225,7 +243,7 @@ const hoverRings = () => {
             setTimeout(() => {
                 visualizationPop
                     .querySelector("img")
-                    .setAttribute("src", `./img/ring-${idRing}.png`);
+                    .setAttribute("src", `./img/ring-${idRing}.webp`);
                 visualizationPop.classList.add("show");
             }, 100);
         });
@@ -509,6 +527,7 @@ const init = () => {
     modalViz();
     modalExplore();
     hoverRings2();
+
     // hoverPeriods();
 };
 
