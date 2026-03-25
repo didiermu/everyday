@@ -199,5 +199,10 @@ canvas {
                 display: none;
             }
         }
+
+        dialog .modal--content video {
+            transform: rotate(0deg);
+            width: 100%;
+        }
     }
 }

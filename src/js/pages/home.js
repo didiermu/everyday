@@ -61,7 +61,7 @@ const scrollGsap = async () => {
                 end: "bottom bottom",
                 toogleActions: "restart pause reverse pause",
 
-                // onEnter: () => updatePanelClass(i),
+                onEnter: () => updatePanelClass(i),
                 onEnterBack: () => updatePanelClass(i),
                 onLeave: () => {
                     if (i < panels.length - 2) {
@@ -82,7 +82,6 @@ const scrollGsap = async () => {
                 trigger: ".page-periods",
                 start: "-=200 top",
                 end: "bottom bottom",
-
                 // markers: true,
                 onEnter: () => (headerHome.style.opacity = "0"),
                 onEnterBack: () => (headerHome.style.opacity = "0"),
@@ -104,7 +103,7 @@ const scrollGsap = async () => {
             scrollTrigger: {
                 trigger: section,
                 start: mediaQuery.matches ? "-=130" : "top top",
-                end: "+=200%",
+                end: "+=250%",
                 pin: true,
                 pinSpacing: false,
                 scrub: 1,
@@ -423,7 +422,7 @@ const render = async () => {
     scene.add(new THREE.AmbientLight(0xffffff, 2));
 
     const dirLight = new THREE.DirectionalLight(0xffffff, 4);
-    dirLight.position.set(10, -9, 3);
+    dirLight.position.set(10, 9, 3);
     scene.add(dirLight);
 
     /* ==============================
@@ -498,17 +497,17 @@ const render = async () => {
     resizeHandler = () => {
         if (!mainElement) return;
 
-        const rect = mainElement.getBoundingClientRect();
-
-        camera.aspect = rect.width / rect.height;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(rect.width, rect.height);
+        // const rect = mainElement.getBoundingClientRect();
+        //
+        // camera.aspect = rect.width / rect.height;
+        // camera.updateProjectionMatrix();
+        //
+        // renderer.setSize(rect.width, rect.height);
 
         updateDeviceConfig();
     };
 
-    window.addEventListener("resize", resizeHandler);
+    window.addEventListener("change", resizeHandler);
     // mediaQuery.addEventListener("change", updateDeviceConfig);
 
     return {
@@ -628,18 +627,18 @@ const renderShadow = async () => {
     resizeHandlerShadow = () => {
         if (!mainElement) return;
 
-        const rect = mainElement.getBoundingClientRect();
-
-        camera.aspect = rect.width / rect.height;
-        camera.updateProjectionMatrix();
-
-        rendererShadow.setSize(rect.width, rect.height);
+        //         const rect = mainElement.getBoundingClientRect();
+        //
+        //         camera.aspect = rect.width / rect.height;
+        //         camera.updateProjectionMatrix();
+        //
+        //         rendererShadow.setSize(rect.width, rect.height);
 
         updateDeviceConfig();
     };
 
-    window.addEventListener("resize", resizeHandlerShadow);
-    mediaQuery.addEventListener("change", updateDeviceConfig);
+    window.addEventListener("change", resizeHandlerShadow);
+    // mediaQuery.addEventListener("change", updateDeviceConfig);
 
     return {
         camera,

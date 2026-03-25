@@ -76,7 +76,7 @@
     &--moments {
         // height: 200dvh;
         // height: 150vh;
-        height: 3000px;
+        height: 2700px;
 
         &.is-step-1 {
             .expand__image--fondo img {
@@ -406,7 +406,7 @@
 
         &--moments {
             // z-index: 9;
-            height: 400dvh;
+            height: 300vh;
 
             .expand__image {
                 &--fondo {
@@ -497,20 +497,6 @@
             position: relative;
             padding-block-end: 12.5rem;
 
-            &::after {
-                content: "";
-                width: 90%;
-                height: 80px;
-                background: var(--color-banana);
-                border-radius: var(--border-radius-lg) var(--border-radius-lg) 0
-                    0;
-                position: absolute;
-                margin: auto;
-                bottom: 0;
-                left: 0;
-                right: 0;
-            }
-
             .row {
                 display: grid;
                 place-items: flex-end;
@@ -548,6 +534,13 @@
 
 @media (min-width: 1920px) {
     .page-physicalizing--moments {
+        height: 320vh;
+
+        .expand__image--fondo img {
+            object-position: calc(145px - 250 * (100vw - 1920px) / 2560) 60px;
+            transform: scale(2.7);
+        }
+
         &.is-step-1 .expand__image--fondo img {
             object-position: calc(145px - 250 * (100vw - 1920px) / 2560) 60px;
             transform: scale(2.7);
