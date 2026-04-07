@@ -372,60 +372,27 @@ let currentConfig = mediaQuery.matches ? CONFIG.desktop : CONFIG.mobile;
 /* ==============================
    ACTUALIZAR SEGÚN DISPOSITIVO
 ============================== */
-async function updateDeviceConfig() {
-    // 1. Detectar dispositivo actual
+function updateDeviceConfig() {
     currentConfig = mediaQuery.matches ? CONFIG.desktop : CONFIG.mobile;
+
     sizeRender = currentConfig.scale;
 
-    if (model && modelShadow) {
+    if (model) {
         model.scale.set(...sizeRender);
-        modelShadow.scale.set(...sizeRender);
-        camera.lookAt(...currentConfig.position);
-        // console.log(currentConfig.camara);
     }
 
-    const mainElement = document.querySelector(".page-home");
-    if (!mainElement) return;
-    const rect = mainElement.getBoundingClientRect();
-    //
-    //     /* --- AJUSTE DE RENDERER Y CÁMARA PRINCIPAL --- */
-    if (renderer && camera) {
-        // renderer.setSize(rect.width, rect.height);
-        // camera.aspect = rect.width / rect.height;
-        // camera.updateProjectionMatrix();
+    if (modelShadow) {
+        modelShadow.scale.set(...sizeRender);
+    }
 
-        // Aplicar posición de cámara desde CONFIG
+    if (camera) {
         camera.position.set(...currentConfig.camara);
         camera.lookAt(...currentConfig.position);
     }
 
-    /* --- AJUSTE DE RENDERER Y CÁMARA DE SOMBRAS (Si existen) --- */
-    if (rendererShadow && cameraShadow) {
-        // rendererShadow.setSize(rect.width, rect.height);
-        // cameraShadow.aspect = rect.width / rect.height;
-        // cameraShadow.updateProjectionMatrix();
+    if (cameraShadow) {
         cameraShadow.position.set(...currentConfig.camaraShadow);
-    }
-
-    /* --- AJUSTE DEL MODELO Y TARGETS DE ANIMACIÓN --- */
-    if (model) {
-        // Actualizar escala
-        model.scale.set(...currentConfig.scale);
-
-        // RE-SINCRONIZAR TARGETS: Esto hace que el modelo "salte" o se mueva
-        // a la posición inicial del nuevo dispositivo
-        const base = currentConfig.baseRotation;
-        targetRotationX = base.x;
-        targetRotationY = base.y;
-        targetRotationZ = base.z;
-
-        // Si tienes posiciones base específicas en CONFIG, actualízalas aquí
-        targetPosX = 0;
-        targetPosY = 0;
-
-        model.rotation.set(base.x, base.y, base.z);
-        model.position.set(0, 0, 0);
-        model.scale.set(...currentConfig.scale);
+        cameraShadow.lookAt(...currentConfig.position);
     }
 }
 
@@ -452,7 +419,7 @@ const render = async () => {
 
     renderer.setSize(rect.width, rect.height);
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 3));
 
     if (mainElement) {
         mainElement.insertAdjacentElement("afterbegin", renderer.domElement);
@@ -537,41 +504,22 @@ const render = async () => {
        RESIZE
     ============================== */
 
-    //     resizeHandler = () => {
-    //         if (!mainElement || !camera || !renderer) return;
-    //
-    //         // console.log("resize funcionando");
-    //
-    //         const rect = mainElement.getBoundingClientRect();
-    //
-    //         camera.aspect = rect.width / rect.height;
-    //         camera.updateProjectionMatrix();
-    //
-    //         renderer.setSize(rect.width, rect.height);
-    //
-    //         updateDeviceConfig();
-    //     };
-    //
-    //     window.addEventListener("resize", resizeHandler);
-    //     mediaQuery.addEventListener("change", updateDeviceConfig);
+    resizeHandler = () => {
+        if (!mainElement || !camera || !renderer) return;
 
-    /* ==============================
-   OBSERVADOR DE CAMBIO DE TAMAÑO
-============================== */
+        // console.log("resize funcionando");
 
-    // Coloca esto al final de tu función render()
-    const resizeObserver = new ResizeObserver(() => {
-        // Usamos requestAnimationFrame para asegurar que el navegador
-        // ya terminó de pintar el layout antes de medirlo
-        requestAnimationFrame(() => {
-            updateDeviceConfig();
-        });
-    });
+        const rect = mainElement.getBoundingClientRect();
 
-    if (mainElement) resizeObserver.observe(mainElement);
+        camera.aspect = rect.width / rect.height;
+        camera.updateProjectionMatrix();
 
-    // También escuchar específicamente el cambio de breakpoint de Media Query
-    // window.addEventListener("resize", resizeObserver);
+        renderer.setSize(rect.width, rect.height);
+
+        updateDeviceConfig();
+    };
+
+    window.addEventListener("resize", resizeHandler);
     mediaQuery.addEventListener("change", updateDeviceConfig);
 
     return {
@@ -605,7 +553,7 @@ const renderShadow = async () => {
 
     rendererShadow.setSize(rect.width, rect.height);
 
-    rendererShadow.setPixelRatio(Math.min(window.devicePixelRatio, 0.1));
+    rendererShadow.setPixelRatio(Math.min(window.devicePixelRatio, 1));
 
     if (mainElement) {
         mainElement.insertAdjacentElement(
@@ -688,38 +636,23 @@ const renderShadow = async () => {
     // ----------------------
     // RESIZE
     // ----------------------
-    //     resizeHandlerShadow = () => {
-    //         if (!mainElement || !cameraShadow || !rendererShadow) return;
-    //
-    //         // console.log("resize funcionando shad");
-    //
-    //         const rect = mainElement.getBoundingClientRect();
-    //
-    //         cameraShadow.aspect = rect.width / rect.height;
-    //         cameraShadow.updateProjectionMatrix();
-    //
-    //         rendererShadow.setSize(rect.width, rect.height);
-    //
-    //         updateDeviceConfig();
-    //     };
-    //
-    //     window.addEventListener("resize", resizeHandlerShadow);
-    //     mediaQuery.addEventListener("change", updateDeviceConfig);
+    resizeHandlerShadow = () => {
+        if (!mainElement || !cameraShadow || !rendererShadow) return;
 
-    /* Coloca esto al final de tu función render() */
+        // console.log("resize funcionando shad");
 
-    //     resizeHandler = () => {
-    //         updateDeviceConfig();
-    //     };
-    //
-    //     // Escucha el cambio de tamaño manual de la ventana
-    //     window.addEventListener("resize", resizeHandler);
-    //
-    //     // Escucha el cambio de breakpoint (de mobile a desktop y viceversa)
-    //     mediaQuery.addEventListener("change", updateDeviceConfig);
-    //
-    //     // Ejecutar una vez al inicio para setear el tamaño actual
-    //     updateDeviceConfig();
+        const rect = mainElement.getBoundingClientRect();
+
+        cameraShadow.aspect = rect.width / rect.height;
+        cameraShadow.updateProjectionMatrix();
+
+        rendererShadow.setSize(rect.width, rect.height);
+
+        updateDeviceConfig();
+    };
+
+    window.addEventListener("resize", resizeHandlerShadow);
+    mediaQuery.addEventListener("change", updateDeviceConfig);
 
     return {
         cameraShadow,

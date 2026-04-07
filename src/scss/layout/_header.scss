@@ -232,6 +232,10 @@
             letter-spacing: 0;
         }
 
+        &:has(.navbar.secondary) {
+            width: 250px;
+        }
+
         .navbar {
             & > .container {
                 flex-direction: row;
@@ -241,6 +245,10 @@
             img {
                 width: 74px;
                 height: 74px;
+            }
+
+            &.secondary {
+                width: 300px;
             }
         }
     }

@@ -436,7 +436,8 @@
         &--mapa {
             padding-block: var(--spacing-5xl) 13.75rem;
             overflow: hidden;
-            // max-width: 1920px;
+            max-width: 1600px;
+            margin: auto;
 
             .row {
                 flex-direction: row;

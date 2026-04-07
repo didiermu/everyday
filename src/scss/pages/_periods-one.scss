@@ -719,6 +719,9 @@
         }
 
         .periods {
+            .container {
+                max-width: 1600px;
+            }
             .row {
                 justify-content: center;
                 position: relative;

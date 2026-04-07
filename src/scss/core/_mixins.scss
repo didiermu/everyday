@@ -150,6 +150,8 @@ $container-sizes: (
                 background: var(--icon-close) no-repeat center / 0.4em
                     var(--color-magic);
                 z-index: 9;
+
+                outline: none;
             }
 
             video {
