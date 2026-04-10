@@ -1035,6 +1035,7 @@
             bottom: 0;
             right: 64px;
             left: auto;
+            justify-content: flex-end;
 
             &.hide {
                 opacity: 0;

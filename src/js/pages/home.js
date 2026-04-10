@@ -60,7 +60,7 @@ const scrollGsap = async () => {
                 start: "-=200 top",
                 end: "bottom bottom",
                 toogleActions: "restart pause reverse pause",
-
+                // markers: true,
                 onEnter: () => updatePanelClass(i),
                 onEnterBack: () => updatePanelClass(i),
                 onLeave: () => {
@@ -102,14 +102,13 @@ const scrollGsap = async () => {
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: section,
-                start: mediaQuery.matches ? "-=130" : "top top",
+                start: mediaQuery.matches ? "-=150" : "top top",
                 end: "+=250%",
                 pin: true,
                 pinSpacing: false,
                 scrub: 1,
                 // markers: true,
                 onUpdate: (self) => {
-                    // Lógica de clases precisa según el progreso
                     const step = Math.min(
                         Math.ceil(self.progress * items.length) || 1,
                         items.length,

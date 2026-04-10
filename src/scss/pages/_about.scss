@@ -50,7 +50,7 @@
         }
 
         h3 {
-            @include typography.typography("xl", tertiary);
+            @include typography.typography("3xl", tertiary);
             font-weight: 400;
         }
 
@@ -64,8 +64,7 @@
             color: var(--color-magic);
             border-color: var(--color-magic);
             filter: drop-shadow(3px 6px var(--color-magic));
-            @include typography.typography("md", tertiary);
-            letter-spacing: 0;
+            @include typography.typography("6xl", primaryDemiBold);
         }
     }
 }
@@ -99,7 +98,7 @@
             }
 
             .button-primary {
-                @include typography.typography("2xl", tertiary);
+                @include typography.typography("2xl", primaryDemiBold);
 
                 &::after {
                     background-image: var(--icon-arrow-magic);
