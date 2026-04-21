@@ -269,7 +269,7 @@
 
     .link-decorated {
         margin-block: var(--spacing-8xl) 0;
-        padding-block-end: var(--spacing-2xl);
+        padding-block-end: var(--spacing-4xl);
     }
 }
 
@@ -401,6 +401,13 @@
             .swiper-slide {
                 display: grid;
                 justify-content: center;
+                opacity: 0 !important;
+
+                &.swiper-slide-visible,
+                &.swiper-slide-next,
+                &.swiper-slide-prev {
+                    opacity: 1 !important;
+                }
             }
         }
 
@@ -410,7 +417,9 @@
 
             .expand__image {
                 &--fondo {
-                    height: calc(100vh - 135px);
+                    // height: calc(100vh - 135px);
+                    height: 100vh;
+
                     img {
                         object-position: calc(
                                 -20px + 2000 * (100vw - 1280px) / 1440

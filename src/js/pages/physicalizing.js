@@ -201,8 +201,8 @@ const videoSection = () => {
 const initPsych = () => {
     videoSection();
     slider();
-    duplicateSlides(".marquee", 10);
-    createMarquee({ container: ".expand__image", speed: 20 });
+    duplicateSlides(".marquee", 20);
+    createMarquee({ container: ".expand__image", speed: 50 });
     createMarqueeImg({ container: ".carousel-all", speed: 60 });
 };
 

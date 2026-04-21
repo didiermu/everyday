@@ -94,11 +94,13 @@ $container-sizes: (
 
 @mixin img-cover {
     display: block;
+    overflow: hidden;
 
     img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        will-change: transform;
     }
 }
 

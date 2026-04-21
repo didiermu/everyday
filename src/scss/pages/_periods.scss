@@ -574,7 +574,7 @@
         }
 
         p {
-            @include typography.typography("md", secondary);
+            @include typography.typography("md", tertiary);
             font-weight: 300;
         }
 

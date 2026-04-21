@@ -151,10 +151,7 @@ canvas {
 
 @media (min-width: 1280px) {
     .page-home {
-        padding-block-start: 200px;
-        // canvas {
-        //     transform: translate(-30px, -150px);
-        // }
+        // padding-block-start: 200px;
 
         .intro {
             // padding-block-start: 12.5rem;
@@ -169,10 +166,10 @@ canvas {
             }
 
             p {
-                @include typography.typography("3xl", secondary);
+                @include typography.typography("3xl", tertiary);
 
                 &:nth-child(2) {
-                    @include typography.typography("xl", secondary);
+                    @include typography.typography("xl", tertiary);
                 }
             }
 

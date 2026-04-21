@@ -132,7 +132,7 @@
                         display: block;
                         letter-spacing: 0;
                         text-transform: none;
-                        @include typography.typography("md", secondary);
+                        @include typography.typography("md", tertiary);
                         font-weight: 100;
                         line-height: 1;
                         transform: translateY(-5px);
@@ -161,10 +161,10 @@
 
     .head-home {
         display: flex;
-        padding-block: var(--spacing-6xl);
+        padding-block: var(--spacing-xl);
         background: var(--color-banana);
-        position: fixed;
-        top: 0;
+        // position: fixed;
+        // top: 0;
         z-index: 9;
         width: 100%;
 
@@ -175,7 +175,7 @@
 
         p {
             text-align: center;
-            @include typography.typography("md", secondary);
+            @include typography.typography("md", tertiary);
             font-weight: 300;
             flex-basis: 33%;
 
@@ -234,6 +234,29 @@
 
         &:has(.navbar.secondary) {
             width: 250px;
+        }
+
+        .offcanvas.offcanvas-end {
+            position: absolute;
+            width: 332px;
+            max-width: none !important;
+            bottom: -1rem;
+            border-radius: var(--border-radius-md);
+            border: 0;
+            right: auto;
+            left: auto;
+
+            &.showing:not(.hiding),
+            &.show:not(.hiding) {
+                transform: translate(0, 0);
+            }
+
+            a,
+            & {
+                cursor:
+                    url(./img/cerillo2.webp) 30 30,
+                    auto;
+            }
         }
 
         .navbar {

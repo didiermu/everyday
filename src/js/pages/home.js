@@ -23,10 +23,118 @@ ScrollTrigger.defaults({
 // Variables globales para cleanup
 
 const mediaQuery = window.matchMedia("(min-width:1280px)");
+const MODAL_VIDEO_ID = "modal-video";
+const MODAL_VIDEO_SRC = "./video/intro_video_landscape.webm";
+
+let modalVideoTrigger = null;
+let modalVideoCleanup = null;
+let sectionVideoWasPlaying = false;
+
+const openModalVideo = async () => {
+    const pageHome = document.querySelector(".page-home");
+    const sectionVideo = document.querySelector(".video video");
+
+    if (!pageHome) return;
+
+    modalVideoCleanup?.();
+
+    sectionVideoWasPlaying = Boolean(
+        sectionVideo && !sectionVideo.paused && !sectionVideo.ended,
+    );
+
+    if (sectionVideoWasPlaying) {
+        sectionVideo.pause();
+    }
+
+    const modal = document.createElement("dialog");
+    modal.id = MODAL_VIDEO_ID;
+    modal.innerHTML = `
+        <div class="modal--content">
+            <button class="close" type="button" aria-label="Close video"></button>
+            <video loop playsinline preload="metadata">
+                <source src="${MODAL_VIDEO_SRC}" type="video/webm">
+            </video>
+        </div>
+    `;
+
+    pageHome.appendChild(modal);
+
+    const video = modal.querySelector("video");
+    const closeBtn = modal.querySelector(".close");
+
+    const destroyModal = () => {
+        video.pause();
+        video.currentTime = 0;
+        closeBtn.removeEventListener("click", closeHandler);
+        modal.removeEventListener("close", modalCloseHandler);
+        modal.remove();
+
+        if (sectionVideoWasPlaying && sectionVideo) {
+            sectionVideo
+                .play()
+                .catch((error) =>
+                    console.error("Section video resume failed:", error),
+                );
+        }
+
+        sectionVideoWasPlaying = false;
+        modalVideoCleanup = null;
+    };
+
+    const closeHandler = () => {
+        if (modal.open) {
+            modal.close();
+        }
+    };
+
+    const modalCloseHandler = () => {
+        destroyModal();
+    };
+
+    closeBtn.addEventListener("click", closeHandler);
+    modal.addEventListener("close", modalCloseHandler);
+
+    modalVideoCleanup = destroyModal;
+
+    modal.showModal();
+
+    try {
+        await video.play();
+    } catch (error) {
+        console.error("Video autoplay failed:", error);
+    }
+};
 
 //// HEADER
 
 const scrollGsap = async () => {
+    const panelZoom = () => {
+        const panel = gsap.utils.toArray(".panel-zoom");
+
+        panel.forEach((cover) => {
+            gsap.set(cover, {
+                scale: mediaQuery.matches ? 0.9 : 0.8,
+                transformOrigin: "center center",
+                borderRadius: 32,
+            });
+
+            gsap.to(cover, {
+                scale: 1,
+                borderRadius: 0,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: cover,
+                    start: "top bottom",
+                    end: "+=100 center",
+                    scrub: true,
+                    // toogleActions: "restart pause reverse pause",
+                    invalidateOnRefresh: true,
+                    // markers: true,
+                },
+            });
+        });
+    };
+
     const paneles = () => {
         const panels = gsap.utils.toArray(".panel");
         const panelContent = gsap.utils.toArray(".panel__content");
@@ -47,13 +155,6 @@ const scrollGsap = async () => {
             }
         });
 
-        const updatePanelClass = (index) => {
-            panelContent.forEach((_, idx) => {
-                document.body.classList.remove(`panel-${idx}`);
-            });
-            document.body.classList.add(`panel-${index}`);
-        };
-
         panelContent.forEach((panel, i) => {
             ScrollTrigger.create({
                 trigger: panel,
@@ -61,18 +162,6 @@ const scrollGsap = async () => {
                 end: "bottom bottom",
                 toogleActions: "restart pause reverse pause",
                 // markers: true,
-                onEnter: () => updatePanelClass(i),
-                onEnterBack: () => updatePanelClass(i),
-                onLeave: () => {
-                    if (i < panels.length - 2) {
-                        updatePanelClass(i + 1);
-                    }
-                },
-                onLeaveBack: () => {
-                    if (i > 0) {
-                        updatePanelClass(i - 1);
-                    }
-                },
             });
         });
 
@@ -102,7 +191,7 @@ const scrollGsap = async () => {
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: section,
-                start: mediaQuery.matches ? "-=150" : "top top",
+                start: "top top",
                 end: "+=250%",
                 pin: true,
                 pinSpacing: false,
@@ -238,54 +327,31 @@ const scrollGsap = async () => {
 
     await scrollViz();
     paneles();
+    panelZoom();
     pinCards();
     setupThreeAnimation();
 };
 
 const modalVideo = () => {
-    const modal = document.getElementById("modal-video");
-    const video = modal.querySelector("video");
     const sectionVideo = document.querySelector(".video");
     const btnPlay = document.querySelector(".btn-play");
-    const closeBtn = document.querySelector("#modal-video .close");
 
-    const playHandler = async () => {
-        modal.showModal();
-        video.play();
-    };
-
-    const closeHandler = () => {
-        video.pause();
-        video.currentTime = 0;
-        modal.close();
-    };
-
-    const modalCloseHandler = () => {
-        video.pause();
-        video.currentTime = 0;
-    };
-
-    // Remover listeners previos si existen
-    if (sectionVideo) sectionVideo.removeEventListener("click", playHandler);
-    if (btnPlay) btnPlay.removeEventListener("click", playHandler);
-
-    if (mediaQuery.matches) {
-        if (sectionVideo) sectionVideo.addEventListener("click", playHandler);
-    } else {
-        if (btnPlay) btnPlay.addEventListener("click", playHandler);
+    if (modalVideoTrigger) {
+        modalVideoTrigger.removeEventListener("click", openModalVideo);
     }
 
-    // Listeners que siempre están activos
-    if (closeBtn) closeBtn.addEventListener("click", closeHandler);
-    if (modal) modal.addEventListener("close", modalCloseHandler);
+    modalVideoTrigger = mediaQuery.matches ? sectionVideo : btnPlay;
 
-    // Retornar función de limpieza
+    if (modalVideoTrigger) {
+        modalVideoTrigger.addEventListener("click", openModalVideo);
+    }
+
     return () => {
-        if (sectionVideo)
-            sectionVideo.removeEventListener("click", playHandler);
-        if (btnPlay) btnPlay.removeEventListener("click", playHandler);
-        if (closeBtn) closeBtn.removeEventListener("click", closeHandler);
-        if (modal) modal.removeEventListener("close", modalCloseHandler);
+        if (modalVideoTrigger) {
+            modalVideoTrigger.removeEventListener("click", openModalVideo);
+        }
+        modalVideoCleanup?.();
+        modalVideoTrigger = null;
     };
 };
 

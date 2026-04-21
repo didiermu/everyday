@@ -276,7 +276,8 @@
         &__tools {
             display: grid;
             align-items: center;
-            row-gap: var(--spacing-2xl);
+            // row-gap: var(--spacing-2xl);
+            row-gap: 0;
             // padding-top: var(--spacing-2xl);
 
             h5 {
@@ -288,9 +289,11 @@
 
             .swiper {
                 width: 100%;
+                top: -0.8rem;
 
                 &-slide {
                     padding-inline: var(--spacing-lg) 0;
+                    padding-block-start: var(--spacing-xl);
                     margin-right: 0 !important;
                     width: max-content;
                     min-width: 15.625rem;
@@ -340,6 +343,8 @@
                 @media (hover: hover) {
                     &:hover {
                         background: var(--color-banana);
+                        transform: scale(1.2);
+                        margin-inline: var(--spacing-2xl);
                     }
                 }
             }

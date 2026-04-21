@@ -59,6 +59,25 @@
             font-weight: 100;
         }
 
+        #read-about {
+            cursor: pointer;
+        }
+
+        li {
+            @include typography.typography("md", tertiary);
+            font-weight: 100;
+        }
+
+        #more-about {
+            height: 0;
+            overflow: hidden;
+            transition: 0.3s ease-in-out all;
+
+            &.is-open {
+                height: auto;
+            }
+        }
+
         .button-primary {
             background: var(--color-not-so-black);
             color: var(--color-magic);
@@ -89,6 +108,8 @@
             .row {
                 justify-content: center;
             }
+
+            li,
             p {
                 @include typography.typography("xl", tertiary);
             }
