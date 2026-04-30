@@ -504,7 +504,7 @@ const hoverRings2 = () => {
                 svgIndicador.style.display = "none";
                 svgFlechas.style.display = "block";
 
-                flecha.setAttribute("href", `/img/flecha-${idRing}.webp`);
+                flecha.setAttribute("href", `${import.meta.env.BASE_URL}img/flecha-${idRing}.webp`);
                 svgFlechas.id = `flecha-${idRing}`;
             }
         });
@@ -516,7 +516,7 @@ const hoverRings2 = () => {
                 ringResume.classList.remove(`show`);
                 header.style.visibility = "visible";
 
-                flecha.setAttribute("href", `/img/flecha-00.webp`);
+                flecha.setAttribute("href", `${import.meta.env.BASE_URL}img/flecha-00.webp`);
                 svgIndicador.style.display = "block";
                 svgFlechas.style.display = "none";
             }

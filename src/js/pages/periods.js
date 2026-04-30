@@ -762,7 +762,10 @@ const hoverMap = () => {
 
             svgFlechas.forEach((map) => (map.style.display = "block"));
             flecha.forEach((map) =>
-                map.setAttribute("href", `/img/flecha-${idFlecha}.webp`),
+                map.setAttribute(
+                    "href",
+                    `${import.meta.env.BASE_URL}img/flecha-${idFlecha}.webp`,
+                ),
             );
             svgFlechas.forEach((map) => (map.id = `flecha-${idFlecha}`));
 
@@ -784,7 +787,10 @@ const hoverMap = () => {
             paginador.forEach((map) => map.classList.remove("hide"));
 
             flecha.forEach((map) =>
-                map.setAttribute("href", `/img/flecha-00.webp`),
+                map.setAttribute(
+                    "href",
+                    `${import.meta.env.BASE_URL}img/flecha-00.webp`,
+                ),
             );
             svgFlechas.forEach((map) => (map.style.display = "none"));
         });
