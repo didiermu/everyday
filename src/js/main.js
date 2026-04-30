@@ -10,8 +10,15 @@ import "bootstrap/js/dist/collapse";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const initImgCoverZoom = () => {
+export const initImgCoverZoom = () => {
     const imageCovers = gsap.utils.toArray(".img-zoom");
+
+    // Matar todos los triggers existentes en img-zoom
+    ScrollTrigger.getAll().forEach((trigger) => {
+        if (imageCovers.includes(trigger.trigger)) {
+            trigger.kill();
+        }
+    });
 
     imageCovers.forEach((cover) => {
         const image = cover.querySelector("img");
@@ -32,7 +39,6 @@ const initImgCoverZoom = () => {
                 end: "center center",
                 scrub: true,
                 invalidateOnRefresh: true,
-                // markers: true,
             },
         });
     });

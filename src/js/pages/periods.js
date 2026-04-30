@@ -733,6 +733,7 @@ const hoverMap = () => {
     };
 
     const updateResume = (periodNumber) => {
+        // const menu = document.querySelector(".header");
         const data =
             emotionsData[swiperActive].highlights[periodNumber - 1][
                 periodNumber
@@ -754,6 +755,7 @@ const hoverMap = () => {
             document.querySelectorAll(`.map-hover${idRing}`).forEach((map) => {
                 map.classList.add("show");
             });
+            header.style.visibility = "hidden";
             dataTitle.forEach((map) => map.classList.add("hide"));
             dataHead.forEach((map) => map.classList.add("show"));
             dataResume.forEach((map) => map.classList.add("hide"));
@@ -774,6 +776,7 @@ const hoverMap = () => {
         });
 
         element.addEventListener("mouseleave", () => {
+            header.style.visibility = "visible";
             document.querySelectorAll(`.map-hover${idRing}`).forEach((map) => {
                 map.classList.remove("show");
             });

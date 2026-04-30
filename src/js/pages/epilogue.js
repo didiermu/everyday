@@ -4,6 +4,8 @@ import {
     smoothScroll,
 } from "./../utils/loadLocomotive.js";
 
+import { initImgCoverZoom } from ".//../main.js";
+
 import Swiper from "swiper";
 import { Pagination } from "swiper/modules";
 import "swiper/css/pagination";
@@ -39,8 +41,16 @@ const botonera = async () => {
 
     if (btnTools) {
         const toolsHandler = () => {
-            heroSection.style.display = "none";
-            panelsSection.style.display = "block";
+            setTimeout(() => {
+                gsap.fromTo(
+                    panelsSection,
+                    { opacity: 0 },
+                    { opacity: 1, duration: 1, ease: "power2.out" },
+                );
+                heroSection.style.display = "none";
+                panelsSection.style.display = "block";
+                ScrollTrigger.refresh();
+            }, 100);
         };
 
         btnTools.addEventListener("click", toolsHandler);
@@ -51,11 +61,21 @@ const botonera = async () => {
         const lessonsHandler = () => {
             heroSection.style.display = "none";
             panelsSection.style.display = "block";
+            gsap.fromTo(
+                panelsSection,
+                { opacity: 0 },
+                { opacity: 1, duration: 1 },
+            );
 
             const profileTab = new bootstrap.Tab(
                 document.getElementById("profile-tab"),
             );
             profileTab.show();
+
+            setTimeout(() => {
+                // initImgCoverZoom();
+                ScrollTrigger.refresh();
+            }, 100);
         };
 
         btnLessons.addEventListener("click", lessonsHandler);
@@ -69,6 +89,10 @@ const botonera = async () => {
 
         const tabHandler = (event) => {
             event.preventDefault();
+            setTimeout(() => {
+                // initImgCoverZoom();
+                ScrollTrigger.refresh();
+            }, 100);
         };
 
         triggerEl.addEventListener("click", tabHandler);
@@ -118,6 +142,11 @@ const slider = () => {
                 );
             },
         },
+        breakpoints: {
+            1280: {
+                allowTouchMove: false,
+            },
+        },
         on: {
             init: function () {
                 hideSlideIndex = this.activeIndex;
@@ -152,6 +181,11 @@ const slider = () => {
                 return (
                     '<span class="' + className + '">' + (index + 1) + "</span>"
                 );
+            },
+        },
+        breakpoints: {
+            1280: {
+                allowTouchMove: false,
             },
         },
         on: {
@@ -208,6 +242,7 @@ const init = async () => {
 
     slider();
     botonera();
+    initImgCoverZoom();
     blogMenuHandler();
 };
 

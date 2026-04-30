@@ -772,7 +772,7 @@
                 width: 26%;
                 height: max-content;
                 opacity: 0;
-                transition: 0.3s ease-in-out all;
+                transition: 0.3s ease-in-out opacity;
                 @include typography.typography("md", tertiary);
 
                 &.show {
@@ -797,10 +797,15 @@
             &#period-2 .parrafo-1,
             &#period-5 .parrafo-1,
             &#period-7 .parrafo-2,
-            &#period-7 .parrafo-6 {
+            &#period-7 .parrafo-6,
+            &#period-2 .parrafo-3 {
                 top: 0;
                 bottom: 0;
                 right: 0;
+            }
+
+            &#period-2 .parrafo-3 {
+                @include typography.typography("2xl", script);
             }
 
             &#period-3 {
@@ -1101,12 +1106,14 @@
 
             .swiper {
                 padding-block-end: var(--spacing-xl);
+                height: 100svh;
             }
         }
 
         .swiper-pagination {
             top: auto;
-            bottom: var(--spacing-6xl);
+            bottom: var(--spacing-2xl);
+            // bottom: 0;
             right: calc(64px + 700 * (100vw - 1280px) / 1920);
             left: auto;
             justify-content: flex-end;
