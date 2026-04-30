@@ -83,7 +83,7 @@
             color: var(--color-magic);
             border-color: var(--color-magic);
             filter: drop-shadow(3px 6px var(--color-magic));
-            @include typography.typography("6xl", primaryDemiBold);
+            @include typography.typography("2xl", primaryDemiBold);
         }
     }
 }

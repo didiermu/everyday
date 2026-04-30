@@ -194,6 +194,7 @@
 
     .header {
         position: fixed;
+        padding-block: var(--spacing-xs);
         inset: 0;
         top: auto;
         bottom: var(--spacing-lg);

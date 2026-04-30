@@ -47,6 +47,12 @@ const initImgCoverZoom = () => {
     }
 
     // initRouter();
-    currentDate();
+    if (
+        !document.querySelector("main").classList.contains("main-about") &&
+        !document.querySelector("main").classList.contains("main-blog")
+    ) {
+        currentDate();
+    }
+
     initImgCoverZoom();
 })();

@@ -9,6 +9,7 @@ body {
     @import "../pages/_periods-one";
     @import "../pages/_about";
     @import "../pages/_epilogue";
+    @import "../layout/map";
 
     &:has(dialog[open]) {
         overflow: hidden;

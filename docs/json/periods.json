@@ -379,9 +379,9 @@
         ],
         "map": [
             {
-                "image": "map-1.webp",
-                "x": 550,
-                "y": 570,
+                "image": "map-23.webp",
+                "x": 615,
+                "y": 645,
                 "resume": "I don’t recommend it; it was awful. There’s a high risk of thrombosis, and I experienced the worst headaches of my life. Never again."
             }
         ]
@@ -745,30 +745,31 @@
         ],
         "map": [
             {
-                "image": "map-26.webp",
-                "x": 400,
-                "y": 525,
+                "image": "map-24.webp",
+                "x": 300,
+                "y": 545,
                 "resume": "Yes, you can pay with crypto."
             },
             {
-                "image": "map-2.webp",
-                "x": 399,
-                "y": 515
+                "image": "map-25.webp",
+                "x": 293,
+                "y": 521
             },
             {
-                "image": "map-6.webp",
-                "x": 404,
-                "y": 465
+                "image": "map-26.webp",
+                "x": 310,
+                "y": 420,
+                "resume": "<ul><li>At the Iceland Airport</li><li>At the Munich Airport</li><li>Having someone pick me up at the airport in Europe</li><li>Watching the beautiful Alps up close in Tyrol</li><li>Living as a ‘family’ with my boyfriend and his daughter.</li></ul>"
             },
             {
-                "image": "map-5.webp",
-                "x": 455,
-                "y": 410
+                "image": "map-27.webp",
+                "x": 414,
+                "y": 300
             },
             {
-                "image": "map-4.webp",
-                "x": 604,
-                "y": 382,
+                "image": "map-19.webp",
+                "x": 729,
+                "y": 243,
                 "resume": "Other first-time experiences from this trip that weren't documented include trying Korean BBQ, enjoying traditional Austrian food, going bouldering, jumping into the Nordkette for dinner in a Hütte, going to the Tate and the impressive Natural History Museum in London, seeing Fever Ray live, experiencing a real winter."
             }
         ]
@@ -1219,6 +1220,7 @@
         "imagenDesk": "viz-04-desk.webp",
         "hover": true,
         "fullStory": true,
+        "disclaimer": "Each time I’ve cried in that day",
         "story": "<h4>11 May, 2024</h4><h3>My auntie died</h3><p>I mourned the loss of my aunt alongside my family and my uncle Luis. He was devastated after losing his wife, they’ve been together for 64 years. He shared stories of their many adventures together—some of them quite surprising, like the time they jumped out of a plane in Acapulco. <br><br> I was also secretly grieving the loss of a partner that no one, except my mother, knew about. By then, I felt that relationship had come to an end. I was devastated too and couldn’t begin to imagine my uncle’s suffering. <br><br> That same weekend, solar activity was so intense that auroras were seen in northern Mexico for the first time.</p><a>Read more</a>",
         "emotions": [
             {
@@ -1291,7 +1293,7 @@
                     "botones": "1",
                     "date": "5 Apr, 2024",
                     "title": "Intentionally hurting someone I love",
-                    "resume": "My Buddhist teacher used to say: \"The one who feels badly, acts badly.\" <br><br>I'm not justifying what I did, but it was a clear sign that I was no longer in control of my thoughts or actions. I was overwhelmed with anxiety and gripped by a fear of losing what, at the time,<br>I believed was the relationship I had always dreamed of. I quite literally lost my mind and began acting erratically—undermining trust and pushing away the only."
+                    "resume": "My Buddhist teacher used to say:<br>  \"The one who feels badly, acts badly.\" <br><br>I'm not justifying what I did, but it was a clear sign that I was no longer in control of my thoughts or actions. I was overwhelmed with anxiety and gripped by a fear of losing what, at the time,<br>I believed was the relationship I had always dreamed of. I quite literally lost my mind and began acting erratically—undermining trust and pushing away the only."
                 }
             },
             {
@@ -1633,21 +1635,21 @@
         ],
         "map": [
             {
-                "image": "map-9.webp",
-                "x": 392,
-                "y": 372
+                "image": "map-21.webp",
+                "x": 284,
+                "y": 219
             },
             {
-                "image": "map-3.webp",
-                "x": 460,
-                "y": 650,
-                "resume": "My Buddhist teacher used to say: <br> “The one who feels badly, acts badly.” <br>I’m not justifying what I did, but it was a clear sign that I was no longer in control of my thoughts or actions. I was overwhelmed with anxiety and gripped by a fear of losing what, at the time, I believed was the relationship I had always dreamed of. I quite literally lost my mind and began acting erratically—undermining trust and pushing my partner away."
+                "image": "map-20.webp",
+                "x": 427,
+                "y": 813,
+                "resume": "My Buddhist teacher used to say: <br> “The one who feels badly, acts badly.” <br><br>I’m not justifying what I did, but it was a clear sign that I was no longer in control of my thoughts or actions. I was overwhelmed with anxiety and gripped by a fear of losing what, at the time, I believed was the relationship I had always dreamed of. I quite literally lost my mind and began acting erratically—undermining trust and pushing my partner away."
             }
         ],
         "modalStory": "<p>The period I referred to as \"hell\" was one of the darkest times in my life. I was consumed by relentless guilt and felt mentally unwell, tormented by obsessive thoughts that plagued me from morning until night.</p><p>Concentrating on anything became nearly impossible, and I lived in constant fear of losing my job. I often had to step away just to cry uncontrollably and lie down, trying to gather the strength to keep going. I found myself crying almost every waking hour—and often during the night as well. Depression triggered insomnia, making everything worse; I was left to endure mental pain for more hours than I could tolerate, with no chance for true rest. </p><p>This relentless cycle weakened me, and even my immune system became compromised, leaving me physically vulnerable too. Despite the chaos, I was both surprised and deeply grateful to my body for staying healthy through it all.</p>"
     },
     "5": {
-        "title": "The hard work of healing",
+        "title": "The Hard Work of Healing",
         "fecha": "~ 19 Jun - 30 Aug, 2024",
         "rango": "Days 171 to 243",
         "duracion": "~73 days",
@@ -2317,41 +2319,41 @@
         ],
         "map": [
             {
-                "image": "map-21.webp",
-                "x": 430,
-                "y": 350,
+                "image": "map-22.webp",
+                "x": 360,
+                "y": 170,
                 "resume": "Achieving the 4 day Work Week happened almost by accident due to my mental health crisis but it was a game changer. I was finally able to work on my personal projects (like this one) in a week day, devoting 8 hours each week."
             },
             {
-                "image": "map-15.webp",
-                "x": 533,
-                "y": 283
+                "image": "map-1.webp",
+                "x": 580,
+                "y": 35
             },
             {
-                "image": "map-14.webp",
-                "x": 607,
-                "y": 306
+                "image": "map-2.webp",
+                "x": 735,
+                "y": 83
             },
             {
-                "image": "map-19.webp",
-                "x": 654,
-                "y": 343,
+                "image": "map-3.webp",
+                "x": 836,
+                "y": 165,
                 "resume": "That day, I felt overwhelmed and confused. I wanted to cry and felt the urge to call my ex for explanations. Instead, I decided to set a timer for two hours to create something nice using Midjourney. My mood changed completely; I felt joy and was grateful to see how happy I am when I’m creating. It doesn’t matter if it’s something simple."
             },
             {
-                "image": "map-18.webp",
-                "x": 705,
-                "y": 435,
+                "image": "map-4.webp",
+                "x": 945,
+                "y": 360,
                 "resume": "When it comes to doing something risky or extreme, I’m usually the one who watches others go first, feeling super anxious as my turn approaches. But this time, I was surprisingly relaxed and prepared—so much so that I volunteered to be the first! The guide approved and mentioned that the first 30 seconds would be unbearable, but after that, it would get easier. I thought to myself: I’ve been enduring unbearable emotional pain, sadness, confusion, and anxiety for at least three months; this is nothing for me! And boy, I did pretty well. I was proud of myself!"
             },
             {
-                "image": "map-22.webp",
-                "x": 690,
-                "y": 605,
+                "image": "map-5.webp",
+                "x": 908,
+                "y": 713,
                 "resume": "Poverty Radar is one of my favorite projects—a physicalization that involves Arduino and hardware. This time, I invited a friend to collaborate, and he understood the idea perfectly and was willing to help. I couldn’t be more grateful and excited!"
             }
         ],
-        "modalStory": "<p>This was the time when I really had to pull myself together again. It was a nightmare finding a therapist as good as Luis, my former therapist and mentor who passed away in 2017. I tried 4 different therapists before finding one who could help me navigate this challenging journey.</p><p>Eventually I returned to the tools I knew: meditation, journaling, deep self-analysis, reflection, exercise, and reading. I also listened to countless hours of content on relationships, psychotherapy, and healing techniques.</p>"
+        "modalStory": "<p>This was the time when I really had to pull myself together again.</p><p>It was a nightmare finding a therapist as good as Luis, my former therapist and mentor who passed away in 2017. I tried four different therapists before finding one who could help me navigate this challenging journey. Eventually I returned to the tools I knew: meditation, journaling, deep self-analysis, reflection, exercise, and reading. I also listened to countless hours of content on relationships, psychotherapy, and healing techniques. <br><br>I’ve come to understand that healing from a breakup is not really about the person who hurt you. It’s about understanding why you ended up with the wrong person—or at the wrong time. It’s about recognizing the ways you were vulnerable without realizing it, the patterns and behaviors you’ve carried for years, and the narratives you keep telling yourself that may prevent you from finding what you truly need to be happy.</p>"
     },
     "6": {
         "title": "The recovery",
@@ -2449,7 +2451,7 @@
                     "botones": "1",
                     "date": "07 Sep, 2024",
                     "title": "Publishing an article about break ups, mental health and music",
-                    "resume": "As I learned how to overcome my breakup, I felt compelled to share my small victories with others in similar situations, showing them that there was a way out of the pain. This was the first of many pieces I planned to write, but I struggled to find time between my 9-to-6 job and side projects, which prevented me from completing the others."
+                    "resume": "A visual record of my most delicious meals, both at home and dining out, as well as my daily cup of coffee."
                 }
             },
             {
@@ -2473,7 +2475,7 @@
                     "botones": "2",
                     "date": "27 Sep, 2024",
                     "title": "Launch Circles of joy",
-                    "resume": "A visual record of my most delicious meals, both at home and dining out, as well as my daily cup of coffee."
+                    "resume": "As I learned how to overcome my breakup, I felt compelled to share my small victories with others in similar situations, showing them that there was a way out of the pain. This was the first of many pieces I planned to write, but I struggled to find time between my 9-to-6 job and side projects, which prevented me from completing the others."
                 }
             },
             {
@@ -2822,32 +2824,32 @@
         ],
         "map": [
             {
-                "image": "map-23.webp",
-                "x": 475,
-                "y": 726,
-                "resume": "This is another data humanist project: a dashboard tracking what I ate over the course of 10 months. It was originally intended to cover a full year, but I struggled to consistently record my meals during my trip to the US and Europe."
+                "image": "map-10.webp",
+                "x": 459,
+                "y": 970,
+                "resume": "I see this as my very first step toward becoming a creative technologist. I’m not sure yet if I’ll be able to make it, but it’s worth trying."
             },
             {
-                "image": "map-24.webp",
-                "x": 498,
-                "y": 723,
-                "resume": "As I learned how to overcome my breakup, I felt compelled to share my small victories with others in similar situations, showing them that there was a way out of the pain. This was the first of many pieces I planned to write, but I struggled to find time between my 9-to-6 job and side projects, which prevented me from completing the others."
-            },
-            {
-                "image": "map-25.webp",
-                "x": 635,
-                "y": 673
-            },
-            {
-                "image": "map-27.webp",
-                "x": 643,
-                "y": 666,
+                "image": "map-9.webp",
+                "x": 510,
+                "y": 964,
                 "resume": "A visual record of my most delicious meals, both at home and dining out, as well as my daily cup of coffee."
             },
             {
-                "image": "map-20.webp",
-                "x": 655,
-                "y": 649,
+                "image": "map-8.webp",
+                "x": 795,
+                "y": 854
+            },
+            {
+                "image": "map-7.webp",
+                "x": 813,
+                "y": 844,
+                "resume": "As I learned how to overcome my breakup, I felt compelled to share my small victories with others in similar situations, showing them that there was a way out of the pain. This was the first of many pieces I planned to write, but I struggled to find time between my 9-to-6 job and side projects, which prevented me from completing the others."
+            },
+            {
+                "image": "map-6.webp",
+                "x": 840,
+                "y": 807,
                 "resume": "I see this as my very first step toward becoming a creative technologist. I’m not sure yet if I’ll be able to make it, but it’s worth trying."
             }
         ]
@@ -3548,47 +3550,47 @@
         ],
         "map": [
             {
-                "image": "map-8.webp",
-                "x": 345,
-                "y": 675
+                "image": "map-11.webp",
+                "x": 190,
+                "y": 860
             },
             {
-                "image": "map-7.webp",
-                "x": 325,
-                "y": 655,
+                "image": "map-12.webp",
+                "x": 140,
+                "y": 820,
                 "resume": "Growing up in a working-class family, my mom never had the chance to travel overseas. As a child, I vowed to change that for her. Seeing her explore new places for the first time was one of the most fulfilling experiences of my life, and those cherished memories will remain with me always. 💜"
             },
             {
                 "image": "map-13.webp",
-                "x": 275,
-                "y": 582
+                "x": 40,
+                "y": 661
             },
             {
-                "image": "map-12.webp",
-                "x": 270,
-                "y": 565
+                "image": "map-14.webp",
+                "x": 30,
+                "y": 630
             },
             {
-                "image": "map-11.webp",
-                "x": 308,
-                "y": 372
-            },
-            {
-                "image": "map-10.webp",
-                "x": 314,
-                "y": 366,
-                "resume": "It wasn’t really about getting the job; I knew I had no chance. But for the first time in my life, it felt like I had the perfect experience and profile for the position. So, I put together my resume and latest projects and sent it off. It was a huge step for me since I’ve been dealing with impostor syndrome my whole life."
-            },
-            {
-                "image": "map-17.webp",
-                "x": 457,
-                "y": 279,
-                "resume": "As the year came to a close, I realized I wasn’t achieving the results I hoped for from the Max course. This made me quite anxious, so I decided to dedicate my Christmas holidays to learning the basics of Arduino on my own. I was so invested in it that I chose to skip the Christmas celebration with my family, something I had never done before."
+                "image": "map-15.webp",
+                "x": 110,
+                "y": 230
             },
             {
                 "image": "map-16.webp",
-                "x": 466,
-                "y": 278
+                "x": 117,
+                "y": 212,
+                "resume": "It wasn’t really about getting the job; I knew I had no chance. But for the first time in my life, it felt like I had the perfect experience and profile for the position. So, I put together my resume and latest projects and sent it off. It was a huge step for me since I’ve been dealing with impostor syndrome my whole life."
+            },
+            {
+                "image": "map-18.webp",
+                "x": 424,
+                "y": 27,
+                "resume": "As the year came to a close, I realized I wasn’t achieving the results I hoped for from the Max course. This made me quite anxious, so I decided to dedicate my Christmas holidays to learning the basics of Arduino on my own. I was so invested in it that I chose to skip the Christmas celebration with my family, something I had never done before."
+            },
+            {
+                "image": "map-17.webp",
+                "x": 447,
+                "y": 30
             }
         ]
     }

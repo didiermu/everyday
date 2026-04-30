@@ -45,7 +45,9 @@
 
     --icon-close: url('data:image/svg+xml,<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.11968 0.647461L0.647461 7.11968M0.647461 0.647461L7.11968 7.11968" stroke="%23141414" stroke-width="1.29444" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 
-    --icon-close-white: url('data:image/svg+xml,<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.11968 0.647461L0.647461 7.11968M0.647461 0.647461L7.11968 7.11968" stroke="%23ffffff" stroke-width="1.29444" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    // --icon-close-white: url('data:image/svg+xml,<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.11968 0.647461L0.647461 7.11968M0.647461 0.647461L7.11968 7.11968" stroke="%23ffffff" stroke-width="1.29444" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+
+    --icon-close-white: url('data:image/svg+xml,<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 22C0 9.84974 9.84974 0 22 0V0C34.1503 0 44 9.84974 44 22V22C44 34.1503 34.1503 44 22 44V44C9.84974 44 0 34.1503 0 22V22Z" fill="%2314171C"/><path d="M27 17L17 27M17 17L27 27" stroke="%23F2FCA7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 
     --icon-arrow: url('data:image/svg+xml,<svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M-6.03795e-05 6.98434V5.56834H12.4319L8.37594 0.000335217H10.0559L14.7599 6.26434L10.0559 12.5523H8.37594L12.4319 6.98434H-6.03795e-05Z" fill="black"/></svg>');
 
@@ -67,7 +69,14 @@
 
     --icon-time: url('data:image/svg+xml,<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.99967 14.6667C11.6816 14.6667 14.6663 11.6819 14.6663 8.00001C14.6663 4.31811 11.6816 1.33334 7.99967 1.33334C4.31778 1.33334 1.33301 4.31811 1.33301 8.00001C1.33301 11.6819 4.31778 14.6667 7.99967 14.6667Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 4V8L10.6667 9.33333" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 
+    @media (min-width: 1280px) {
+        --width-period: 85vw;
+        --height-period: calc(100% - 140px);
+        --width-svg: 90%;
+    }
+
     @media (min-width: 1440px) {
+        --width-period: 68vw;
         font-size: 16px;
     }
 }

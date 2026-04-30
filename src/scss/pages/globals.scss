@@ -9,6 +9,7 @@
 // }
 
 & {
+    background-color: var(--color-not-so-white-viz-300);
     font-family: var(--font-primaria-regular);
 
     h1,
@@ -75,9 +76,9 @@
 
 @media (min-width: 1280px) {
     & {
-        div[class*="page-"] {
-            min-height: calc(100vh - 8.4375rem);
-        }
+        // div[class*="page-"] {
+        //     min-height: calc(100vh - 8.4375rem);
+        // }
 
         section {
             padding-block: var(--spacing-10xl) 0;

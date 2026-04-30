@@ -11,6 +11,7 @@ let buttonHandler = null;
 let linkHandler = null;
 let linkBack;
 const mediaQuery = window.matchMedia("(min-width:1280px)");
+const mediaQueryFull = window.matchMedia("(min-width:1920px)");
 let swiperInstance = null;
 
 const modalViz = () => {
@@ -183,8 +184,8 @@ const openExplore = async (idRing) => {
 
     if (mediaQuery.matches) {
         modal.classList.add("show");
-        document.body.style.overflow = "hidden";
-        destroyScroll();
+        // prueba
+        // destroyScroll();
     } else {
         hero.classList.remove("show");
         hero.classList.add("hide");
@@ -233,27 +234,29 @@ const openExplore = async (idRing) => {
     // updatePeriodHead(parseInt(idRing));
 };
 
-const hoverRings = () => {
-    const rings = document.querySelectorAll(".gold-dot");
-    const visualizationPop = document.querySelector(".visualization--pop");
-
-    rings.forEach((element) => {
-        let idRing = element.id.replace("nodo-", "");
-        element.addEventListener("mouseenter", () => {
-            setTimeout(() => {
-                visualizationPop
-                    .querySelector("img")
-                    .setAttribute("src", `./img/ring-${idRing}.webp`);
-                visualizationPop.classList.add("show");
-            }, 100);
-        });
-    });
-    visualizationPop
-        .querySelector(".visualization--pop--hover")
-        .addEventListener("mouseleave", () => {
-            visualizationPop.classList.remove("show");
-        });
-};
+/// deprecated
+// const hoverRings = () => {
+//     const rings = document.querySelectorAll(".gold-dot");
+//     const visualizationPop = document.querySelector(".visualization--pop");
+//
+//     rings.forEach((element) => {
+//         let idRing = element.id.replace("nodo-", "");
+//         element.addEventListener("mouseenter", () => {
+//             setTimeout(() => {
+//                 visualizationPop
+//                     .querySelector("img")
+//                     .setAttribute("src", `./img/ring-${idRing}.webp`);
+//                 visualizationPop.classList.add("show");
+//             }, 100);
+//         });
+//     });
+//     visualizationPop
+//         .querySelector(".visualization--pop--hover")
+//         .addEventListener("mouseleave", () => {
+//             visualizationPop.classList.remove("show");
+//         });
+// };
+/// deprecated
 
 const hoverRings2 = () => {
     const ringsYellow = document.querySelectorAll(".yellow-dot");
@@ -262,6 +265,7 @@ const hoverRings2 = () => {
 
     const ringHead = document.querySelector(".visualization--ring--head");
     const ringResume = document.querySelector(".visualization--resume");
+    const menu = document.querySelector(".header");
 
     const dataRing = {
         27: {
@@ -275,6 +279,11 @@ const hoverRings2 = () => {
             date: "18 Feb, 2024",
             emotion: "Confused",
             location: "Austria",
+            resume: `<ul><li>At the Iceland Airport</li>
+            <li>At the Munich Airport</li>
+            <li>Having someone pick me up at the airport in Europe</li>
+            <li>Watching the beautiful Alps up close in Tyrol</li>
+            <li>Living as a ‘family’ with my boyfriend and his daughter.</li></ul>`,
         },
         25: {
             day: "44",
@@ -433,13 +442,13 @@ const hoverRings2 = () => {
             date: "24 Dec, 2024",
             emotion: "Inspired",
             location: "México",
-            resume: "As the year came to a close, I realized I wasn’t achieving the results I hoped for from the Max course. This made me quite anxious, so I decided to dedicate my Christmas holidays to learning the basics of Arduino on my own. I was so invested in it that I chose to skip the Christmas celebration with my family, something I had never done before.",
         },
         18: {
             day: "360",
             date: "25 Dec, 2024",
             emotion: "Inspired",
             location: "México",
+            resume: "As the year came to a close, I realized I wasn’t achieving the results I hoped for from the Max course. This made me quite anxious, so I decided to dedicate my Christmas holidays to learning the basics of Arduino on my own. I was so invested in it that I chose to skip the Christmas celebration with my family, something I had never done before.",
         },
     };
 
@@ -479,6 +488,9 @@ const hoverRings2 = () => {
     rings.forEach((element) => {
         let idRing = element.id.replace("nodo-", "");
         let idHover = document.querySelector(`#ring${idRing}`);
+        let svgFlechas = document.querySelector(".svg-flechas");
+        let svgIndicador = document.querySelector(".svg-indicador");
+        let flecha = document.querySelector(".flechas");
 
         element.addEventListener("mouseenter", () => {
             if (idHover) {
@@ -486,6 +498,14 @@ const hoverRings2 = () => {
                 idHover.classList.add("show");
 
                 updateRingHead(parseInt(idRing));
+
+                header.style.visibility = "hidden";
+
+                svgIndicador.style.display = "none";
+                svgFlechas.style.display = "block";
+
+                flecha.setAttribute("href", `/img/flecha-${idRing}.webp`);
+                svgFlechas.id = `flecha-${idRing}`;
             }
         });
 
@@ -494,6 +514,11 @@ const hoverRings2 = () => {
                 visualizationSection.classList.remove("hover");
                 idHover.classList.remove("show");
                 ringResume.classList.remove(`show`);
+                header.style.visibility = "visible";
+
+                flecha.setAttribute("href", `/img/flecha-00.webp`);
+                svgIndicador.style.display = "block";
+                svgFlechas.style.display = "none";
             }
         });
     });
@@ -501,12 +526,18 @@ const hoverRings2 = () => {
     ringsYellow.forEach((element) => {
         let idRing = element.id.replace("period-", "");
         let idHover = document.querySelector(`#yellow-${idRing}`);
+        let deeper = document.querySelector(".deeper");
+        let svgIndicador = document.querySelector(".svg-indicador");
 
         element.addEventListener("mouseenter", () => {
             if (idHover) {
                 visualizationSection.classList.add("hoverYellow");
                 idHover.classList.add("show");
                 updatePeriodHead(parseInt(idRing));
+                header.style.visibility = "hidden";
+                svgIndicador.style.display = "none";
+                deeper.style.display = "block";
+                deeper.id = `deeper-${idRing}`;
             }
         });
 
@@ -514,12 +545,27 @@ const hoverRings2 = () => {
             if (idHover) {
                 visualizationSection.classList.remove("hoverYellow");
                 idHover.classList.remove("show");
+                header.style.visibility = "visible";
+                svgIndicador.style.display = "block";
+                deeper.style.display = "none";
             }
         });
 
         element.addEventListener("click", () => {
             openExplore(idRing);
         });
+
+        function sizeDeeper() {
+            deeper
+                .querySelector("rect")
+                .setAttribute("width", mediaQueryFull.matches ? "280" : "240");
+            deeper
+                .querySelector("text")
+                .setAttribute("x", mediaQueryFull.matches ? "140" : "120");
+        }
+
+        sizeDeeper();
+        window.addEventListener("resize", sizeDeeper);
     });
 };
 

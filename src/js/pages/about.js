@@ -1,3 +1,23 @@
+import {
+    getScrollInstance,
+    destroyScroll,
+    smoothScroll,
+} from "./../utils/loadLocomotive.js";
+
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger.js";
+
+gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({
+    ignoreMobileResize: true,
+});
+
+ScrollTrigger.defaults({
+    invalidateOnRefresh: false,
+});
+
+const mediaQuery = window.matchMedia("(min-width:1280px)");
+
 const readMore = () => {
     const text = document.querySelector("#more-about");
     const readMoreBtn = document.querySelector("#read-about");
@@ -12,6 +32,8 @@ const readMore = () => {
 };
 
 export function initAbout() {
+    smoothScroll();
+
     readMore();
 }
 

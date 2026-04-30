@@ -12,6 +12,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger.js";
 import GUI from "lil-gui";
 
 gsap.registerPlugin(ScrollTrigger);
+
 ScrollTrigger.config({
     ignoreMobileResize: true,
 });
@@ -287,7 +288,7 @@ const scrollGsap = async () => {
 
             setTimeout(() => {
                 visualizationSection.insertAdjacentElement(
-                    "afterend",
+                    "beforeend",
                     mainPeriods,
                 );
             }, 1000);

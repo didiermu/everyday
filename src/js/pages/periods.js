@@ -192,52 +192,65 @@ function createPeriodsTemplate(data, currentPeriod) {
     `
         : "";
 
+    // const noFlecha = data.map.map((mapa, i) => {
+    //     let name = mapa.image.replace(".webp", "").replace("map-", "");
+    //
+    // });
+
     const mapHTML = data.map
         .map(
             (mapa, i) => `
-            <image href="./img/${mapa.image}" class="map-hover map-hover${i + 1}" width="980" height="1000" x="0" y="0"></image>
-        `,
+            <image href="./img/${mapa.image}" class="map-hover map-hover${i + 1}" width="980" height="1000" x="0" y="0"></image>`,
         )
         .join("");
 
     const dotHTML = data.map
-        .map(
-            (mapa, i) => `
-            <circle class="yellow-dot" data-map="map-${i + 1}" cx="${mapa.x}" cy="${mapa.y}" r="5"></circle>
-        `,
-        )
+        .map((mapa, i) => {
+            let name = mapa.image.replace(".webp", "").replace("map-", "");
+            return `
+            <circle class="yellow-dot" data-map="map-${i + 1}" data-flecha="${name}" cx="${mapa.x}" cy="${mapa.y}" r="10"></circle>
+        `;
+        })
         .join("");
 
     return `
-        <section class="periods" id="period-${currentPeriod}">
+        <section class="periods viz-mapa" id="period-${currentPeriod}">
             <div class="container">
                 <div class="row">
                     <p class="periods--parrafo"></p>
-                    <div class="col-12 periods-image">
+                    <div class="col-12 periods-image visualization--fondo">
                         ${data.hover ? '<span class="periods-hover"></span>' : ""}
-                        <svg viewBox="0 0 980 1000" xmlns="http://www.w3.org/2000/svg">
-                            <image href="./img/${
-                                data.imagenDesk
-                                    ? mediaQuery.matches
-                                        ? data.imagenDesk
+                        <svg viewBox="0 0 1980 1250"  xmlns="http://www.w3.org/2000/svg">
+                            <g id="svg-ring" transform="translate(500, 110)">
+                                <image href="./img/${
+                                    data.imagenDesk
+                                        ? mediaQuery.matches
+                                            ? data.imagenDesk
+                                            : data.imagen
                                         : data.imagen
-                                    : data.imagen
-                            }" width="980" height="1000" x="0" y="0"></image>
-                            ${mapHTML}
-                            ${dotHTML}
+                                }" width="980" height="1000" x="0" y="0"></image>
+                                ${mapHTML}
+                            </g>
+                             <g class="svg-flechas" transform="translate(500, 110)">
+                                <image href="/img/flecha-00.webp" class="flechas" width="980" height="1000"
+                                    x="0" y="0"></image>
+                            </g>
+                            <g id="svg-dots" transform="translate(500, 110)">
+                                ${dotHTML}
+                            </g>
                         </svg>
                         
                     </div>
                    
-                    <div class="col-12 periods--data">
-                        <h4>Emotion Stats</h4>
+                    <div class="col-12 periods--data visualization--data">
+                        
                         <div class="visualization--data--table">
                             ${emotionsHTML}
                             ${totalHTML}
                         </div>
                     </div>
-                    <div class="col-12 periods--summary">
-                        <h4>SUMMARY</h4>
+                    <div class="col-12 periods--summary visualization--instructions">
+                        
                         <p>${data.resumen}</p>
                     </div>
                     <div class="col-12 periods--botonera">
@@ -272,7 +285,7 @@ function createPeriodsTemplate(data, currentPeriod) {
 }
 
 // Función para crear el template del modal-data
-function createModalDataTemplate(data, periodName) {
+function createModalDataTemplate(data, periodName, disclaimer) {
     if (!data || !Array.isArray(data) || data.length === 0) return "";
 
     const days = data.map((item) => item.day);
@@ -365,6 +378,9 @@ function createModalDataTemplate(data, periodName) {
                                     <span>Duration<strong>${totalDays} days</strong></span>
                                 </div>
                             </div>
+                            <div class="col-12 hero--disclaimer">
+                                <p>${disclaimer ? ` <span><i></i><i></i><i></i><i></i></span>${disclaimer}` : ""}</p>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-12 modal-data--content">
@@ -389,7 +405,11 @@ function createSlideContent(data, periodId) {
     const heroHTML = createHeroTemplate(data, periodId);
     const periodsHTML = createPeriodsTemplate(data, periodId);
     const modalHighHTML = createModalHighTemplate(data.highlights);
-    const modalDataHTML = createModalDataTemplate(data.data, data.title);
+    const modalDataHTML = createModalDataTemplate(
+        data.data,
+        data.title,
+        data.disclaimer,
+    );
 
     return `
         ${heroHTML}
@@ -691,6 +711,8 @@ const hoverMap = () => {
     const paginador = document.querySelectorAll(".swiper-pagination");
     const dataMap = document.querySelectorAll(".periods--data");
     const resumeMap = document.querySelectorAll(".periods--parrafo");
+    const svgFlechas = document.querySelectorAll(".svg-flechas");
+    const flecha = document.querySelectorAll(".flechas");
 
     const updateRingHead = (periodNumber) => {
         const data =
@@ -725,11 +747,10 @@ const hoverMap = () => {
 
     rings.forEach((element) => {
         let idRing = element.dataset.map.replace("map-", "");
-        // let idHover = document.querySelector(`#ring${idRing}`);
+        let idFlecha = element.dataset.flecha;
 
+        //
         element.addEventListener("mouseenter", () => {
-            // visualizationSection.classList.add("hover");
-            // idHover.classList.add("show");
             document.querySelectorAll(`.map-hover${idRing}`).forEach((map) => {
                 map.classList.add("show");
             });
@@ -738,6 +759,12 @@ const hoverMap = () => {
             dataResume.forEach((map) => map.classList.add("hide"));
             dataMap.forEach((map) => map.classList.add("hide"));
             paginador.forEach((map) => map.classList.add("hide"));
+
+            svgFlechas.forEach((map) => (map.style.display = "block"));
+            flecha.forEach((map) =>
+                map.setAttribute("href", `/img/flecha-${idFlecha}.webp`),
+            );
+            svgFlechas.forEach((map) => (map.id = `flecha-${idFlecha}`));
 
             updateRingHead(parseInt(idRing));
             updateResume(parseInt(idRing));
@@ -755,6 +782,11 @@ const hoverMap = () => {
             dataResume.forEach((map) => map.classList.remove("hide"));
             dataMap.forEach((map) => map.classList.remove("hide"));
             paginador.forEach((map) => map.classList.remove("hide"));
+
+            flecha.forEach((map) =>
+                map.setAttribute("href", `/img/flecha-00.webp`),
+            );
+            svgFlechas.forEach((map) => (map.style.display = "none"));
         });
     });
 };

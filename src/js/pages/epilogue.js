@@ -1,3 +1,9 @@
+import {
+    getScrollInstance,
+    destroyScroll,
+    smoothScroll,
+} from "./../utils/loadLocomotive.js";
+
 import Swiper from "swiper";
 import { Pagination } from "swiper/modules";
 import "swiper/css/pagination";
@@ -7,6 +13,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger.js";
 import { gsap } from "gsap";
 
 gsap.registerPlugin(ScrollTrigger);
+
 ScrollTrigger.config({
     ignoreMobileResize: true,
 });
@@ -169,9 +176,39 @@ const slider = () => {
     });
 };
 
+const blogMenuHandler = () => {
+    const blogLink = document.querySelector('a[href="blog.html"]');
+    const heroSection = document.querySelector(".page-epilogue .hero");
+    const panelsSection = document.querySelector(".panels");
+    const offcanvasMenu = document.getElementById("offcanvasDarkNavbar");
+    const offcanvasInstance = offcanvasMenu
+        ? bootstrap.Offcanvas.getInstance(offcanvasMenu)
+        : null;
+
+    if (blogLink) {
+        blogLink.addEventListener("click", (e) => {
+            if (window.location.pathname.includes("blog.html")) {
+                e.preventDefault();
+
+                heroSection.style.display = "block";
+                panelsSection.style.display = "none";
+
+                if (offcanvasInstance) {
+                    offcanvasInstance.hide();
+                }
+
+                window.scrollTo(0, 0);
+            }
+        });
+    }
+};
+
 const init = async () => {
+    smoothScroll();
+
     slider();
     botonera();
+    blogMenuHandler();
 };
 
 init();
