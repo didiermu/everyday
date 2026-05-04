@@ -935,6 +935,7 @@
                 order: 4;
                 flex-direction: row;
                 display: flex;
+                margin-block-start: 0;
 
                 .button {
                     width: auto;
@@ -1112,9 +1113,9 @@
 
         .swiper-pagination {
             top: auto;
-            bottom: var(--spacing-2xl);
+            bottom: var(--spacing-lg);
             // bottom: 0;
-            right: calc(64px + 700 * (100vw - 1280px) / 1920);
+            right: calc(64px + 200 * (100vw - 1280px) / 1920);
             left: auto;
             justify-content: flex-end;
 

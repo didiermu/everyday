@@ -213,7 +213,9 @@
         .button {
             @include typography.typography("2xl", primaryBold);
             padding-inline: var(--spacing-3xl);
-            transition: 0.3s ease-in-out all !important;
+            transition:
+                0.1s linear filter,
+                letter-spacing !important;
 
             &:hover {
                 letter-spacing: 1px;
