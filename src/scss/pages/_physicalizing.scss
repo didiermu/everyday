@@ -453,8 +453,8 @@
         }
 
         &--moments {
-            // z-index: 9;
-            height: 300vh;
+            // height: 300vh;
+            height: 350vh;
 
             .expand__image {
                 &--fondo {
@@ -612,7 +612,7 @@
 
 @media (min-width: 1920px) {
     .page-physicalizing--moments {
-        height: 320vh;
+        // height: 350vh;
 
         .expand__image--fondo img {
             object-position: calc(-645px - 500 * (100vw - 1920px) / 2560)
