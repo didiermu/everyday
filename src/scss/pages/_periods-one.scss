@@ -132,6 +132,10 @@
         //             }
         //         }
 
+        .svg-flechas-period {
+            display: none;
+        }
+
         &--botonera {
             display: grid;
             row-gap: var(--spacing-lg) !important;
@@ -842,6 +846,10 @@
                 #svg-flechas-period-04 {
                     transform: translate(-4%, 41%);
                 }
+            }
+
+            .svg-flechas-period {
+                display: block;
             }
 
             //             &--summary {

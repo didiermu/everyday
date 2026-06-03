@@ -36,7 +36,7 @@ var rc=Object.defineProperty;var nc=(a,t,e)=>t in a?rc(a,t,{enumerable:!0,config
 </nav>
 `,oc=`<nav class="navbar secondary">
     <div class=" container-fluid">
-        <a href="index.html" class="link-back">BACK</a>
+        <a class="link-back">BACK</a>
         <button class="button button-primary button-min" id="button-menu" data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"
             aria-label="Toggle navigation">MENU</button>

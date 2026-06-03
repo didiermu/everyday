@@ -116,7 +116,7 @@
             }
 
             .visualization--data {
-                top: 16%;
+                // top: 16%;
                 bottom: 0;
                 // align-self: flex-end;
                 padding-block-end: var(--spacing-4xl);
@@ -131,7 +131,6 @@
             max-width: 320px;
             z-index: 1;
             align-items: flex-start;
-
             transition: 0.3s ease-in-out;
             //
             position: absolute;
@@ -139,7 +138,7 @@
             top: 12%;
             padding-block-start: 0;
             // bottom: 0;
-            align-self: center;
+            // align-self: center;
 
             &.hide {
                 opacity: 0;

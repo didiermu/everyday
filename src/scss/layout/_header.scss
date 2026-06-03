@@ -97,13 +97,13 @@
 
         &.offcanvas-end {
             transform: translate(0, 100%);
-            top: auto;
+            top: 0;
             left: 0;
             max-width: 332px;
 
             &.showing,
             &.show:not(.hiding) {
-                transform: translate(0, -50%);
+                transform: translate(0, 0%);
             }
         }
 
@@ -253,13 +253,14 @@
 
         .offcanvas.offcanvas-end {
             position: absolute;
-            width: 332px;
+            width: 342px;
             max-width: none !important;
             bottom: -0.5rem;
             border-radius: var(--border-radius-md);
             border: 0;
             right: auto;
             left: auto;
+            top: auto;
 
             &.showing:not(.hiding),
             &.show:not(.hiding) {

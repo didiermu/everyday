@@ -289,9 +289,9 @@ const scrollGsap = async () => {
             lastScrollTime = now;
             scrollCount++;
 
-            console.log(`Scroll ${scrollCount}/8`);
+            console.log(`Scroll ${scrollCount}/6`);
 
-            if (scrollCount >= 8) {
+            if (scrollCount >= 6) {
                 console.log("Reactivando Locomotive");
 
                 const scrollInstance = getScrollInstance();
@@ -310,11 +310,11 @@ const scrollGsap = async () => {
         ScrollTrigger.create({
             trigger: video,
             start: "top top",
-            end: "bottom center",
+            end: "+=105% center",
             // markers: true,
 
             onEnter: () => {
-                console.log("ENTRA A VIDEO - Desactivando scroll");
+                // console.log("ENTRA A VIDEO - Desactivando scroll");
 
                 isLocked = true;
                 scrollCount = 0;
@@ -332,7 +332,7 @@ const scrollGsap = async () => {
             },
 
             onLeave: () => {
-                console.log("SALE DE VIDEO - Reactivando scroll");
+                // console.log("SALE DE VIDEO - Reactivando scroll");
 
                 isLocked = false;
                 scrollCount = 0;
@@ -918,10 +918,25 @@ const renderShadow = async () => {
     };
 };
 
+const initScrollPosition = () => {
+    // Si no hay hash en la URL, scroll al top
+    if (!window.location.hash) {
+        setTimeout(() => {
+            const scrollInstance = getScrollInstance();
+            if (scrollInstance) {
+                scrollInstance.scrollTo(0, { duration: 0 });
+            } else {
+                window.scrollTo(0, 0);
+            }
+        }, 100);
+    }
+};
+
 const init = async () => {
     render();
     renderShadow();
     smoothScroll();
+    // initScrollPosition();
     scrollGsap();
     modalVideo();
 
