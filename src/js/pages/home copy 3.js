@@ -277,37 +277,26 @@ const scrollGsap = async () => {
         let lastTouchY = 0;
 
         const handleScroll = (e) => {
-            if (!isLocked) {
-                console.log(
-                    "handleScroll called but isLocked is false, returning",
-                );
-                return;
-            }
+            if (!isLocked) return;
 
-            let scrollDirection = 0; // 1 = abajo, -1 = arriba, 0 = sin movimiento
+            let isScrollDown = false;
             let isMobile = false;
 
             // Detectar si es wheel o touch
             if (e.type === "wheel") {
                 // Desktop: wheel event
-                if (e.deltaY > 0) {
-                    scrollDirection = 1; // Abajo
-                } else if (e.deltaY < 0) {
-                    scrollDirection = -1; // Arriba
-                }
+                if (e.deltaY <= 0) return;
+                isScrollDown = true;
             } else if (e.type === "touchmove") {
                 // Mobile: touch event
                 const currentY = e.touches[0].clientY;
-                if (currentY < lastTouchY) {
-                    scrollDirection = 1; // Abajo
-                } else if (currentY > lastTouchY) {
-                    scrollDirection = -1; // Arriba
-                }
+                if (currentY >= lastTouchY) return; // Movimiento hacia arriba
+                isScrollDown = true;
                 lastTouchY = currentY;
                 isMobile = true;
             }
 
-            if (scrollDirection === 0) return;
+            if (!isScrollDown) return;
 
             const now = Date.now();
 
@@ -315,18 +304,13 @@ const scrollGsap = async () => {
             if (now - lastScrollTime < 300) return;
 
             lastScrollTime = now;
-
-            // Sumar si es abajo, restar si es arriba
-            scrollCount += scrollDirection;
-            scrollCount = Math.max(0, scrollCount); // Nunca negativo
+            scrollCount++;
 
             const requiredScrolls = isMobile ? 3 : 6;
-            console.log(
-                `Scroll ${scrollCount}/${requiredScrolls} (${scrollDirection > 0 ? "↓" : "↑"})`,
-            );
+            console.log(`Scroll ${scrollCount}/${requiredScrolls}`);
 
             if (scrollCount >= requiredScrolls) {
-                console.log("✅ Desbloqueo por scroll hacia abajo completado");
+                console.log("Reactivando Locomotive");
 
                 const scrollInstance = getScrollInstance();
 
@@ -338,20 +322,9 @@ const scrollGsap = async () => {
                 scrollCount = 0;
 
                 window.removeEventListener("wheel", handleScroll);
-                window.removeEventListener("touchmove", handleScroll);
-            } else if (scrollCount === 0) {
-                console.log("↩️ Volviste al inicio - Desbloqueando scroll");
-
-                const scrollInstance = getScrollInstance();
-
-                if (scrollInstance) {
-                    scrollInstance.start();
-                }
-
-                isLocked = false;
-
-                window.removeEventListener("wheel", handleScroll);
-                window.removeEventListener("touchmove", handleScroll);
+                window.removeEventListener("touchmove", handleScroll, {
+                    passive: false,
+                });
             }
         };
 
@@ -359,10 +332,10 @@ const scrollGsap = async () => {
             trigger: video,
             start: mediaQuery.matches ? "top top" : "top top",
             end: "+=105% center",
-            // markers: true,
+            markers: true,
 
             onEnter: () => {
-                console.log("🎬 VIDEO TRIGGER ONENTER - Bloqueando scroll");
+                // console.log("ENTRA A VIDEO - Desactivando scroll");
 
                 isLocked = true;
                 scrollCount = 0;
@@ -384,7 +357,7 @@ const scrollGsap = async () => {
             },
 
             onLeave: () => {
-                console.log("🎬 VIDEO TRIGGER ONLEAVE - Desbloqueando scroll");
+                // console.log("SALE DE VIDEO - Reactivando scroll");
 
                 isLocked = false;
                 scrollCount = 0;
