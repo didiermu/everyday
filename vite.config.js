@@ -7,7 +7,8 @@ export default defineConfig(({ command }) => {
 
         // 👇 CLAVE PARA GITHUB PAGES
 
-        base: command === "serve" ? "/" : "/everyday/",
+        // base: command === "serve" ? "/" : "/everyday/",
+        base: "/",
 
         publicDir: path.resolve(__dirname, "public"),
 
