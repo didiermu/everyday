@@ -132,11 +132,6 @@ $container-sizes: (
         }
 
         .modal--content {
-            // background: #fff;
-            // text-align: center;
-            // display: flex;
-            // flex-direction: column;
-            // align-items: center;
             position: relative;
 
             .close {
@@ -166,6 +161,13 @@ $container-sizes: (
                 inset: -100%;
                 margin: auto;
             }
+        }
+    }
+    @media (min-width: 1920px) {
+        dialog .modal--content .close {
+            width: 48px;
+            height: 48px;
+            background-size: 0.6em;
         }
     }
 }

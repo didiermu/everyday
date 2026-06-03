@@ -185,6 +185,12 @@ canvas {
 
         .video {
             margin-block-end: 0;
+            padding-block: 0;
+            height: 100svh;
+
+            video {
+                height: 100%;
+            }
 
             cursor:
                 url(./../img/cursor-play.svg) 30 30,

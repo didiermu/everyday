@@ -328,6 +328,10 @@
         }
 
         .hero {
+            .row {
+                justify-content: center;
+            }
+
             .col-12 {
                 row-gap: var(--spacing-3xl);
             }

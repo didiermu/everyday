@@ -44,6 +44,27 @@ export const initImgCoverZoom = () => {
     });
 };
 
+export const initHashNavigation = () => {
+    document.addEventListener("click", (e) => {
+        const link = e.target.closest("a[href^='index.html#']");
+        if (!link) return;
+
+        const href = link.getAttribute("href");
+        const hash = href.split("#")[1];
+        const isOnHomepage =
+            window.location.pathname.includes("index.html") ||
+            window.location.pathname.endsWith("/");
+
+        if (isOnHomepage && hash) {
+            e.preventDefault();
+            const element = document.getElementById(hash);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+    });
+};
+
 // Layout
 (async () => {
     if (document.querySelector("main").classList.contains("main-periods")) {
@@ -61,4 +82,5 @@ export const initImgCoverZoom = () => {
     }
 
     initImgCoverZoom();
+    initHashNavigation();
 })();

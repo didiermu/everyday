@@ -136,8 +136,9 @@
             //
             position: absolute;
             left: 4%;
-            top: 0;
-            bottom: 0;
+            top: 12%;
+            padding-block-start: 0;
+            // bottom: 0;
             align-self: center;
 
             &.hide {
@@ -162,7 +163,7 @@
             }
 
             p {
-                @include typography.typography("md", tertiary);
+                @include typography.typography("sm", tertiary);
                 font-weight: 100;
             }
         }
@@ -335,7 +336,7 @@
         }
 
         .visualization--data {
-            width: 25%;
+            width: 26%;
             max-width: 320px;
             z-index: 2;
             transition: 0.3s ease-in-out;

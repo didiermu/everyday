@@ -231,9 +231,14 @@ function createPeriodsTemplate(data, currentPeriod) {
                                 }" width="980" height="1000" x="0" y="0"></image>
                                 ${mapHTML}
                             </g>
+                             
+                                ${currentPeriod === "3" ? '<g class="svg-flechas-period" id="svg-flechas-period-03" transform="translate(500, 110)"><image href="/img/flecha-period-03.webp" class="flecha-period" width="980" height="1000" x="0" y="0"></image></g>' : ""}
+
+                                ${currentPeriod === "4" ? '<g class="svg-flechas-period" id="svg-flechas-period-04" transform="translate(500, 110)"><image href="/img/flecha-period-04.webp" class="flecha-period" width="980" height="1000" x="0" y="0"></image></g>' : ""}
+                             
                              <g class="svg-flechas" transform="translate(500, 110)">
-                                <image href="/img/flecha-00.webp" class="flechas" width="980" height="1000"
-                                    x="0" y="0"></image>
+                                
+                                <image href="/img/flecha-00.webp" class="flechas" width="980" height="1000" x="0" y="0"></image>
                             </g>
                             <g id="svg-dots" transform="translate(500, 110)">
                                 ${dotHTML}
@@ -712,6 +717,7 @@ const hoverMap = () => {
     const dataMap = document.querySelectorAll(".periods--data");
     const resumeMap = document.querySelectorAll(".periods--parrafo");
     const svgFlechas = document.querySelectorAll(".svg-flechas");
+    const svgFlechasPeriod = document.querySelectorAll(".svg-flechas-period");
     const flecha = document.querySelectorAll(".flechas");
 
     const updateRingHead = (periodNumber) => {
@@ -762,6 +768,7 @@ const hoverMap = () => {
             dataMap.forEach((map) => map.classList.add("hide"));
             paginador.forEach((map) => map.classList.add("hide"));
 
+            svgFlechasPeriod.forEach((map) => (map.style.display = "none"));
             svgFlechas.forEach((map) => (map.style.display = "block"));
             flecha.forEach((map) =>
                 map.setAttribute(
@@ -795,6 +802,8 @@ const hoverMap = () => {
                     `${import.meta.env.BASE_URL}img/flecha-00.webp`,
                 ),
             );
+
+            svgFlechasPeriod.forEach((map) => (map.style.display = "block"));
             svgFlechas.forEach((map) => (map.style.display = "none"));
         });
     });

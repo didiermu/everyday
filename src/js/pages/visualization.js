@@ -11,6 +11,7 @@ let buttonHandler = null;
 let linkHandler = null;
 let linkBack;
 const mediaQuery = window.matchMedia("(min-width:1280px)");
+const mediaQueryDesk = window.matchMedia("(min-width:1440px)");
 const mediaQueryFull = window.matchMedia("(min-width:1920px)");
 let swiperInstance = null;
 
@@ -504,7 +505,10 @@ const hoverRings2 = () => {
                 svgIndicador.style.display = "none";
                 svgFlechas.style.display = "block";
 
-                flecha.setAttribute("href", `${import.meta.env.BASE_URL}img/flecha-${idRing}.webp`);
+                flecha.setAttribute(
+                    "href",
+                    `${import.meta.env.BASE_URL}img/flecha-${idRing}.webp`,
+                );
                 svgFlechas.id = `flecha-${idRing}`;
             }
         });
@@ -516,7 +520,10 @@ const hoverRings2 = () => {
                 ringResume.classList.remove(`show`);
                 header.style.visibility = "visible";
 
-                flecha.setAttribute("href", `${import.meta.env.BASE_URL}img/flecha-00.webp`);
+                flecha.setAttribute(
+                    "href",
+                    `${import.meta.env.BASE_URL}img/flecha-00.webp`,
+                );
                 svgIndicador.style.display = "block";
                 svgFlechas.style.display = "none";
             }
@@ -558,10 +565,24 @@ const hoverRings2 = () => {
         function sizeDeeper() {
             deeper
                 .querySelector("rect")
-                .setAttribute("width", mediaQueryFull.matches ? "280" : "240");
+                .setAttribute(
+                    "width",
+                    mediaQueryFull.matches
+                        ? "280"
+                        : mediaQueryDesk.matches
+                          ? "270"
+                          : "240",
+                );
             deeper
                 .querySelector("text")
-                .setAttribute("x", mediaQueryFull.matches ? "140" : "120");
+                .setAttribute(
+                    "x",
+                    mediaQueryFull.matches
+                        ? "140"
+                        : mediaQueryDesk.matches
+                          ? "135"
+                          : "120",
+                );
         }
 
         sizeDeeper();

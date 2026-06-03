@@ -24,7 +24,10 @@ ScrollTrigger.defaults({
 // Variables globales para cleanup
 
 const mediaQuery = window.matchMedia("(min-width:1280px)");
-const mediaQueryFull = window.matchMedia("(min-width:1440px)");
+const mediaQueryLaptop = window.matchMedia("(min-width:1280px)");
+const mediaQueryDesktop = window.matchMedia("(min-width:1440px)");
+const mediaQueryFullwidth = window.matchMedia("(min-width:1920px)");
+const mediaQuery4K = window.matchMedia("(min-width:2560px)");
 const MODAL_VIDEO_ID = "modal-video";
 const MODAL_VIDEO_SRC = "./video/intro_video_landscape.webm";
 
@@ -46,6 +49,12 @@ const openModalVideo = async () => {
 
     if (sectionVideoWasPlaying) {
         sectionVideo.pause();
+    }
+
+    // Desactivar scroll de locomotive
+    const scrollInstance = getScrollInstance();
+    if (scrollInstance) {
+        scrollInstance.stop();
     }
 
     const modal = document.createElement("dialog");
@@ -70,6 +79,12 @@ const openModalVideo = async () => {
         closeBtn.removeEventListener("click", closeHandler);
         modal.removeEventListener("close", modalCloseHandler);
         modal.remove();
+
+        // Reactivar scroll de locomotive
+        const scrollInstanceOnClose = getScrollInstance();
+        if (scrollInstanceOnClose) {
+            scrollInstanceOnClose.start();
+        }
 
         if (sectionVideoWasPlaying && sectionVideo) {
             sectionVideo
@@ -253,6 +268,86 @@ const scrollGsap = async () => {
         });
     };
 
+    const pinVideo = () => {
+        const video = document.querySelector(".video");
+
+        let scrollCount = 0;
+        let isLocked = false;
+        let lastScrollTime = 0;
+
+        const handleWheel = (e) => {
+            if (!isLocked) return;
+
+            // Solo contar scroll hacia abajo
+            if (e.deltaY <= 0) return;
+
+            const now = Date.now();
+
+            // Ignorar eventos generados por el mismo movimiento de rueda
+            if (now - lastScrollTime < 300) return;
+
+            lastScrollTime = now;
+            scrollCount++;
+
+            console.log(`Scroll ${scrollCount}/8`);
+
+            if (scrollCount >= 8) {
+                console.log("Reactivando Locomotive");
+
+                const scrollInstance = getScrollInstance();
+
+                if (scrollInstance) {
+                    scrollInstance.start();
+                }
+
+                isLocked = false;
+                scrollCount = 0;
+
+                window.removeEventListener("wheel", handleWheel);
+            }
+        };
+
+        ScrollTrigger.create({
+            trigger: video,
+            start: "top top",
+            end: "bottom center",
+            // markers: true,
+
+            onEnter: () => {
+                console.log("ENTRA A VIDEO - Desactivando scroll");
+
+                isLocked = true;
+                scrollCount = 0;
+                lastScrollTime = 0;
+
+                const scrollInstance = getScrollInstance();
+
+                if (scrollInstance) {
+                    scrollInstance.stop();
+                }
+
+                window.addEventListener("wheel", handleWheel, {
+                    passive: true,
+                });
+            },
+
+            onLeave: () => {
+                console.log("SALE DE VIDEO - Reactivando scroll");
+
+                isLocked = false;
+                scrollCount = 0;
+
+                const scrollInstance = getScrollInstance();
+
+                if (scrollInstance) {
+                    scrollInstance.start();
+                }
+
+                window.removeEventListener("wheel", handleWheel);
+            },
+        });
+    };
+
     const setupThreeAnimation = () => {
         ScrollTrigger.create({
             trigger: ".page-home",
@@ -330,6 +425,7 @@ const scrollGsap = async () => {
     await scrollViz();
     paneles();
     panelZoom();
+    pinVideo();
     pinCards();
     setupThreeAnimation();
 };
@@ -425,32 +521,56 @@ const CONFIG = {
         camara: [0, 0, 15],
         camaraShadow: [0, 0, 16],
     },
+    laptop: {
+        baseRotation: { x: -1.5, y: 4, z: -0.3 },
+        scale: [-1, 1, 1],
+        position: [0, -4.8, 0],
+        camara: [0, 0, 12],
+        camaraShadow: [-2, 2.5, 18.5],
+    },
     desktop: {
         baseRotation: { x: -1.5, y: 4, z: -0.3 },
         scale: [-1, 1, 1],
-        position: [0, -8, 0],
-        camara: [0, 0, 19.65],
+        position: [0, -3.9, 0],
+        camara: [0, 0, 10],
         camaraShadow: [-2, 2.5, 18.5],
     },
-    full: {
+    fullwidth: {
         baseRotation: { x: -1.5, y: 4, z: -0.3 },
         scale: [-1, 1, 1],
-        position: [0, -8, 0],
-        camara: [0, 0, 22],
+        position: [0, -3, 0],
+        camara: [0, 0, 8],
+        camaraShadow: [-2, 2.5, 18.5],
+    },
+    fourk: {
+        baseRotation: { x: -1.5, y: 4, z: -0.3 },
+        scale: [-1, 1, 1],
+        position: [0, -3.5, 0],
+        camara: [0, 0, 9],
         camaraShadow: [-2, 2.5, 18.5],
     },
 };
 
-let currentConfig = mediaQuery.matches ? CONFIG.desktop : CONFIG.mobile;
-let lastBreakpoint = mediaQuery.matches; // Guardar el último breakpoint conocido
-console.log("Current Config:", currentConfig);
+let currentConfig = CONFIG.mobile;
+let lastBreakpoint = null;
+
+function getDeviceConfig() {
+    if (mediaQuery4K.matches) return CONFIG.fourk;
+    if (mediaQueryFullwidth.matches) return CONFIG.fullwidth;
+    if (mediaQueryDesktop.matches) return CONFIG.desktop;
+    if (mediaQueryLaptop.matches) return CONFIG.laptop;
+    return CONFIG.mobile;
+}
+
+currentConfig = getDeviceConfig();
+// console.log("Current Config:", currentConfig);
 
 /* ==============================
    ACTUALIZAR SEGÚN DISPOSITIVO
 ============================== */
 async function updateDeviceConfig() {
     // 1. Detectar dispositivo actual
-    currentConfig = mediaQuery.matches ? CONFIG.desktop : CONFIG.mobile;
+    currentConfig = getDeviceConfig();
     sizeRender = currentConfig.scale;
 
     if (model && modelShadow) {
@@ -629,7 +749,12 @@ const render = async () => {
     };
 
     window.addEventListener("resize", resizeHandler);
-    mediaQuery.addEventListener("change", updateDeviceConfig);
+
+    // Agregar listeners a todos los media queries para actualizar configuración
+    mediaQueryLaptop.addEventListener("change", updateDeviceConfig);
+    mediaQueryDesktop.addEventListener("change", updateDeviceConfig);
+    mediaQueryFullwidth.addEventListener("change", updateDeviceConfig);
+    mediaQuery4K.addEventListener("change", updateDeviceConfig);
 
     /* ==============================
    OBSERVADOR DE CAMBIO DE TAMAÑO
@@ -765,14 +890,14 @@ const renderShadow = async () => {
         //
         //         rendererShadow.setSize(rect.width, rect.height);
 
-        // Solo llamar a updateDeviceConfig si cambió el breakpoint
-        if (lastBreakpoint !== mediaQuery.matches) {
-            updateDeviceConfig();
-        }
+        updateDeviceConfig();
     };
 
     window.addEventListener("resize", resizeHandlerShadow);
-    mediaQuery.addEventListener("change", updateDeviceConfig);
+    mediaQueryLaptop.addEventListener("change", updateDeviceConfig);
+    mediaQueryDesktop.addEventListener("change", updateDeviceConfig);
+    mediaQueryFullwidth.addEventListener("change", updateDeviceConfig);
+    mediaQuery4K.addEventListener("change", updateDeviceConfig);
 
     /* ==============================
    OBSERVADOR DE CAMBIO DE TAMAÑO
@@ -802,7 +927,7 @@ const init = async () => {
 
     videoHome();
     // ScrollTrigger.refresh();
-    mediaQuery.addEventListener("change", modalVideo);
+    mediaQueryLaptop.addEventListener("change", modalVideo);
 };
 
 init();

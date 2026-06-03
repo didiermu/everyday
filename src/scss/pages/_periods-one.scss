@@ -779,6 +779,10 @@
                     z-index: 1;
                     opacity: 1;
                 }
+
+                li {
+                    @include typography.typography("md", script);
+                }
             }
 
             &#period-1 .parrafo-1,
@@ -808,6 +812,12 @@
                 @include typography.typography("2xl", script);
             }
 
+            .periods-hover {
+                // border: 1px solid;
+                width: min(3%, 20px);
+                height: 5%;
+            }
+
             &#period-3 {
                 #svg-dots {
                     display: none;
@@ -815,14 +825,22 @@
 
                 .periods-hover {
                     top: 71%;
-                    right: 42%;
+                    right: calc(486px + 742 * (100vw - 1280px) / 1920);
+                }
+
+                #svg-flechas-period-03 {
+                    transform: translate(42%, 36%);
                 }
             }
 
             &#period-4 {
                 .periods-hover {
-                    top: 71%;
-                    left: 39%;
+                    top: 68%;
+                    left: calc(468px + 710 * (100vw - 1280px) / 1920);
+                }
+
+                #svg-flechas-period-04 {
+                    transform: translate(-4%, 41%);
                 }
             }
 
@@ -1107,14 +1125,16 @@
 
             .swiper {
                 padding-block-end: var(--spacing-xl);
-                height: 100svh;
+                height: 100%;
+                // height: 100svh;
+                // max-height: 900px;
             }
         }
 
         .swiper-pagination {
             top: auto;
-            bottom: var(--spacing-lg);
-            // bottom: 0;
+            // bottom: var(--spacing-lg);
+            bottom: 0;
             right: calc(64px + 200 * (100vw - 1280px) / 1920);
             left: auto;
             justify-content: flex-end;
@@ -1237,6 +1257,22 @@
                     padding: 0;
                 }
             }
+        }
+    }
+}
+
+// @media (min-width: 1440px) {
+//     .page-periods {
+//         #modal-periods .swiper {
+//             height: auto;
+//         }
+//     }
+// }
+
+@media (min-width: 1920px) {
+    .page-periods {
+        .swiper-pagination {
+            bottom: var(--spacing-lg);
         }
     }
 }

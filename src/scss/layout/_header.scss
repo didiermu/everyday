@@ -272,6 +272,16 @@
                     url(./../img/cerillo2.webp) 30 30,
                     auto;
             }
+
+            ul li {
+                letter-spacing: 2%;
+                transition: 0.2s ease-in-out all;
+
+                &:hover {
+                    color: var(--color-magic);
+                    letter-spacing: 6%;
+                }
+            }
         }
 
         .navbar {

@@ -12,7 +12,7 @@ export default defineConfig(({ command }) => {
         publicDir: path.resolve(__dirname, "public"),
 
         build: {
-            outDir: path.resolve(__dirname, "docs"),
+            outDir: path.resolve(__dirname, "dist"),
             emptyOutDir: true,
             rollupOptions: {
                 input: {

@@ -105,11 +105,13 @@ const slider = () => {
         direction: "horizontal",
         slidesPerView: "auto",
         spaceBetween: 20,
+
         cssMode: true,
         on: {
             click: function () {
                 hideSlideIndex = this.clickedIndex;
                 swiperBlog.slideTo(hideSlideIndex);
+                window.scrollTo(0, 0);
             },
         },
     });
@@ -123,6 +125,7 @@ const slider = () => {
             click: function () {
                 hideSlideIndex = this.clickedIndex;
                 swiperLearned.slideTo(hideSlideIndex);
+                window.scrollTo(0, 0);
             },
         },
     });
@@ -133,6 +136,8 @@ const slider = () => {
         slidesPerView: "auto",
         spaceBetween: 20,
         autoHeight: true,
+        effect: "none",
+        speed: 0,
         pagination: {
             el: ".swiper-blog .swiper-pagination",
             clickable: true,
@@ -174,6 +179,7 @@ const slider = () => {
         slidesPerView: "auto",
         spaceBetween: 20,
         autoHeight: true,
+        speed: 0,
         pagination: {
             el: ".swiper-learned .swiper-pagination",
             clickable: true,

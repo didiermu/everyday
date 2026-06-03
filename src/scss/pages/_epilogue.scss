@@ -104,6 +104,7 @@
                     display: block;
                     margin-block-start: var(--spacing-md);
                     text-transform: none;
+                    font-weight: normal;
                     @include typography.typography("lg", tertiary);
                 }
             }
@@ -262,14 +263,14 @@
                 text-decoration: none;
                 width: fit-content;
 
-                &::after {
-                    content: "";
-                    width: 16px;
-                    height: 16px;
-                    display: block;
-                    background: var(--icon-link) no-repeat center / contain;
-                    flex: 0 0 16px;
-                }
+                // &::after {
+                //     content: "";
+                //     width: 16px;
+                //     height: 16px;
+                //     display: block;
+                //     background: var(--icon-link) no-repeat center / contain;
+                //     flex: 0 0 16px;
+                // }
             }
         }
 
@@ -451,11 +452,13 @@
 
                 .panel--contenido {
                     order: 2;
+                    padding-inline: 5.3125rem 10.875rem;
                 }
 
                 .panels--links {
                     order: 1;
                     place-items: flex-start;
+                    padding-inline: 10.875rem 5.3125rem;
                 }
             }
 
@@ -488,6 +491,12 @@
 
                 .button {
                     @include typography.typography("2xl", primaryBold);
+                }
+            }
+
+            &--links {
+                a:hover {
+                    text-decoration: underline;
                 }
             }
         }
