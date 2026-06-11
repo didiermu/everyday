@@ -265,6 +265,7 @@
 
             .visualization--ring--head {
                 opacity: 1;
+                z-index: 1;
             }
 
             .visualization--mapa {
@@ -286,7 +287,7 @@
             }
 
             .visualization--title {
-                & > .row {
+                .container--header {
                     opacity: 0;
                 }
             }
@@ -384,12 +385,17 @@
             z-index: 1;
             position: relative;
 
+            .container--header {
+                width: var(--width-period);
+                padding-inline: 0;
+            }
+
             .row {
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
                 column-gap: var(--spacing-3xl);
-                max-width: 1280px;
+                // max-width: 1280px;
                 margin: auto;
                 transition: 0.3s ease-in-out all;
 
@@ -400,11 +406,18 @@
                     &:nth-child(1) {
                         order: 2;
                     }
+
                     &:nth-child(2) {
                         order: 1;
+                        align-items: flex-start;
+                        // padding-inline: 4.5% 0;
+                        padding-inline: calc(var(--bs-gutter-x) * 0.5) 0;
                     }
+
                     &:nth-child(3) {
                         order: 3;
+                        align-items: flex-end;
+                        padding-inline: 0 calc(var(--bs-gutter-x) * 0.5);
                     }
                 }
             }
@@ -475,7 +488,10 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: var(--spacing-5xl) 64px;
+                // padding: var(--spacing-5xl) 4.5%;
+                padding: var(--spacing-5xl) calc(var(--bs-gutter-x) * 0.5);
+                width: var(--width-period);
+                justify-self: center;
 
                 h2 {
                     @include typography.typography("10xl", primary);

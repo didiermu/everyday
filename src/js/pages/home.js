@@ -278,9 +278,9 @@ const scrollGsap = async () => {
 
         const handleScroll = (e) => {
             if (!isLocked) {
-                console.log(
-                    "handleScroll called but isLocked is false, returning",
-                );
+                // console.log(
+                //     "handleScroll called but isLocked is false, returning",
+                // );
                 return;
             }
 
@@ -321,12 +321,12 @@ const scrollGsap = async () => {
             scrollCount = Math.max(0, scrollCount); // Nunca negativo
 
             const requiredScrolls = isMobile ? 3 : 6;
-            console.log(
-                `Scroll ${scrollCount}/${requiredScrolls} (${scrollDirection > 0 ? "↓" : "↑"})`,
-            );
+            // console.log(
+            //     `Scroll ${scrollCount}/${requiredScrolls} (${scrollDirection > 0 ? "↓" : "↑"})`,
+            // );
 
             if (scrollCount >= requiredScrolls) {
-                console.log("✅ Desbloqueo por scroll hacia abajo completado");
+                // console.log("✅ Desbloqueo por scroll hacia abajo completado");
 
                 const scrollInstance = getScrollInstance();
 
@@ -340,7 +340,7 @@ const scrollGsap = async () => {
                 window.removeEventListener("wheel", handleScroll);
                 window.removeEventListener("touchmove", handleScroll);
             } else if (scrollCount === 0) {
-                console.log("↩️ Volviste al inicio - Desbloqueando scroll");
+                // console.log("↩️ Volviste al inicio - Desbloqueando scroll");
 
                 const scrollInstance = getScrollInstance();
 
@@ -362,7 +362,7 @@ const scrollGsap = async () => {
             // markers: true,
 
             onEnter: () => {
-                console.log("🎬 VIDEO TRIGGER ONENTER - Bloqueando scroll");
+                // console.log("🎬 VIDEO TRIGGER ONENTER - Bloqueando scroll");
 
                 isLocked = true;
                 scrollCount = 0;
@@ -384,7 +384,7 @@ const scrollGsap = async () => {
             },
 
             onLeave: () => {
-                console.log("🎬 VIDEO TRIGGER ONLEAVE - Desbloqueando scroll");
+                // console.log("🎬 VIDEO TRIGGER ONLEAVE - Desbloqueando scroll");
 
                 isLocked = false;
                 scrollCount = 0;
