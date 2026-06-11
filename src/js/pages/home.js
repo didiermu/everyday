@@ -187,7 +187,13 @@ const scrollGsap = async () => {
 
         function checkPanelClass(panel) {
             if (panel && panel.classList.contains("page-visualization")) {
-                // console.log("viz");
+                // if (
+                //     document
+                //         .querySelector(".viz-mapa")
+                //         .classList.contains("hide")
+                // )
+                //     // console.log("viz");
+                //     loadComponent("#header", "componets/header-interior.html");
             } else {
                 // console.log("no ");
                 loadComponent("#header", "componets/header.html");

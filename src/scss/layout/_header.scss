@@ -9,8 +9,14 @@
     }
 }
 
-&.panel-3:has(.visualization.show),
-&.panel-3:has(.main-periods.show) {
+// &.panel-3:has(.visualization.show),
+// &.panel-3:has(.main-periods.show) {
+//     #button-menu {
+//         background: var(--color-not-so-white);
+//     }
+// }
+&.panel-3:has(.navbar.secondary):has(.visualization.show),
+&.panel-3:has(.navbar.secondary):has(.main-periods.show) {
     #button-menu {
         background: var(--color-not-so-white);
     }
