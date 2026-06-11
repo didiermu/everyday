@@ -10,6 +10,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger.js";
 // import smoothScroll from "./../utils/loadLocomotive.js";
 import GUI from "lil-gui";
+import { loadComponent } from "./../utils/loadComponent.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -172,6 +173,27 @@ const scrollGsap = async () => {
             }
         });
 
+        panels.forEach((panel) => {
+            ScrollTrigger.create({
+                trigger: panel,
+                start: "top center",
+                end: "bottom center",
+                onEnter: () => checkPanelClass(panel),
+                onEnterBack: () => checkPanelClass(panel),
+                onLeave: () => checkPanelClass(null),
+                onLeaveBack: () => checkPanelClass(null),
+            });
+        });
+
+        function checkPanelClass(panel) {
+            if (panel && panel.classList.contains("page-visualization")) {
+                // console.log("viz");
+            } else {
+                // console.log("no ");
+                loadComponent("#header", "componets/header.html");
+            }
+        }
+
         panelContent.forEach((panel, i) => {
             ScrollTrigger.create({
                 trigger: panel,
@@ -197,6 +219,31 @@ const scrollGsap = async () => {
         }
     };
 
+    let currentStep = null;
+
+    const updateImage = (step) => {
+        const image = document.querySelector(".expand__image--fondo img");
+
+        const images = [
+            "./img/physicalizing-02.webp",
+            "./img/fondo-psych-mobile.webp",
+            "./img/fondo-psych-mobile-2.webp",
+        ];
+
+        const newSrc = images[step - 1];
+        if (!newSrc || step === currentStep) return;
+        currentStep = step;
+
+        // Fade out → cambia src → fade in
+        gsap.to(image, {
+            autoAlpha: 0,
+            duration: 0.3,
+            onComplete: () => {
+                image.src = newSrc;
+                gsap.to(image, { autoAlpha: 1, duration: 0.3 });
+            },
+        });
+    };
     const pinCards = () => {
         const section = document.querySelector(".page-physicalizing--moments");
         const items = gsap.utils.toArray(".expand__image__info");
@@ -214,16 +261,33 @@ const scrollGsap = async () => {
                 pinSpacing: false,
                 scrub: 1,
                 // markers: true,
+                // onUpdate: (self) => {
+                //     const step = Math.min(
+                //         Math.ceil(self.progress * items.length) || 1,
+                //         items.length,
+                //     );
+                //     section.className = section.className.replace(
+                //         /\bis-step-\d+/g,
+                //         "",
+                //     );
+                //     section.classList.add(`is-step-${step}`);
+                // },
+
                 onUpdate: (self) => {
                     const step = Math.min(
                         Math.ceil(self.progress * items.length) || 1,
                         items.length,
                     );
-                    section.className = section.className.replace(
-                        /\bis-step-\d+/g,
-                        "",
-                    );
-                    section.classList.add(`is-step-${step}`);
+
+                    if (step !== currentStep) {
+                        section.className = section.className.replace(
+                            /\bis-step-\d+/g,
+                            "",
+                        );
+                        section.classList.add(`is-step-${step}`);
+
+                        updateImage(step); // 👈 solo se llama cuando el step cambia
+                    }
                 },
             },
         });
@@ -996,6 +1060,7 @@ const init = async () => {
     videoHome();
     // ScrollTrigger.refresh();
     mediaQueryLaptop.addEventListener("change", modalVideo);
+    // alert("hola");
 };
 
 init();
