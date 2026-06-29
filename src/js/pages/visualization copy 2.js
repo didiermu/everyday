@@ -5,6 +5,8 @@ import {
     getScrollInstance,
     destroyScroll,
     smoothScroll,
+    stopScroll,
+    startScroll,
 } from "./../utils/loadLocomotive.js";
 
 let buttonHandler = null;
@@ -84,9 +86,13 @@ const modalExplore = () => {
             await loadComponent("#header", "componets/header-interior.html");
 
             setTimeout(() => {
-                const linkBack = document.querySelector(".link-back");
-                linkBack.addEventListener("click", linkHandler);
+                // no borrar aun
+                // const linkBack = document.querySelector(".link-back");
+                // linkBack.addEventListener("click", linkHandler);
+                // no borrar aun
 
+                linkBack = document.querySelector(".link-back");
+                linkBack.addEventListener("click", linkHandlerMobile);
                 document.querySelector("body").className = "panel-3";
 
                 //
@@ -112,40 +118,64 @@ const modalExplore = () => {
                 //     "color:#00BCD4;font-weight:bold",
                 // );
                 // console.trace();
-                ScrollTrigger.refresh(true);
+                // ScrollTrigger.refresh(true);
                 // console.groupEnd();
                 lenis.scrollTo(top, { immediate: true });
                 //
-                //destroyScroll();
+                // //destroyScroll();
                 stopScroll();
-            }, 500);
+                // console.log("modd");
+            }, 300);
         };
 
-        const linkHandler = () => {
-            hero.classList.add("show");
-            modal.classList.remove("show");
+        // NO BORRAR AUN
+        //         const linkHandler = () => {
+        //             hero.classList.add("show");
+        //             modal.classList.remove("show");
+        //
+        //             // ✅ destruir swiper correctamente
+        //             if (swiperInstance) {
+        //                 swiperInstance.destroy(true, true);
+        //                 swiperInstance = null;
+        //             }
+        //
+        //             loadComponent("#header", "componets/header.html");
+        //
+        //             // console.trace("REFRESH");
+        //             // console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+        //             // console.trace();
+        //             // ScrollTrigger.refresh(true);
+        //             // console.groupEnd();
+        //             if (scroll) {
+        //                 smoothScroll();
+        //             }
+        //         };
 
-            // ✅ destruir swiper correctamente
-            if (swiperInstance) {
-                swiperInstance.destroy(true, true);
-                swiperInstance = null;
-            }
-
-            loadComponent("#header", "componets/header.html");
-
-            // console.trace("REFRESH");
-            // console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
-            // console.trace();
-            // ScrollTrigger.refresh(true);
-            // console.groupEnd();
-            if (scroll) {
-                smoothScroll();
-            }
-        };
+        // NO BORRAR AUN
 
         button.addEventListener("click", buttonHandler);
         linkExplore.addEventListener("click", buttonHandler);
     }
+};
+
+export const linkHandlerMobile = async () => {
+    const hero = document.querySelector(".visualization");
+    const modal = document.querySelector(".main-periods");
+
+    hero.classList.add("show");
+    modal.classList.remove("show");
+
+    // ✅ destruir swiper correctamente
+    if (swiperInstance) {
+        swiperInstance.destroy(true, true);
+        swiperInstance = null;
+    }
+
+    await loadComponent("#header", "componets/header.html");
+    startScroll();
+    // if (scroll) {
+    //     smoothScroll();
+    // }
 };
 
 const datosPeriod = {
@@ -238,6 +268,7 @@ const openExplore = async (idRing) => {
     const heroViz = document.querySelector(".hero-viz");
     const modal = document.querySelector(".main-periods");
     const periodHead = document.querySelector(".visualization--period--head");
+
     swiperInstance = await initPeriods();
 
     if (mediaQuery.matches) {
@@ -268,11 +299,12 @@ const openExplore = async (idRing) => {
         setTimeout(() => {
             //destroyScroll();
             stopScroll();
+            console.log("openEx");
         }, 500);
 
-        // console.log("d");
+        console.log("d");
     } else {
-        // console.log("m");
+        console.log("m");
         hero.classList.remove("show");
         hero.classList.add("hide");
         modal.classList.add("show");
@@ -344,7 +376,8 @@ const linkHandlerDesk = async () => {
     // ScrollTrigger.refresh(true);
     // console.groupEnd();
 
-    smoothScroll();
+    // smoothScroll();
+    startScroll();
 };
 
 const hoverRings2 = () => {
@@ -682,10 +715,6 @@ const init = () => {
     modalViz();
     modalExplore();
     hoverRings2();
-
-    // hoverPeriods();
 };
 
 init();
-
-// alert("limpiar conentedor slide periods");

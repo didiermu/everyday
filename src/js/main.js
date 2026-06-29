@@ -8,7 +8,9 @@ import "./../scss/styles.scss";
 import "bootstrap/js/dist/offcanvas";
 import "bootstrap/js/dist/collapse";
 
+import { startScroll } from "./utils/loadLocomotive.js";
 import { scrollToSection } from "./pages/home.js";
+import { linkHandlerMobile } from "./pages/visualization.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -88,8 +90,18 @@ export const initMenuLinks = () => {
                 return;
             }
 
-            // Si ya estoy en index, hago el scroll
-            scrollToSection(hash);
+            if (
+                document
+                    .querySelector(".main-periods")
+                    .classList.contains("show")
+            ) {
+                startScroll();
+                scrollToSection(hash);
+                linkHandlerMobile();
+            } else {
+                scrollToSection(hash);
+            }
+
             return;
         }
     });

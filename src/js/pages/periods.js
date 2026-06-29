@@ -6,6 +6,8 @@ import {
     getScrollInstance,
     destroyScroll,
     smoothScroll,
+    stopScroll,
+    startScroll,
 } from "./../utils/loadLocomotive.js";
 // Variables globales para almacenar los datos y recursos
 let emotionsData = null;
@@ -519,7 +521,8 @@ async function attachModalEvents(slide) {
 
         dataButton.onclick = () => {
             modalData.showModal();
-            destroyScroll();
+            //destroyScroll();
+            // stopScroll();
         };
 
         if (closeBtn)
@@ -587,7 +590,9 @@ async function attachModalEvents(slide) {
                 );
             }
 
-            destroyScroll();
+            //destroyScroll();
+            // stopScroll();
+            // console.log("star");
         };
 
         const highlights = normalizeHighlights(data.highlights);
@@ -615,15 +620,18 @@ async function attachModalEvents(slide) {
         readButton.onclick = () => {
             updateStory(swiperActive);
             modalStory.showModal();
-            destroyScroll();
+            //destroyScroll();
+            // stopScroll();
         };
 
         if (closeBtnStory)
             closeBtnStory.onclick = () => {
                 modalStory.close();
-                if (scroll) {
-                    smoothScroll();
-                }
+                // if (scroll) {
+                //     smoothScroll();
+                // }
+                // startScroll();
+                // console.log("cer");
             };
     }
 
@@ -634,15 +642,18 @@ async function attachModalEvents(slide) {
         // readButton.onclick = () => {
         //     // modalResume.showModal();
         //     modalStory.showModal();
-        //     destroyScroll();
+        //     //destroyScroll();
+        // stopScroll();
         // };
 
         if (closeBtn)
             closeBtn.onclick = () => {
                 modalResume.close();
-                if (scroll) {
-                    smoothScroll();
-                }
+                // if (scroll) {
+                //     smoothScroll();
+                // }
+                // startScroll();
+                // console.log("cer resume");
             };
 
         const text = modalResume.querySelector("p");

@@ -118,13 +118,14 @@ const modalExplore = () => {
                 //     "color:#00BCD4;font-weight:bold",
                 // );
                 // console.trace();
-                ScrollTrigger.refresh(true);
+                // ScrollTrigger.refresh(true);
                 // console.groupEnd();
                 lenis.scrollTo(top, { immediate: true });
                 //
-                // destroyScroll();
+                // //destroyScroll();
                 stopScroll();
-            }, 500);
+                // console.log("modd");
+            }, 300);
         };
 
         // NO BORRAR AUN
@@ -157,7 +158,7 @@ const modalExplore = () => {
     }
 };
 
-const linkHandlerMobile = async () => {
+export const linkHandlerMobile = async () => {
     const hero = document.querySelector(".visualization");
     const modal = document.querySelector(".main-periods");
 
@@ -267,16 +268,19 @@ const openExplore = async (idRing) => {
     const heroViz = document.querySelector(".hero-viz");
     const modal = document.querySelector(".main-periods");
     const periodHead = document.querySelector(".visualization--period--head");
+
     swiperInstance = await initPeriods();
 
     if (mediaQuery.matches) {
         modal.classList.add("show");
         // prueba
 
-        if (!scroll) return;
+        const loco = getScrollInstance();
+        if (!loco) return;
 
-        const lenis = scroll.lenisInstance;
+        const lenis = loco.lenisInstance;
         if (!lenis) return;
+
         const target = document.querySelector(".viz-mapa");
         const pinSpacer = target.closest(".pin-spacer") ?? target;
 
@@ -287,17 +291,13 @@ const openExplore = async (idRing) => {
             el = el.offsetParent;
         }
 
-        // console.trace("REFRESH");
-        // console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
-        // console.trace();
-        // ScrollTrigger.refresh(true);
-        // console.groupEnd();
         lenis.scrollTo(top, { immediate: true });
+        stopScroll();
 
-        setTimeout(() => {
-            destroyScroll();
-        }, 500);
-
+        // setTimeout(() => {
+        //     //destroyScroll();
+        //     // stopScroll();
+        // }, 500);
         // console.log("d");
     } else {
         // console.log("m");
@@ -309,7 +309,7 @@ const openExplore = async (idRing) => {
     await loadComponent("#header", "componets/header-interior.html");
     linkBack = document.querySelector(".link-back");
     linkBack.addEventListener("click", linkHandlerDesk);
-
+    console.log("openEx");
     headerLayout();
     window.addEventListener("change", headerLayout);
 
@@ -372,7 +372,8 @@ const linkHandlerDesk = async () => {
     // ScrollTrigger.refresh(true);
     // console.groupEnd();
 
-    smoothScroll();
+    // smoothScroll();
+    startScroll();
 };
 
 const hoverRings2 = () => {
@@ -710,10 +711,6 @@ const init = () => {
     modalViz();
     modalExplore();
     hoverRings2();
-
-    // hoverPeriods();
 };
 
 init();
-
-// alert("limpiar conentedor slide periods");
