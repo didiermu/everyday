@@ -5,6 +5,8 @@ import {
     getScrollInstance,
     destroyScroll,
     smoothScroll,
+    stopScroll,
+    startScroll,
 } from "./../utils/loadLocomotive.js";
 
 let buttonHandler = null;
@@ -120,7 +122,8 @@ const modalExplore = () => {
                 // console.groupEnd();
                 lenis.scrollTo(top, { immediate: true });
                 //
-                destroyScroll();
+                // destroyScroll();
+                stopScroll();
             }, 500);
         };
 
@@ -168,10 +171,10 @@ const linkHandlerMobile = async () => {
     }
 
     await loadComponent("#header", "componets/header.html");
-
-    if (scroll) {
-        smoothScroll();
-    }
+    startScroll();
+    // if (scroll) {
+    //     smoothScroll();
+    // }
 };
 
 const datosPeriod = {

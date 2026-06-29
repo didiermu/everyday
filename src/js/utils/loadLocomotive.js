@@ -54,3 +54,13 @@ export function destroyScroll() {
 export function getLenisInstance() {
     return scrollInstance?.lenisInstance ?? null;
 }
+
+export function stopScroll() {
+    scrollInstance?.lenisInstance?.stop();
+    console.log("stop");
+}
+
+export function startScroll() {
+    scrollInstance?.lenisInstance?.start();
+    console.log("start");
+}
