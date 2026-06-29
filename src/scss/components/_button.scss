@@ -12,6 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: inherit;
 
     &-min {
         padding: var(--spacing-xxs) 40px;
@@ -26,6 +27,7 @@
     }
     &-secondary {
         background: var(--color-magic);
+        color: var(--color-not-so-black);
     }
 
     &-tertiary {

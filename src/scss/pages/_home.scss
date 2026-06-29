@@ -35,7 +35,7 @@ canvas {
 
     .intro {
         background: var(--color-banana);
-        padding-block: var(--spacing-4xl) 0;
+        padding-block: var(--spacing-4xl) var(--spacing-lg);
 
         .col-12 {
             display: flex;
@@ -52,7 +52,7 @@ canvas {
             @include typography.typography("xl", tertiary);
 
             &:nth-child(2) {
-                @include typography.typography("md", tertiary);
+                @include typography.typography("lg", tertiary);
             }
         }
 
@@ -92,8 +92,11 @@ canvas {
 
         button {
             position: absolute;
-            bottom: var(--spacing-lg);
-            right: var(--spacing-lg);
+            inset: 0;
+            margin: auto;
+            // bottom: var(--spacing-lg);
+            // right: var(--spacing-lg);
+
             border-radius: 50%;
             width: 120px;
             height: 120px;
@@ -159,6 +162,7 @@ canvas {
 
         .intro {
             // padding-block-start: 12.5rem;
+            padding-block-end: 0;
 
             cursor:
                 url(./../img/cursor-scroll.svg) 30 30,

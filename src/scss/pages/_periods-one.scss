@@ -60,40 +60,11 @@
         padding-block: var(--spacing-md) var(--spacing-6xl);
 
         .row {
-            row-gap: var(--spacing-md);
+            row-gap: var(--spacing-4xl);
         }
 
         &--parrafo {
             display: none;
-        }
-
-        //         &--data {
-        //             padding-block-start: var(--spacing-sm);
-        //             @include mixins.data-table;
-        //
-        //             h4 {
-        //                 display: none;
-        //             }
-        //         }
-
-        .periods-image {
-            //             position: relative;
-            //             margin-block-end: var(--spacing-5xl);
-            //
-            //             svg {
-            //                 image {
-            //                     transform: scale(2);
-            //                     transform-origin: center;
-            //                 }
-            //
-            // .map-hover {
-            //     display: none;
-            // }
-            //
-            //                 .yellow-dot {
-            //                     display: none;
-            //                 }
-            //             }
         }
 
         .periods-hover {
@@ -115,22 +86,6 @@
             // bottom: 25%;
             // left: 40%;
         }
-
-        //         &--summary {
-        //             padding-block-start: var(--spacing-sm);
-        //             display: grid;
-        //             row-gap: var(--spacing-lg);
-        //
-        //             h4 {
-        //                 @include typography.typography("6xl", primary);
-        //                 letter-spacing: 2px;
-        //             }
-        //
-        //             p {
-        //                 @include typography.typography("md", tertiary);
-        //                 font-weight: 100;
-        //             }
-        //         }
 
         .svg-flechas-period {
             display: none;
@@ -164,7 +119,7 @@
         column-gap: var(--spacing-md);
         inset: 0;
         position: absolute;
-        top: calc(500px + 760 * (100vw - 360px) / 768);
+        top: calc(510px + 760 * (100vw - 360px) / 768);
         margin: 0 auto;
         height: max-content;
         z-index: 9;
@@ -638,7 +593,8 @@
 
         .modal--content {
             background: var(--color-not-so-white);
-            border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+            border-radius: var(--border-radius-md);
+            margin-inline: var(--spacing-lg);
         }
 
         section {

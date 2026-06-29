@@ -14,6 +14,7 @@ const mediaQuery = window.matchMedia("(min-width:1280px)");
 const mediaQueryDesk = window.matchMedia("(min-width:1440px)");
 const mediaQueryFull = window.matchMedia("(min-width:1920px)");
 let swiperInstance = null;
+const scroll = getScrollInstance();
 
 const modalViz = () => {
     const hero = document.querySelector(".hero-viz");
@@ -24,9 +25,31 @@ const modalViz = () => {
         buttonHandler = () => {
             hero.classList.add("hide");
             modal.classList.add("show");
-
-            ScrollTrigger.refresh();
             document.querySelector("body").className = "panel-3";
+
+            const loco = getScrollInstance();
+            if (!loco) return;
+
+            const lenis = loco.lenisInstance;
+            if (!lenis) return;
+
+            const target = document.querySelector("#visualization");
+            const pinSpacer = target.closest(".pin-spacer") ?? target;
+
+            let top = 0;
+            let el = pinSpacer;
+            while (el) {
+                top += el.offsetTop;
+                el = el.offsetParent;
+            }
+
+            // console.trace("REFRESH");
+            // console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+            // console.trace();
+            ScrollTrigger.refresh(true);
+            // console.groupEnd();
+            // console.log("top absoluto:", top);
+            lenis.scrollTo(top, { immediate: true });
         };
 
         button.addEventListener("click", buttonHandler);
@@ -57,17 +80,43 @@ const modalExplore = () => {
             hero.classList.add("hide");
             modal.classList.add("show");
 
-            loadComponent("#header", "componets/header-interior.html");
-
-            const linkBack = document.querySelector(".link-back");
-            linkBack.addEventListener("click", linkHandler);
-
             swiperInstance = await initPeriods();
-            // swiperInstance = callPeriodos;
+            await loadComponent("#header", "componets/header-interior.html");
 
             setTimeout(() => {
-                ScrollTrigger.refresh();
+                const linkBack = document.querySelector(".link-back");
+                linkBack.addEventListener("click", linkHandler);
+
                 document.querySelector("body").className = "panel-3";
+
+                //
+                const loco = getScrollInstance();
+                if (!loco) return;
+
+                const lenis = loco.lenisInstance;
+                if (!lenis) return;
+
+                const target = document.querySelector(".main-periods"); // ← cambia por el id correcto
+                const pinSpacer = target.closest(".pin-spacer") ?? target;
+
+                let top = 0;
+                let el = pinSpacer;
+                while (el) {
+                    top += el.offsetTop;
+                    el = el.offsetParent;
+                }
+
+                // console.trace("REFRESH");
+                // console.group(
+                //     "%cMANUAL REFRESH",
+                //     "color:#00BCD4;font-weight:bold",
+                // );
+                // console.trace();
+                ScrollTrigger.refresh(true);
+                // console.groupEnd();
+                lenis.scrollTo(top, { immediate: true });
+                //
+                destroyScroll();
             }, 500);
         };
 
@@ -83,7 +132,14 @@ const modalExplore = () => {
 
             loadComponent("#header", "componets/header.html");
 
-            ScrollTrigger.refresh();
+            // console.trace("REFRESH");
+            // console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+            // console.trace();
+            ScrollTrigger.refresh(true);
+            // console.groupEnd();
+            if (scroll) {
+                smoothScroll();
+            }
         };
 
         button.addEventListener("click", buttonHandler);
@@ -186,78 +242,108 @@ const openExplore = async (idRing) => {
     if (mediaQuery.matches) {
         modal.classList.add("show");
         // prueba
-        // destroyScroll();
+
+        if (!scroll) return;
+
+        const lenis = scroll.lenisInstance;
+        if (!lenis) return;
+        const target = document.querySelector(".viz-mapa");
+        const pinSpacer = target.closest(".pin-spacer") ?? target;
+
+        let top = 0;
+        let el = pinSpacer;
+        while (el) {
+            top += el.offsetTop;
+            el = el.offsetParent;
+        }
+
+        // console.trace("REFRESH");
+        // console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+        // console.trace();
+        // ScrollTrigger.refresh(true);
+        // console.groupEnd();
+        lenis.scrollTo(top, { immediate: true });
+
+        setTimeout(() => {
+            destroyScroll();
+        }, 500);
+
+        // console.log("d");
     } else {
+        // console.log("m");
         hero.classList.remove("show");
         hero.classList.add("hide");
         modal.classList.add("show");
     }
 
-    loadComponent("#header", "componets/header-interior.html");
+    await loadComponent("#header", "componets/header-interior.html");
+    linkBack = document.querySelector(".link-back");
+    linkBack.addEventListener("click", linkHandlerDesk);
 
     headerLayout();
     window.addEventListener("change", headerLayout);
 
-    // 👇 inicializamos y guardamos instancia
-    // swiperInstance = await initPeriods();
-
-    // swiperInstance.slideTo(parseInt(idRing) - 1, 1);
     swiperInstance.slideTo(parseInt(idRing) - 1);
-    // console.log(swiperInstance);
-    // console.log(idRing);
 
     setTimeout(() => {
-        // ScrollTrigger.refresh();
+        // console.trace("REFRESH"); console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+        // console.trace();
+        // ScrollTrigger.refresh(true);
+        // console.groupEnd();
         document.querySelector("body").className = "panel-3";
     }, 500);
 
-    const linkHandler = () => {
-        hero.classList.add("show");
-        modal.classList.remove("show");
+    // no borrar aun
+    //     const linkHandler = () => {
+    //         hero.classList.add("show");
+    //         hero.classList.remove("hide");
+    //         modal.classList.remove("show");
+    //
+    //         // ✅ destruir swiper correctamente
+    //         if (swiperInstance) {
+    //             swiperInstance.destroy(true, true);
+    //             swiperInstance = null;
+    //         }
+    //
+    //         loadComponent("#header", "componets/header.html");
+    //
+    //         console.trace("REFRESH"); console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+    // console.trace();
+    // ScrollTrigger.refresh(true);
+    // console.groupEnd();
+    //         if (scroll) {
+    //             smoothScroll();
+    //         }
+    //     };
+    //
+    //     const linkBack = document.querySelector(".link-back");
+    //     linkBack.addEventListener("click", linkHandler);
 
-        // ✅ destruir swiper correctamente
-        // if (swiperInstance) {
-        //     swiperInstance.destroy(true, true);
-        //     swiperInstance = null;
-        // }
-
-        loadComponent("#header", "componets/header.html");
-
-        document.body.style.overflow = "auto";
-        smoothScroll();
-
-        // ScrollTrigger.refresh();
-    };
-
-    const linkBack = document.querySelector(".link-back");
-    linkBack.addEventListener("click", linkHandler);
-
-    // updatePeriodHead(parseInt(idRing));
+    // no borrar aun
 };
 
-/// deprecated
-// const hoverRings = () => {
-//     const rings = document.querySelectorAll(".gold-dot");
-//     const visualizationPop = document.querySelector(".visualization--pop");
-//
-//     rings.forEach((element) => {
-//         let idRing = element.id.replace("nodo-", "");
-//         element.addEventListener("mouseenter", () => {
-//             setTimeout(() => {
-//                 visualizationPop
-//                     .querySelector("img")
-//                     .setAttribute("src", `./img/ring-${idRing}.webp`);
-//                 visualizationPop.classList.add("show");
-//             }, 100);
-//         });
-//     });
-//     visualizationPop
-//         .querySelector(".visualization--pop--hover")
-//         .addEventListener("mouseleave", () => {
-//             visualizationPop.classList.remove("show");
-//         });
-// };
-/// deprecated
+const linkHandlerDesk = async () => {
+    const hero = document.querySelector(".visualization");
+    const modal = document.querySelector(".main-periods");
+
+    hero.classList.add("show");
+    hero.classList.remove("hide");
+    modal.classList.remove("show");
+    document.querySelector("body").classList.remove("panel-3");
+    await loadComponent("#header", "componets/header.html");
+
+    if (swiperInstance) {
+        swiperInstance.destroy(true, true);
+        swiperInstance = null;
+    }
+
+    // console.trace("REFRESH"); console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+    // console.trace();
+    // ScrollTrigger.refresh(true);
+    // console.groupEnd();
+
+    smoothScroll();
+};
 
 const hoverRings2 = () => {
     const ringsYellow = document.querySelectorAll(".yellow-dot");

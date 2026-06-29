@@ -1,8 +1,8 @@
 @use "../core/mixins";
 
-:root {
-    scroll-behavior: smooth;
-}
+// :root {
+//     scroll-behavior: smooth;
+// }
 
 // :target {
 //     scroll-margin-block: 5lh;
@@ -71,6 +71,10 @@
 
     .reveal.is-inview {
         opacity: 1;
+    }
+
+    &:has(.main-periods.show) {
+        overflow: hidden;
     }
 }
 

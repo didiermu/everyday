@@ -1,5 +1,15 @@
 @use "../core/typography";
 
+// .swiper-lessons .swiper-slide {
+//     // opacity: 0;
+//     pointer-events: none;
+// }
+//
+// .swiper-lessons .swiper-slide-active {
+//     // opacity: 1;
+//     pointer-events: auto;
+// }
+
 .page-epilogue {
     background: var(--color-magic);
 
@@ -72,8 +82,9 @@
 
             & > .active {
                 display: flex;
-                row-gap: var(--spacing-2xl);
                 flex-direction: column;
+                // display: block;
+                row-gap: var(--spacing-2xl);
             }
 
             .panel--contenido {
@@ -92,6 +103,11 @@
 
                 & > h4 {
                     @include typography.typography("9xl", primary);
+                    text-align: center;
+                }
+
+                & > span {
+                    text-align: center;
                 }
             }
 
@@ -194,6 +210,12 @@
                 display: flex;
                 flex-direction: column;
                 row-gap: var(--spacing-xl);
+
+                &-active {
+                    .panels__recommended a {
+                        pointer-events: auto;
+                    }
+                }
             }
         }
 
@@ -224,6 +246,8 @@
 
             a {
                 text-decoration: none;
+                width: max-content;
+                // pointer-events: none;
             }
         }
 
@@ -258,26 +282,22 @@
                 @include typography.typography("md", tertiary);
                 color: var(--color-not-so-black);
                 display: flex;
-                align-items: center;
-                column-gap: var(--spacing-sm);
+                // align-items: center;
+                column-gap: var(--spacing-xs);
                 text-decoration: none;
                 width: fit-content;
 
-                // &::after {
-                //     content: "";
-                //     width: 16px;
-                //     height: 16px;
-                //     display: block;
-                //     background: var(--icon-link) no-repeat center / contain;
-                //     flex: 0 0 16px;
-                // }
+                &::before {
+                    content: "•";
+                    display: block;
+                    flex: 0 0 4px;
+                }
             }
         }
 
         &__tools {
             display: grid;
             align-items: center;
-            // row-gap: var(--spacing-2xl);
             row-gap: 0;
             // padding-top: var(--spacing-2xl);
 
@@ -297,9 +317,12 @@
                     padding-block-start: var(--spacing-xl);
                     margin-right: 0 !important;
                     width: max-content;
-                    min-width: 15.625rem;
+                    aspect-ratio: 228 / 223;
+                    // min-width: 15.625rem;
+                    // min-height: 15.625rem;
                     padding-bottom: 20px;
                     cursor: pointer;
+                    height: auto;
 
                     &:last-child {
                         padding-inline: var(--spacing-lg);
@@ -317,17 +340,20 @@
 
             &__card {
                 scroll-snap-align: start;
-                background: var(--color-magic-strong);
+                background: var(--color-banana);
                 border-radius: var(--border-radius-md);
                 padding: var(--spacing-lg);
                 box-shadow:
                     0px 16px 16px -8px rgba(12, 12, 13, 0.1),
                     0px 4px 4px -4px rgba(12, 12, 13, 0.05);
                 color: var(--color-not-so-black);
-                height: 13.75rem;
-                display: grid;
-                place-content: space-between;
+                // height: 13.75rem;
+                height: 100%;
                 width: 245px;
+                display: grid;
+                row-gap: var(--spacing-sm);
+                place-content: space-between;
+                // width: 100%;
                 transition: 0.3s ease-in-out all;
 
                 h4 {
@@ -424,11 +450,6 @@
                 .container {
                     & > h4 {
                         @include typography.typography("10xl", primary);
-                        text-align: center;
-                    }
-
-                    & > span {
-                        text-align: center;
                     }
                 }
 
@@ -466,6 +487,7 @@
                 &__card {
                     height: 220px;
                     width: 280px;
+                    background: var(--color-magic-strong);
                 }
 
                 .swiper {

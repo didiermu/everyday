@@ -5,11 +5,13 @@ import {
     getScrollInstance,
     destroyScroll,
     smoothScroll,
+    getLenisInstance,
 } from "./../utils/loadLocomotive.js";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger.js";
 // import smoothScroll from "./../utils/loadLocomotive.js";
 import GUI from "lil-gui";
+import { loadComponent } from "./../utils/loadComponent.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -124,6 +126,62 @@ const openModalVideo = async () => {
 
 //// HEADER
 
+const scrollToSection = (section) => {
+    //     const links = document.querySelectorAll(".header .offcanvas-body ul li");
+    //
+    //     links.forEach((link) => {
+    //         link.addEventListener("click", (e) => {
+    //             console.log("link");
+    //         });
+    //     });
+
+    // const seccion = document.querySelector("#intro");
+    // const seccionPsy = document.querySelector("#physicalizing");
+    // const posIntro = seccion.offsetTop;
+    // const posPsy = seccionPsy.offsetTop;
+    // console.log(posIntro);
+    // if (e.target.closest("#link-visualization"))
+    //     target = document.querySelector("#visualization");
+
+    document.addEventListener("click", (e) => {
+        let target = null;
+        if (e.target.closest("#link-intro"))
+            target = document.querySelector("#intro");
+        if (e.target.closest("#link-physicalizing"))
+            target = document.querySelector("#physicalizing");
+        if (e.target.closest("#link-visualization"))
+            target = document.querySelector("#visualization");
+        if (!target) return;
+
+        const loco = getScrollInstance();
+        if (!loco) return;
+
+        const lenis = loco.lenisInstance;
+        if (!lenis) return;
+
+        // const pinSpacer = target.closest(".pin-spacer") ?? target;
+        // const top = pinSpacer.getBoundingClientRect().top + window.scrollY;
+
+        const pinSpacer = target.closest(".pin-spacer") ?? target;
+        const top = pinSpacer.getBoundingClientRect().top + window.scrollY;
+        console.log(
+            "id:",
+            target.id,
+            "pinSpacer clase:",
+            pinSpacer.className,
+            "top:",
+            top,
+            "scrollY:",
+            window.scrollY,
+        );
+
+        lenis.scrollTo(top, {
+            immediate: true,
+            duration: 2, // ← agrega esto junto con immediate
+        });
+    });
+};
+
 const scrollGsap = async () => {
     const panelZoom = () => {
         const panel = gsap.utils.toArray(".panel-zoom");
@@ -172,6 +230,33 @@ const scrollGsap = async () => {
             }
         });
 
+        panels.forEach((panel) => {
+            ScrollTrigger.create({
+                trigger: panel,
+                start: "top center",
+                end: "bottom center",
+                onEnter: () => checkPanelClass(panel),
+                onEnterBack: () => checkPanelClass(panel),
+                onLeave: () => checkPanelClass(null),
+                onLeaveBack: () => checkPanelClass(null),
+            });
+        });
+
+        function checkPanelClass(panel) {
+            if (panel && panel.classList.contains("page-visualization")) {
+                // if (
+                //     document
+                //         .querySelector(".viz-mapa")
+                //         .classList.contains("hide")
+                // )
+                //     // console.log("viz");
+                //     loadComponent("#header", "componets/header-interior.html");
+            } else {
+                // console.log("no ");
+                loadComponent("#header", "componets/header.html");
+            }
+        }
+
         panelContent.forEach((panel, i) => {
             ScrollTrigger.create({
                 trigger: panel,
@@ -195,6 +280,34 @@ const scrollGsap = async () => {
                 onLeaveBack: () => (headerHome.style.opacity = "1"),
             });
         }
+
+        //// posicion
+    };
+
+    let currentStep = null;
+
+    const updateImage = (step) => {
+        const image = document.querySelector(".expand__image--fondo img");
+
+        const images = [
+            "./img/physicalizing-02.webp",
+            "./img/fondo-psych-mobile.webp",
+            "./img/fondo-psych-mobile-2.webp",
+        ];
+
+        const newSrc = images[step - 1];
+        if (!newSrc || step === currentStep) return;
+        currentStep = step;
+
+        // Fade out → cambia src → fade in
+        gsap.to(image, {
+            autoAlpha: 0,
+            duration: 0.3,
+            onComplete: () => {
+                image.src = newSrc;
+                gsap.to(image, { autoAlpha: 1, duration: 0.3 });
+            },
+        });
     };
 
     const pinCards = () => {
@@ -214,16 +327,33 @@ const scrollGsap = async () => {
                 pinSpacing: false,
                 scrub: 1,
                 // markers: true,
+                // onUpdate: (self) => {
+                //     const step = Math.min(
+                //         Math.ceil(self.progress * items.length) || 1,
+                //         items.length,
+                //     );
+                //     section.className = section.className.replace(
+                //         /\bis-step-\d+/g,
+                //         "",
+                //     );
+                //     section.classList.add(`is-step-${step}`);
+                // },
+
                 onUpdate: (self) => {
                     const step = Math.min(
                         Math.ceil(self.progress * items.length) || 1,
                         items.length,
                     );
-                    section.className = section.className.replace(
-                        /\bis-step-\d+/g,
-                        "",
-                    );
-                    section.classList.add(`is-step-${step}`);
+
+                    if (step !== currentStep) {
+                        section.className = section.className.replace(
+                            /\bis-step-\d+/g,
+                            "",
+                        );
+                        section.classList.add(`is-step-${step}`);
+
+                        updateImage(step); // 👈 solo se llama cuando el step cambia
+                    }
                 },
             },
         });
@@ -270,34 +400,133 @@ const scrollGsap = async () => {
 
     const pinVideo = () => {
         const video = document.querySelector(".video");
+
         let scrollCount = 0;
         let isLocked = false;
+        let lastScrollTime = 0;
+        let lastTouchY = 0;
 
-        const scrollLockTrigger = ScrollTrigger.create({
-            trigger: video,
-            scroller: window,
-            start: "top top",
-            end: "bottom center",
-            toggleActions: "play none none reverse",
-            markers: true,
-            onEnter: () => {
-                console.log("ENTRA A VIDEO - Desactivando scroll");
-                isLocked = true;
-                scrollCount = 0;
-                const scrollInstance = getScrollInstance();
-                if (scrollInstance) {
-                    console.log("Deteniendo Locomotive Scroll");
-                    scrollInstance.stop();
+        const handleScroll = (e) => {
+            if (!isLocked) {
+                // console.log(
+                //     "handleScroll called but isLocked is false, returning",
+                // );
+                return;
+            }
+
+            let scrollDirection = 0; // 1 = abajo, -1 = arriba, 0 = sin movimiento
+            let isMobile = false;
+
+            // Detectar si es wheel o touch
+            if (e.type === "wheel") {
+                // Desktop: wheel event
+                if (e.deltaY > 0) {
+                    scrollDirection = 1; // Abajo
+                } else if (e.deltaY < 0) {
+                    scrollDirection = -1; // Arriba
                 }
-            },
-            onLeave: () => {
-                console.log("SALE DE VIDEO - Reactivando scroll");
-                isLocked = false;
+            } else if (e.type === "touchmove") {
+                // Mobile: touch event
+                const currentY = e.touches[0].clientY;
+                if (currentY < lastTouchY) {
+                    scrollDirection = 1; // Abajo
+                } else if (currentY > lastTouchY) {
+                    scrollDirection = -1; // Arriba
+                }
+                lastTouchY = currentY;
+                isMobile = true;
+            }
+
+            if (scrollDirection === 0) return;
+
+            const now = Date.now();
+
+            // Ignorar eventos generados rápidamente
+            if (now - lastScrollTime < 300) return;
+
+            lastScrollTime = now;
+
+            // Sumar si es abajo, restar si es arriba
+            scrollCount += scrollDirection;
+            scrollCount = Math.max(0, scrollCount); // Nunca negativo
+
+            const requiredScrolls = isMobile ? 3 : 6;
+            // console.log(
+            //     `Scroll ${scrollCount}/${requiredScrolls} (${scrollDirection > 0 ? "↓" : "↑"})`,
+            // );
+
+            if (scrollCount >= requiredScrolls) {
+                // console.log("✅ Desbloqueo por scroll hacia abajo completado");
+
                 const scrollInstance = getScrollInstance();
+
                 if (scrollInstance) {
-                    console.log("Iniciando Locomotive Scroll");
                     scrollInstance.start();
                 }
+
+                isLocked = false;
+                scrollCount = 0;
+
+                window.removeEventListener("wheel", handleScroll);
+                window.removeEventListener("touchmove", handleScroll);
+            } else if (scrollCount === 0) {
+                // console.log("↩️ Volviste al inicio - Desbloqueando scroll");
+
+                const scrollInstance = getScrollInstance();
+
+                if (scrollInstance) {
+                    scrollInstance.start();
+                }
+
+                isLocked = false;
+
+                window.removeEventListener("wheel", handleScroll);
+                window.removeEventListener("touchmove", handleScroll);
+            }
+        };
+
+        ScrollTrigger.create({
+            trigger: video,
+            start: mediaQuery.matches ? "top top" : "top top",
+            end: "+=105% center",
+            // markers: true,
+
+            onEnter: () => {
+                // console.log("🎬 VIDEO TRIGGER ONENTER - Bloqueando scroll");
+
+                isLocked = true;
+                scrollCount = 0;
+                lastScrollTime = 0;
+                lastTouchY = window.innerHeight / 2;
+
+                const scrollInstance = getScrollInstance();
+
+                if (scrollInstance) {
+                    scrollInstance.stop();
+                }
+
+                window.addEventListener("wheel", handleScroll, {
+                    passive: true,
+                });
+                window.addEventListener("touchmove", handleScroll, {
+                    passive: false,
+                });
+            },
+
+            onLeave: () => {
+                // console.log("🎬 VIDEO TRIGGER ONLEAVE - Desbloqueando scroll");
+
+                isLocked = false;
+                scrollCount = 0;
+
+                const scrollInstance = getScrollInstance();
+
+                if (scrollInstance) {
+                    scrollInstance.start();
+                }
+
+                window.removeEventListener("wheel", handleScroll);
+                window.removeEventListener("touchmove", handleScroll);
             },
         });
     };
@@ -350,7 +579,10 @@ const scrollGsap = async () => {
             mainPeriods.insertAdjacentElement("afterend", visualizationHeroViz);
         }
 
-        // ScrollTrigger.refresh();
+        // console.trace("REFRESH"); console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+        console.trace();
+        ScrollTrigger.refresh(true);
+        console.groupEnd();
 
         ScrollTrigger.create({
             trigger: ".visualization",
@@ -872,16 +1104,52 @@ const renderShadow = async () => {
     };
 };
 
-const init = async () => {
-    render();
-    renderShadow();
-    smoothScroll();
-    scrollGsap();
-    modalVideo();
+const initScrollPosition = () => {
+    // Si no hay hash en la URL, scroll al top
+    if (!window.location.hash) {
+        setTimeout(() => {
+            const scrollInstance = getScrollInstance();
+            if (scrollInstance) {
+                scrollInstance.scrollTo(0, { duration: 0 });
+            } else {
+                window.scrollTo(0, 0);
+            }
+        }, 100);
+    }
+};
 
+const init = async () => {
+    // render();
+    // renderShadow();
+    window.addEventListener("locomotiveReady", async ({ detail }) => {
+        const lenis = detail.instance?.lenisInstance;
+        if (!lenis) return;
+
+        lenis.on("scroll", ScrollTrigger.update);
+
+        await scrollGsap();
+
+        setTimeout(() => {
+            console.trace("REFRESH");
+            console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+            console.trace();
+            ScrollTrigger.refresh(true);
+            console.groupEnd();
+            scrollToSection();
+        }, 300);
+    });
+
+    // 2. Disparar smoothScroll DESPUÉS
+    smoothScroll();
+
+    modalVideo();
     videoHome();
-    // ScrollTrigger.refresh();
+    // console.trace("REFRESH"); console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+    console.trace();
+    ScrollTrigger.refresh(true);
+    console.groupEnd();
     mediaQueryLaptop.addEventListener("change", modalVideo);
+    // alert("hola");
 };
 
 init();

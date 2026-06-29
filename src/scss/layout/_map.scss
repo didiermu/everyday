@@ -84,6 +84,12 @@
 
 @media (min-width: 1280px) {
     .viz-mapa {
+        &:has(.show) {
+            .visualization--mapa .visualization--instructions {
+                opacity: 0;
+            }
+        }
+
         .visualization--mapa {
             // padding-block: var(--spacing-xl);
             padding-block: 0;

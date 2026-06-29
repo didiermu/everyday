@@ -65,6 +65,45 @@ export const initHashNavigation = () => {
     });
 };
 
+export const initMenuLinks = () => {
+    const links = {
+        "#link-intro": "#intro",
+        "#link-physicalizing": "#physicalizing",
+        "#link-visualization": "#visualization",
+    };
+
+    document.addEventListener("click", (e) => {
+        for (const [link, hash] of Object.entries(links)) {
+            if (!e.target.closest(link)) continue;
+
+            e.preventDefault();
+
+            const currentPage = window.location.pathname.split("/").pop();
+
+            // Si estoy en blog o about -> regreso al index
+            if (currentPage === "blog.html" || currentPage === "about.html") {
+                window.location.href = `index.html${hash}`;
+                return;
+            }
+
+            // Si ya estoy en index, hago el scroll
+            scrollToSection(hash);
+            return;
+        }
+    });
+};
+
+export const initHashScroll = () => {
+    const hash = window.location.hash;
+
+    if (!hash) return;
+
+    // Espera a que Locomotive esté listo
+    setTimeout(() => {
+        scrollToSection(hash);
+    }, 300);
+};
+
 // Layout
 (async () => {
     if (document.querySelector("main").classList.contains("main-periods")) {
@@ -82,5 +121,7 @@ export const initHashNavigation = () => {
     }
 
     initImgCoverZoom();
-    initHashNavigation();
+    // initHashNavigation();
+    initMenuLinks();
+    initHashScroll();
 })();

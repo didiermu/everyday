@@ -49,12 +49,34 @@ const botonera = async () => {
                 );
                 heroSection.style.display = "none";
                 panelsSection.style.display = "block";
-                ScrollTrigger.refresh();
+                slider();
+                console.trace("REFRESH");
+                console.group(
+                    "%cMANUAL REFRESH",
+                    "color:#00BCD4;font-weight:bold",
+                );
+                console.trace();
+                ScrollTrigger.refresh(true);
+                console.groupEnd();
             }, 100);
         };
 
         btnTools.addEventListener("click", toolsHandler);
         buttonHandlers.push({ element: btnTools, handler: toolsHandler });
+
+        document
+            .getElementById("home-tab")
+            .addEventListener("shown.bs.tab", () => {
+                slider();
+                console.trace("REFRESH");
+                console.group(
+                    "%cMANUAL REFRESH",
+                    "color:#00BCD4;font-weight:bold",
+                );
+                console.trace();
+                ScrollTrigger.refresh(true);
+                console.groupEnd();
+            });
     }
 
     if (btnLessons) {
@@ -71,15 +93,24 @@ const botonera = async () => {
                 document.getElementById("profile-tab"),
             );
             profileTab.show();
-
-            setTimeout(() => {
-                // initImgCoverZoom();
-                ScrollTrigger.refresh();
-            }, 100);
         };
 
         btnLessons.addEventListener("click", lessonsHandler);
         buttonHandlers.push({ element: btnLessons, handler: lessonsHandler });
+
+        document
+            .getElementById("profile-tab")
+            .addEventListener("shown.bs.tab", () => {
+                sliderLessons();
+                console.trace("REFRESH");
+                console.group(
+                    "%cMANUAL REFRESH",
+                    "color:#00BCD4;font-weight:bold",
+                );
+                console.trace();
+                ScrollTrigger.refresh(true);
+                console.groupEnd();
+            });
     }
 
     const triggerTabList = document.querySelectorAll("#myTab button");
@@ -91,7 +122,14 @@ const botonera = async () => {
             event.preventDefault();
             setTimeout(() => {
                 // initImgCoverZoom();
-                ScrollTrigger.refresh();
+                console.trace("REFRESH");
+                console.group(
+                    "%cMANUAL REFRESH",
+                    "color:#00BCD4;font-weight:bold",
+                );
+                console.trace();
+                ScrollTrigger.refresh(true);
+                console.groupEnd();
             }, 100);
         };
 
@@ -100,32 +138,19 @@ const botonera = async () => {
     });
 };
 
-const slider = () => {
+const slider = async () => {
     swiperTools = new Swiper(".swiper-tools", {
         direction: "horizontal",
         slidesPerView: "auto",
         spaceBetween: 20,
-
         cssMode: true,
         on: {
-            click: function () {
+            click: function (swiper, event) {
                 hideSlideIndex = this.clickedIndex;
-                swiperBlog.slideTo(hideSlideIndex);
-                window.scrollTo(0, 0);
-            },
-        },
-    });
-
-    swiperLessons = new Swiper(".swiper-lessons", {
-        direction: "horizontal",
-        slidesPerView: "auto",
-        spaceBetween: 20,
-        cssMode: true,
-        on: {
-            click: function () {
-                hideSlideIndex = this.clickedIndex;
-                swiperLearned.slideTo(hideSlideIndex);
-                window.scrollTo(0, 0);
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                    swiperBlog.slideTo(hideSlideIndex);
+                });
             },
         },
     });
@@ -136,6 +161,7 @@ const slider = () => {
         slidesPerView: "auto",
         spaceBetween: 20,
         autoHeight: true,
+        allowTouchMove: false,
         effect: "none",
         speed: 0,
         pagination: {
@@ -172,14 +198,36 @@ const slider = () => {
             },
         },
     });
+};
+
+const sliderLessons = async () => {
+    swiperLessons = new Swiper(".swiper-lessons", {
+        direction: "horizontal",
+        slidesPerView: "auto",
+        spaceBetween: 20,
+        cssMode: true,
+        on: {
+            click: function (swiper, event) {
+                if (!this.clickedSlide) return;
+                if (event.target.closest(".swiper-learned")) return;
+
+                setTimeout(() => {
+                    swiperLearned.slideTo(this.clickedIndex);
+                    window.scrollTo({ top: 0, behavior: "instant" });
+                }, 50);
+            },
+        },
+    });
 
     swiperLearned = new Swiper(".swiper-learned", {
         modules: [Pagination],
         direction: "horizontal",
-        slidesPerView: "auto",
+        slidesPerView: 1,
         spaceBetween: 20,
         autoHeight: true,
+        allowTouchMove: false,
         speed: 0,
+
         pagination: {
             el: ".swiper-learned .swiper-pagination",
             clickable: true,
@@ -196,13 +244,17 @@ const slider = () => {
         },
         on: {
             init: function () {
+                // updateBlogHeight();
+
                 hideSlideIndex = this.activeIndex;
                 const slide = swiperLessons.slides[hideSlideIndex];
                 if (slide) {
                     slide.classList.add("hide");
                 }
             },
+
             slideChange: function () {
+                // updateBlogHeight();
                 swiperLessons.slides.forEach((slide) =>
                     slide.classList.remove("hide"),
                 );
@@ -245,11 +297,13 @@ const blogMenuHandler = () => {
 
 const init = async () => {
     smoothScroll();
-
-    slider();
     botonera();
     initImgCoverZoom();
     blogMenuHandler();
 };
 
 init();
+
+// document.addEventListener("click", (e) => {
+//     console.log(e.target);
+// });

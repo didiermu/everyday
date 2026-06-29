@@ -5,12 +5,15 @@ import {
     getScrollInstance,
     destroyScroll,
     smoothScroll,
+    getLenisInstance,
 } from "./../utils/loadLocomotive.js";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger.js";
 // import smoothScroll from "./../utils/loadLocomotive.js";
 import GUI from "lil-gui";
 import { loadComponent } from "./../utils/loadComponent.js";
+
+import { initMenuLinks, initHashScroll } from "./../main.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -35,6 +38,7 @@ const MODAL_VIDEO_SRC = "./video/intro_video_landscape.webm";
 let modalVideoTrigger = null;
 let modalVideoCleanup = null;
 let sectionVideoWasPlaying = false;
+let gsapInitialized = false;
 
 const openModalVideo = async () => {
     const pageHome = document.querySelector(".page-home");
@@ -125,6 +129,63 @@ const openModalVideo = async () => {
 
 //// HEADER
 
+// const scrollToSection = (section) => {
+//     document.addEventListener("click", (e) => {
+//         let target = null;
+//         if (e.target.closest("#link-intro"))
+//             target = document.querySelector("#intro");
+//         if (e.target.closest("#link-physicalizing"))
+//             target = document.querySelector("#physicalizing");
+//         if (e.target.closest("#link-visualization"))
+//             target = document.querySelector("#visualization");
+//         if (!target) return;
+//
+//         const loco = getScrollInstance();
+//         if (!loco) return;
+//
+//         const lenis = loco.lenisInstance;
+//         if (!lenis) return;
+//
+//         const pinSpacer = target.closest(".pin-spacer") ?? target;
+//
+//         // ✅ posición absoluta recorriendo offsetParent
+//         let top = 0;
+//         let el = pinSpacer;
+//         while (el) {
+//             top += el.offsetTop;
+//             el = el.offsetParent;
+//         }
+//
+//         // console.log("top absoluto:", top);
+//         lenis.scrollTo(top, { immediate: true });
+//     });
+// };
+
+const scrollToSection = (hash) => {
+    const target = document.querySelector(hash);
+    if (!target) return;
+
+    const loco = getScrollInstance();
+    if (!loco) return;
+
+    const lenis = loco.lenisInstance;
+    if (!lenis) return;
+
+    const pinSpacer = target.closest(".pin-spacer") ?? target;
+
+    let top = 0;
+    let el = pinSpacer;
+
+    while (el) {
+        top += el.offsetTop;
+        el = el.offsetParent;
+    }
+
+    lenis.scrollTo(top, {
+        immediate: true,
+    });
+};
+
 const scrollGsap = async () => {
     const panelZoom = () => {
         const panel = gsap.utils.toArray(".panel-zoom");
@@ -160,6 +221,26 @@ const scrollGsap = async () => {
 
         panels.forEach((panel, i) => {
             if (i < panels.length - 1) {
+                //                 console.group(panel.className);
+                //
+                //                 console.log("offsetTop:", panel.offsetTop);
+                //                 console.log("rect.top:", panel.getBoundingClientRect().top);
+
+                //                 let p = panel.parentElement;
+                //
+                //                 while (p) {
+                //                     console.log(
+                //                         p.tagName,
+                //                         p.className,
+                //                         getComputedStyle(p).transform,
+                //                         getComputedStyle(p).position,
+                //                     );
+                //
+                //                     p = p.parentElement;
+                //                 }
+                //
+                //                 console.groupEnd();
+
                 ScrollTrigger.create({
                     trigger: panel,
                     start: "bottom bottom",
@@ -169,31 +250,34 @@ const scrollGsap = async () => {
                     invalidateOnRefresh: true,
                     ignoreMobileResize: true,
                     // markers: true,
+                    //                     onEnter(self) {
+                    //                         console.log("ENTER");
+                    //                         console.log(panel.className);
+                    //                         console.log(panel.getBoundingClientRect());
+                    //                         console.log("scrollY:", window.scrollY);
+                    //                     },
+                    //
+                    //                     onEnterBack(self) {
+                    //                         console.log("ENTER BACK");
+                    //                         console.log(panel.className);
+                    //                         console.log(panel.getBoundingClientRect());
+                    //                     },
+                    //                     onRefresh(self) {
+                    //                         console.log("------------ REFRESH ------------");
+                    //                         console.log(panel.className);
+                    //                         console.log("progress", self.progress);
+                    //                         console.log("start", self.start);
+                    //                         console.log("end", self.end);
+                    //                         console.log("scroll", self.scroll());
+                    //
+                    //                         console.log(panel.getBoundingClientRect());
+                    //                     },
                 });
             }
         });
 
-        panels.forEach((panel) => {
-            ScrollTrigger.create({
-                trigger: panel,
-                start: "top center",
-                end: "bottom center",
-                onEnter: () => checkPanelClass(panel),
-                onEnterBack: () => checkPanelClass(panel),
-                onLeave: () => checkPanelClass(null),
-                onLeaveBack: () => checkPanelClass(null),
-            });
-        });
-
         function checkPanelClass(panel) {
             if (panel && panel.classList.contains("page-visualization")) {
-                // if (
-                //     document
-                //         .querySelector(".viz-mapa")
-                //         .classList.contains("hide")
-                // )
-                //     // console.log("viz");
-                //     loadComponent("#header", "componets/header-interior.html");
             } else {
                 // console.log("no ");
                 loadComponent("#header", "componets/header.html");
@@ -223,7 +307,113 @@ const scrollGsap = async () => {
                 onLeaveBack: () => (headerHome.style.opacity = "1"),
             });
         }
+
+        //// posicion
     };
+
+    //     const paneles = () => {
+    //         const panels = gsap.utils.toArray(".panel");
+    //
+    //         panels.forEach((panel, i) => {
+    //             if (i >= panels.length - 1) return;
+    //
+    //             const isVisualization =
+    //                 panel.classList.contains("page-visualization");
+    //
+    //             const st = ScrollTrigger.create({
+    //                 id: `panel-${i}`,
+    //                 trigger: panel,
+    //                 start: "bottom bottom",
+    //                 end: "bottom top",
+    //                 pin: true,
+    //                 pinSpacing: false,
+    //                 invalidateOnRefresh: true,
+    //                 ignoreMobileResize: true,
+    //
+    //                 onRefresh(self) {
+    //                     if (!isVisualization) return;
+    //
+    //                     console.group(
+    //                         "%cREFRESH",
+    //                         "color:#2196f3;font-weight:bold",
+    //                     );
+    //
+    //                     console.log("progress:", self.progress);
+    //                     console.log("scroll:", self.scroll());
+    //                     console.log("start:", self.start);
+    //                     console.log("end:", self.end);
+    //
+    //                     console.log("rect:", panel.getBoundingClientRect());
+    //
+    //                     console.log("computed:", {
+    //                         position: getComputedStyle(panel).position,
+    //                         top: getComputedStyle(panel).top,
+    //                         transform: getComputedStyle(panel).transform,
+    //                     });
+    //
+    //                     console.groupEnd();
+    //                 },
+    //
+    //                 onEnter(self) {
+    //                     if (!isVisualization) return;
+    //
+    //                     console.group("%cENTER", "color:#4caf50;font-weight:bold");
+    //
+    //                     console.log("progress:", self.progress);
+    //                     console.log("scroll:", self.scroll());
+    //                     console.log("start:", self.start);
+    //                     console.log("end:", self.end);
+    //
+    //                     console.log("rect:", panel.getBoundingClientRect());
+    //
+    //                     console.log("computed:", {
+    //                         position: getComputedStyle(panel).position,
+    //                         top: getComputedStyle(panel).top,
+    //                         transform: getComputedStyle(panel).transform,
+    //                     });
+    //
+    //                     console.groupEnd();
+    //                 },
+    //
+    //                 onEnterBack(self) {
+    //                     if (!isVisualization) return;
+    //
+    //                     console.group(
+    //                         "%cENTER BACK",
+    //                         "color:#ff9800;font-weight:bold",
+    //                     );
+    //
+    //                     console.log("progress:", self.progress);
+    //                     console.log("scroll:", self.scroll());
+    //                     console.log("start:", self.start);
+    //                     console.log("end:", self.end);
+    //
+    //                     console.log("rect:", panel.getBoundingClientRect());
+    //
+    //                     console.log("computed:", {
+    //                         position: getComputedStyle(panel).position,
+    //                         top: getComputedStyle(panel).top,
+    //                         transform: getComputedStyle(panel).transform,
+    //                     });
+    //
+    //                     console.groupEnd();
+    //                 },
+    //             });
+    //
+    //             if (isVisualization) {
+    //                 console.group("%cCREATE", "color:#9c27b0;font-weight:bold");
+    //
+    //                 console.log("progress:", st.progress);
+    //                 console.log("start:", st.start);
+    //                 console.log("end:", st.end);
+    //
+    //                 console.log("offsetTop:", panel.offsetTop);
+    //                 console.log("rect:", panel.getBoundingClientRect());
+    //
+    //                 console.groupEnd();
+    //             }
+    //         });
+    //     };
 
     let currentStep = null;
 
@@ -250,6 +440,7 @@ const scrollGsap = async () => {
             },
         });
     };
+
     const pinCards = () => {
         const section = document.querySelector(".page-physicalizing--moments");
         const items = gsap.utils.toArray(".expand__image__info");
@@ -502,24 +693,51 @@ const scrollGsap = async () => {
         const mainPeriods = document.querySelector(".main-periods");
 
         if (mediaQuery.matches) {
-            visualizationSection.classList.add("panel");
-            pageViz.insertAdjacentElement("afterend", visualizationSection);
+            // no borrar aun
+            //             visualizationSection.classList.add("panel");
+            //             pageViz.insertAdjacentElement("afterend", visualizationSection);
+            //
+            //             setTimeout(() => {
+            //                 visualizationSection.insertAdjacentElement(
+            //                     "beforeend",
+            //                     mainPeriods,
+            //                 );
+            //             }, 1000);
 
-            setTimeout(() => {
-                visualizationSection.insertAdjacentElement(
-                    "beforeend",
-                    mainPeriods,
-                );
-            }, 1000);
+            visualizationSection.classList.add("panel");
+
+            if (visualizationSection.previousElementSibling !== pageViz) {
+                pageViz.after(visualizationSection);
+            }
+
+            if (mainPeriods.parentNode !== visualizationSection) {
+                visualizationSection.appendChild(mainPeriods);
+            }
         } else {
-            visualizationSection.insertAdjacentElement(
-                "afterend",
-                visualizationHeroViz,
-            );
-            mainPeriods.insertAdjacentElement("afterend", visualizationHeroViz);
+            // no borrar aun
+            // visualizationSection.insertAdjacentElement(
+            //     "afterend",
+            //     visualizationHeroViz,
+            // );
+            // mainPeriods.insertAdjacentElement("afterend", visualizationHeroViz);
+            //
+
+            if (
+                visualizationHeroViz.previousElementSibling !==
+                visualizationSection
+            ) {
+                visualizationSection.after(visualizationHeroViz);
+            }
+
+            if (mainPeriods.nextElementSibling !== visualizationHeroViz) {
+                mainPeriods.after(visualizationHeroViz);
+            }
         }
 
-        // ScrollTrigger.refresh();
+        // console.trace("REFRESH"); console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+        // console.trace();
+        // ScrollTrigger.refresh(true);
+        // console.groupEnd();
 
         ScrollTrigger.create({
             trigger: ".visualization",
@@ -1056,17 +1274,55 @@ const initScrollPosition = () => {
 };
 
 const init = async () => {
-    render();
-    renderShadow();
-    smoothScroll();
-    // initScrollPosition();
-    scrollGsap();
-    modalVideo();
+    // render();
+    // renderShadow();
+    // no borrar aun
+    //     window.addEventListener("locomotiveReady", async ({ detail }) => {
+    //         const lenis = detail.instance?.lenisInstance;
+    //         if (!lenis) return;
+    //
+    //         lenis.on("scroll", ScrollTrigger.update);
+    //
+    //
+    //         ScrollTrigger.getAll().forEach((st) => st.kill());
+    //         await scrollGsap();
+    //
+    //         await new Promise((resolve) => requestAnimationFrame(resolve));
+    //         await new Promise((resolve) => requestAnimationFrame(resolve));
+    //
+    //         scrollToSection();
+    //
+    //         ScrollTrigger.refresh(true);
+    //     });
 
+    // window.addEventListener("locomotiveReady", async ({ detail }) => {
+    // const lenis = detail.instance?.lenisInstance;
+    // if (!lenis) return;
+
+    // lenis.on("scroll", ScrollTrigger.update);
+
+    ScrollTrigger.getAll().forEach((st) => st.kill());
+
+    ScrollTrigger.clearScrollMemory();
+
+    await scrollGsap();
+
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    scrollToSection();
+
+    ScrollTrigger.refresh(true);
+    // });
+    //
+    smoothScroll();
+
+    modalVideo();
     videoHome();
-    // ScrollTrigger.refresh();
+    // console.trace("REFRESH"); console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+    // console.trace();
+    // ScrollTrigger.refresh(true);
+    // console.groupEnd();
     mediaQueryLaptop.addEventListener("change", modalVideo);
-    // alert("hola");
 };
 
 init();

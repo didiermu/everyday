@@ -526,9 +526,9 @@ async function attachModalEvents(slide) {
             closeBtn.onclick = () => {
                 modalData.close();
 
-                if (scroll) {
-                    smoothScroll();
-                }
+                // if (scroll) {
+                //     smoothScroll();
+                // }
             };
     }
 
@@ -550,9 +550,9 @@ async function attachModalEvents(slide) {
                     swiperInstance.allowTouchMove = true;
                 }
 
-                if (scroll) {
-                    smoothScroll();
-                }
+                // if (scroll) {
+                //     smoothScroll();
+                // }
             };
         }
 
