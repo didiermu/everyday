@@ -84,13 +84,9 @@ const modalExplore = () => {
             await loadComponent("#header", "componets/header-interior.html");
 
             setTimeout(() => {
-                // no borrar aun
-                // const linkBack = document.querySelector(".link-back");
-                // linkBack.addEventListener("click", linkHandler);
-                // no borrar aun
+                const linkBack = document.querySelector(".link-back");
+                linkBack.addEventListener("click", linkHandler);
 
-                linkBack = document.querySelector(".link-back");
-                linkBack.addEventListener("click", linkHandlerMobile);
                 document.querySelector("body").className = "panel-3";
 
                 //
@@ -124,53 +120,30 @@ const modalExplore = () => {
             }, 500);
         };
 
-        // NO BORRAR AUN
-        //         const linkHandler = () => {
-        //             hero.classList.add("show");
-        //             modal.classList.remove("show");
-        //
-        //             // ✅ destruir swiper correctamente
-        //             if (swiperInstance) {
-        //                 swiperInstance.destroy(true, true);
-        //                 swiperInstance = null;
-        //             }
-        //
-        //             loadComponent("#header", "componets/header.html");
-        //
-        //             // console.trace("REFRESH");
-        //             // console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
-        //             // console.trace();
-        //             // ScrollTrigger.refresh(true);
-        //             // console.groupEnd();
-        //             if (scroll) {
-        //                 smoothScroll();
-        //             }
-        //         };
+        const linkHandler = () => {
+            hero.classList.add("show");
+            modal.classList.remove("show");
 
-        // NO BORRAR AUN
+            // ✅ destruir swiper correctamente
+            if (swiperInstance) {
+                swiperInstance.destroy(true, true);
+                swiperInstance = null;
+            }
+
+            loadComponent("#header", "componets/header.html");
+
+            // console.trace("REFRESH");
+            // console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
+            // console.trace();
+            // ScrollTrigger.refresh(true);
+            // console.groupEnd();
+            if (scroll) {
+                smoothScroll();
+            }
+        };
 
         button.addEventListener("click", buttonHandler);
         linkExplore.addEventListener("click", buttonHandler);
-    }
-};
-
-const linkHandlerMobile = async () => {
-    const hero = document.querySelector(".visualization");
-    const modal = document.querySelector(".main-periods");
-
-    hero.classList.add("show");
-    modal.classList.remove("show");
-
-    // ✅ destruir swiper correctamente
-    if (swiperInstance) {
-        swiperInstance.destroy(true, true);
-        swiperInstance = null;
-    }
-
-    await loadComponent("#header", "componets/header.html");
-
-    if (scroll) {
-        smoothScroll();
     }
 };
 
