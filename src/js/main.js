@@ -8,6 +8,8 @@ import "./../scss/styles.scss";
 import "bootstrap/js/dist/offcanvas";
 import "bootstrap/js/dist/collapse";
 
+import { scrollToSection } from "./pages/home.js";
+
 gsap.registerPlugin(ScrollTrigger);
 
 export const initImgCoverZoom = () => {

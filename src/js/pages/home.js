@@ -161,7 +161,7 @@ const openModalVideo = async () => {
 //     });
 // };
 
-const scrollToSection = (hash) => {
+export const scrollToSection = (hash) => {
     const target = document.querySelector(hash);
     if (!target) return;
 
@@ -1274,8 +1274,8 @@ const initScrollPosition = () => {
 };
 
 const init = async () => {
-    // render();
-    // renderShadow();
+    render();
+    renderShadow();
     // no borrar aun
     //     window.addEventListener("locomotiveReady", async ({ detail }) => {
     //         const lenis = detail.instance?.lenisInstance;
