@@ -64,3 +64,29 @@ export function startScroll() {
     scrollInstance?.lenisInstance?.start();
     console.log("start");
 }
+
+export function stopScrollMob() {
+    scrollInstance?.lenisInstance?.stop();
+
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
+
+    if (scrollContainer) {
+        scrollContainer.style.touchAction = "none";
+        scrollContainer.style.overflow = "hidden";
+    }
+}
+
+export function startScrollMob() {
+    scrollInstance?.lenisInstance?.start();
+
+    document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+    document.body.style.touchAction = "";
+
+    if (scrollContainer) {
+        scrollContainer.style.touchAction = "";
+        scrollContainer.style.overflow = "";
+    }
+}

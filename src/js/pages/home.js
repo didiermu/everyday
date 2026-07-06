@@ -6,6 +6,10 @@ import {
     destroyScroll,
     smoothScroll,
     getLenisInstance,
+    startScroll,
+    stopScroll,
+    startScrollMob,
+    stopScrollMob,
 } from "./../utils/loadLocomotive.js";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger.js";
@@ -127,40 +131,6 @@ const openModalVideo = async () => {
     }
 };
 
-//// HEADER
-
-// const scrollToSection = (section) => {
-//     document.addEventListener("click", (e) => {
-//         let target = null;
-//         if (e.target.closest("#link-intro"))
-//             target = document.querySelector("#intro");
-//         if (e.target.closest("#link-physicalizing"))
-//             target = document.querySelector("#physicalizing");
-//         if (e.target.closest("#link-visualization"))
-//             target = document.querySelector("#visualization");
-//         if (!target) return;
-//
-//         const loco = getScrollInstance();
-//         if (!loco) return;
-//
-//         const lenis = loco.lenisInstance;
-//         if (!lenis) return;
-//
-//         const pinSpacer = target.closest(".pin-spacer") ?? target;
-//
-//         // ✅ posición absoluta recorriendo offsetParent
-//         let top = 0;
-//         let el = pinSpacer;
-//         while (el) {
-//             top += el.offsetTop;
-//             el = el.offsetParent;
-//         }
-//
-//         // console.log("top absoluto:", top);
-//         lenis.scrollTo(top, { immediate: true });
-//     });
-// };
-
 export const scrollToSection = (hash) => {
     const target = document.querySelector(hash);
     if (!target) return;
@@ -221,57 +191,18 @@ const scrollGsap = async () => {
 
         panels.forEach((panel, i) => {
             if (i < panels.length - 1) {
-                //                 console.group(panel.className);
-                //
-                //                 console.log("offsetTop:", panel.offsetTop);
-                //                 console.log("rect.top:", panel.getBoundingClientRect().top);
-
-                //                 let p = panel.parentElement;
-                //
-                //                 while (p) {
-                //                     console.log(
-                //                         p.tagName,
-                //                         p.className,
-                //                         getComputedStyle(p).transform,
-                //                         getComputedStyle(p).position,
-                //                     );
-                //
-                //                     p = p.parentElement;
-                //                 }
-                //
-                //                 console.groupEnd();
-
                 ScrollTrigger.create({
                     trigger: panel,
-                    start: "bottom bottom",
+                    // start: "bottom bottom",
+                    start: mediaQuery.matches
+                        ? "bottom bottom"
+                        : "+=103% bottom",
                     pin: true,
                     pinSpacing: false,
                     end: "bottom top",
                     invalidateOnRefresh: true,
                     ignoreMobileResize: true,
                     // markers: true,
-                    //                     onEnter(self) {
-                    //                         console.log("ENTER");
-                    //                         console.log(panel.className);
-                    //                         console.log(panel.getBoundingClientRect());
-                    //                         console.log("scrollY:", window.scrollY);
-                    //                     },
-                    //
-                    //                     onEnterBack(self) {
-                    //                         console.log("ENTER BACK");
-                    //                         console.log(panel.className);
-                    //                         console.log(panel.getBoundingClientRect());
-                    //                     },
-                    //                     onRefresh(self) {
-                    //                         console.log("------------ REFRESH ------------");
-                    //                         console.log(panel.className);
-                    //                         console.log("progress", self.progress);
-                    //                         console.log("start", self.start);
-                    //                         console.log("end", self.end);
-                    //                         console.log("scroll", self.scroll());
-                    //
-                    //                         console.log(panel.getBoundingClientRect());
-                    //                     },
                 });
             }
         });
@@ -307,113 +238,7 @@ const scrollGsap = async () => {
                 onLeaveBack: () => (headerHome.style.opacity = "1"),
             });
         }
-
-        //// posicion
     };
-
-    //     const paneles = () => {
-    //         const panels = gsap.utils.toArray(".panel");
-    //
-    //         panels.forEach((panel, i) => {
-    //             if (i >= panels.length - 1) return;
-    //
-    //             const isVisualization =
-    //                 panel.classList.contains("page-visualization");
-    //
-    //             const st = ScrollTrigger.create({
-    //                 id: `panel-${i}`,
-    //                 trigger: panel,
-    //                 start: "bottom bottom",
-    //                 end: "bottom top",
-    //                 pin: true,
-    //                 pinSpacing: false,
-    //                 invalidateOnRefresh: true,
-    //                 ignoreMobileResize: true,
-    //
-    //                 onRefresh(self) {
-    //                     if (!isVisualization) return;
-    //
-    //                     console.group(
-    //                         "%cREFRESH",
-    //                         "color:#2196f3;font-weight:bold",
-    //                     );
-    //
-    //                     console.log("progress:", self.progress);
-    //                     console.log("scroll:", self.scroll());
-    //                     console.log("start:", self.start);
-    //                     console.log("end:", self.end);
-    //
-    //                     console.log("rect:", panel.getBoundingClientRect());
-    //
-    //                     console.log("computed:", {
-    //                         position: getComputedStyle(panel).position,
-    //                         top: getComputedStyle(panel).top,
-    //                         transform: getComputedStyle(panel).transform,
-    //                     });
-    //
-    //                     console.groupEnd();
-    //                 },
-    //
-    //                 onEnter(self) {
-    //                     if (!isVisualization) return;
-    //
-    //                     console.group("%cENTER", "color:#4caf50;font-weight:bold");
-    //
-    //                     console.log("progress:", self.progress);
-    //                     console.log("scroll:", self.scroll());
-    //                     console.log("start:", self.start);
-    //                     console.log("end:", self.end);
-    //
-    //                     console.log("rect:", panel.getBoundingClientRect());
-    //
-    //                     console.log("computed:", {
-    //                         position: getComputedStyle(panel).position,
-    //                         top: getComputedStyle(panel).top,
-    //                         transform: getComputedStyle(panel).transform,
-    //                     });
-    //
-    //                     console.groupEnd();
-    //                 },
-    //
-    //                 onEnterBack(self) {
-    //                     if (!isVisualization) return;
-    //
-    //                     console.group(
-    //                         "%cENTER BACK",
-    //                         "color:#ff9800;font-weight:bold",
-    //                     );
-    //
-    //                     console.log("progress:", self.progress);
-    //                     console.log("scroll:", self.scroll());
-    //                     console.log("start:", self.start);
-    //                     console.log("end:", self.end);
-    //
-    //                     console.log("rect:", panel.getBoundingClientRect());
-    //
-    //                     console.log("computed:", {
-    //                         position: getComputedStyle(panel).position,
-    //                         top: getComputedStyle(panel).top,
-    //                         transform: getComputedStyle(panel).transform,
-    //                     });
-    //
-    //                     console.groupEnd();
-    //                 },
-    //             });
-    //
-    //             if (isVisualization) {
-    //                 console.group("%cCREATE", "color:#9c27b0;font-weight:bold");
-    //
-    //                 console.log("progress:", st.progress);
-    //                 console.log("start:", st.start);
-    //                 console.log("end:", st.end);
-    //
-    //                 console.log("offsetTop:", panel.offsetTop);
-    //                 console.log("rect:", panel.getBoundingClientRect());
-    //
-    //                 console.groupEnd();
-    //             }
-    //         });
-    //     };
 
     let currentStep = null;
 
@@ -458,17 +283,6 @@ const scrollGsap = async () => {
                 pinSpacing: false,
                 scrub: 1,
                 // markers: true,
-                // onUpdate: (self) => {
-                //     const step = Math.min(
-                //         Math.ceil(self.progress * items.length) || 1,
-                //         items.length,
-                //     );
-                //     section.className = section.className.replace(
-                //         /\bis-step-\d+/g,
-                //         "",
-                //     );
-                //     section.classList.add(`is-step-${step}`);
-                // },
 
                 onUpdate: (self) => {
                     const step = Math.min(
@@ -529,6 +343,138 @@ const scrollGsap = async () => {
         });
     };
 
+    //     const pinVideo = () => {
+    //         const video = document.querySelector(".video");
+    //
+    //         let scrollCount = 0;
+    //         let isLocked = false;
+    //         let lastScrollTime = 0;
+    //         let lastTouchY = 0;
+    //
+    //         const handleScroll = (e) => {
+    //             if (!isLocked) return;
+    //
+    //             if (e.cancelable) {
+    //                 e.preventDefault();
+    //             }
+    //
+    //             let scrollDirection = 0; // 1 = abajo, -1 = arriba, 0 = sin movimiento
+    //             let isMobile = false;
+    //
+    //             // Detectar si es wheel o touch
+    //             if (e.type === "wheel") {
+    //                 // Desktop: wheel event
+    //                 if (e.deltaY > 0) {
+    //                     scrollDirection = 1; // Abajo
+    //                 } else if (e.deltaY < 0) {
+    //                     scrollDirection = -1; // Arriba
+    //                 }
+    //             } else if (e.type === "touchmove") {
+    //                 // Mobile: touch event
+    //                 const currentY = e.touches[0].clientY;
+    //                 if (currentY < lastTouchY) {
+    //                     scrollDirection = 1; // Abajo
+    //                 } else if (currentY > lastTouchY) {
+    //                     scrollDirection = -1; // Arriba
+    //                 }
+    //                 lastTouchY = currentY;
+    //                 isMobile = true;
+    //             }
+    //
+    //             if (scrollDirection === 0) return;
+    //
+    //             const now = Date.now();
+    //
+    //             // Ignorar eventos generados rápidamente
+    //             if (now - lastScrollTime < 300) return;
+    //
+    //             lastScrollTime = now;
+    //
+    //             // Sumar si es abajo, restar si es arriba
+    //             scrollCount += scrollDirection;
+    //             scrollCount = Math.max(0, scrollCount); // Nunca negativo
+    //
+    //             const requiredScrolls = isMobile ? 3 : 6;
+    //             // console.log(
+    //             //     `Scroll ${scrollCount}/${requiredScrolls} (${scrollDirection > 0 ? "↓" : "↑"})`,
+    //             // );
+    //
+    //             if (scrollCount >= requiredScrolls) {
+    //                 // console.log("✅ Desbloqueo por scroll hacia abajo completado");
+    //
+    //                 const scrollInstance = getScrollInstance();
+    //
+    //                 if (scrollInstance) {
+    //                     scrollInstance.start();
+    //                 }
+    //
+    //                 isLocked = false;
+    //                 scrollCount = 0;
+    //
+    //                 window.removeEventListener("wheel", handleScroll);
+    //                 window.removeEventListener("touchmove", handleScroll);
+    //             } else if (scrollCount === 0) {
+    //                 // console.log("↩️ Volviste al inicio - Desbloqueando scroll");
+    //
+    //                 const scrollInstance = getScrollInstance();
+    //
+    //                 if (scrollInstance) {
+    //                     scrollInstance.start();
+    //                 }
+    //
+    //                 isLocked = false;
+    //
+    //                 window.removeEventListener("wheel", handleScroll);
+    //                 window.removeEventListener("touchmove", handleScroll);
+    //             }
+    //         };
+    //
+    //         ScrollTrigger.create({
+    //             trigger: video,
+    //             start: mediaQuery.matches ? "top top" : "top top",
+    //             end: "+=105% center",
+    //             markers: true,
+    //
+    //             onEnter: () => {
+    //                 // console.log("🎬 VIDEO TRIGGER ONENTER - Bloqueando scroll");
+    //
+    //                 isLocked = true;
+    //                 scrollCount = 0;
+    //                 lastScrollTime = 0;
+    //                 lastTouchY = window.innerHeight / 2;
+    //
+    //                 const scrollInstance = getScrollInstance();
+    //
+    //                 if (scrollInstance) {
+    //                     scrollInstance.stop();
+    //                 }
+    //
+    //                 window.addEventListener("wheel", handleScroll, {
+    //                     passive: true,
+    //                 });
+    //                 window.addEventListener("touchmove", handleScroll, {
+    //                     passive: false,
+    //                 });
+    //             },
+    //
+    //             onLeave: () => {
+    //                 // console.log("🎬 VIDEO TRIGGER ONLEAVE - Desbloqueando scroll");
+    //
+    //                 isLocked = false;
+    //                 scrollCount = 0;
+    //
+    //                 const scrollInstance = getScrollInstance();
+    //
+    //                 if (scrollInstance) {
+    //                     scrollInstance.start();
+    //                 }
+    //
+    //                 window.removeEventListener("wheel", handleScroll);
+    //                 window.removeEventListener("touchmove", handleScroll);
+    //             },
+    //         });
+    //     };
+
     const pinVideo = () => {
         const video = document.querySelector(".video");
 
@@ -536,128 +482,110 @@ const scrollGsap = async () => {
         let isLocked = false;
         let lastScrollTime = 0;
         let lastTouchY = 0;
+        let trigger;
+
+        const unlockScroll = () => {
+            if (!isLocked) return;
+
+            isLocked = false;
+            scrollCount = 0;
+
+            startScroll();
+
+            window.removeEventListener("wheel", handleScroll);
+            window.removeEventListener("touchstart", handleTouchStart);
+            window.removeEventListener("touchmove", handleScroll);
+
+            // Esperar un frame para que Lenis vuelva a tomar el control
+            requestAnimationFrame(() => {
+                trigger.enable(false, false);
+                // no borrar aun
+                // ScrollTrigger.refresh();
+                // no borrar aun
+            });
+        };
+
+        const handleTouchStart = (e) => {
+            lastTouchY = e.touches[0].clientY;
+        };
 
         const handleScroll = (e) => {
-            if (!isLocked) {
-                // console.log(
-                //     "handleScroll called but isLocked is false, returning",
-                // );
-                return;
+            if (!isLocked) return;
+
+            if (e.cancelable) {
+                e.preventDefault();
             }
 
-            let scrollDirection = 0; // 1 = abajo, -1 = arriba, 0 = sin movimiento
-            let isMobile = false;
+            let scrollDirection = 0;
+            let requiredScrolls = 6;
 
-            // Detectar si es wheel o touch
             if (e.type === "wheel") {
-                // Desktop: wheel event
-                if (e.deltaY > 0) {
-                    scrollDirection = 1; // Abajo
-                } else if (e.deltaY < 0) {
-                    scrollDirection = -1; // Arriba
-                }
-            } else if (e.type === "touchmove") {
-                // Mobile: touch event
-                const currentY = e.touches[0].clientY;
-                if (currentY < lastTouchY) {
-                    scrollDirection = 1; // Abajo
-                } else if (currentY > lastTouchY) {
-                    scrollDirection = -1; // Arriba
-                }
-                lastTouchY = currentY;
-                isMobile = true;
+                if (e.deltaY > 0) scrollDirection = 1;
+                if (e.deltaY < 0) scrollDirection = -1;
             }
 
-            if (scrollDirection === 0) return;
+            if (e.type === "touchmove") {
+                const currentY = e.touches[0].clientY;
+
+                if (currentY < lastTouchY) scrollDirection = 1;
+                else if (currentY > lastTouchY) scrollDirection = -1;
+
+                lastTouchY = currentY;
+                requiredScrolls = 3;
+            }
+
+            if (!scrollDirection) return;
 
             const now = Date.now();
 
-            // Ignorar eventos generados rápidamente
-            if (now - lastScrollTime < 300) return;
+            if (now - lastScrollTime < 250) return;
 
             lastScrollTime = now;
 
-            // Sumar si es abajo, restar si es arriba
             scrollCount += scrollDirection;
-            scrollCount = Math.max(0, scrollCount); // Nunca negativo
+            scrollCount = Math.max(0, scrollCount);
 
-            const requiredScrolls = isMobile ? 3 : 6;
             // console.log(
-            //     `Scroll ${scrollCount}/${requiredScrolls} (${scrollDirection > 0 ? "↓" : "↑"})`,
+            //     `${scrollCount}/${requiredScrolls}`,
+            //     scrollDirection > 0 ? "↓" : "↑",
             // );
 
             if (scrollCount >= requiredScrolls) {
-                // console.log("✅ Desbloqueo por scroll hacia abajo completado");
-
-                const scrollInstance = getScrollInstance();
-
-                if (scrollInstance) {
-                    scrollInstance.start();
-                }
-
-                isLocked = false;
-                scrollCount = 0;
-
-                window.removeEventListener("wheel", handleScroll);
-                window.removeEventListener("touchmove", handleScroll);
-            } else if (scrollCount === 0) {
-                // console.log("↩️ Volviste al inicio - Desbloqueando scroll");
-
-                const scrollInstance = getScrollInstance();
-
-                if (scrollInstance) {
-                    scrollInstance.start();
-                }
-
-                isLocked = false;
-
-                window.removeEventListener("wheel", handleScroll);
-                window.removeEventListener("touchmove", handleScroll);
+                unlockScroll();
             }
         };
 
-        ScrollTrigger.create({
+        trigger = ScrollTrigger.create({
             trigger: video,
-            start: mediaQuery.matches ? "top top" : "top top",
+            start: "top top",
             end: "+=105% center",
             // markers: true,
 
             onEnter: () => {
-                // console.log("🎬 VIDEO TRIGGER ONENTER - Bloqueando scroll");
+                if (isLocked) return;
 
                 isLocked = true;
                 scrollCount = 0;
                 lastScrollTime = 0;
-                lastTouchY = window.innerHeight / 2;
 
-                const scrollInstance = getScrollInstance();
+                // no borrar aun
+                stopScroll();
+                // no borrar aun
 
-                if (scrollInstance) {
-                    scrollInstance.stop();
-                }
+                // Evita que los cambios del viewport disparen onLeave
+                trigger.disable(false, false);
 
                 window.addEventListener("wheel", handleScroll, {
-                    passive: true,
+                    passive: false,
                 });
+
+                window.addEventListener("touchstart", handleTouchStart, {
+                    passive: false,
+                });
+
                 window.addEventListener("touchmove", handleScroll, {
                     passive: false,
                 });
-            },
-
-            onLeave: () => {
-                // console.log("🎬 VIDEO TRIGGER ONLEAVE - Desbloqueando scroll");
-
-                isLocked = false;
-                scrollCount = 0;
-
-                const scrollInstance = getScrollInstance();
-
-                if (scrollInstance) {
-                    scrollInstance.start();
-                }
-
-                window.removeEventListener("wheel", handleScroll);
-                window.removeEventListener("touchmove", handleScroll);
             },
         });
     };
@@ -1259,20 +1187,6 @@ const renderShadow = async () => {
     };
 };
 
-const initScrollPosition = () => {
-    // Si no hay hash en la URL, scroll al top
-    if (!window.location.hash) {
-        setTimeout(() => {
-            const scrollInstance = getScrollInstance();
-            if (scrollInstance) {
-                scrollInstance.scrollTo(0, { duration: 0 });
-            } else {
-                window.scrollTo(0, 0);
-            }
-        }, 100);
-    }
-};
-
 const init = async () => {
     render();
     renderShadow();
@@ -1315,6 +1229,13 @@ const init = async () => {
     // });
     //
     smoothScroll();
+
+    // no borrar aun
+    // ScrollTrigger.refresh(true);
+    // smoothScroll();
+    // no borrar aun
+    // });
+    //
 
     modalVideo();
     videoHome();

@@ -68,7 +68,8 @@ canvas {
         z-index: 9;
         margin-block-end: 0;
         padding-block-start: 0;
-        height: 100svh;
+        // height: 100svh;
+        height: 100vh;
 
         video {
             display: block;
@@ -118,7 +119,8 @@ canvas {
     background: var(--color-banana);
 
     .hero-viz {
-        padding-block: var(--spacing-10xl) var(--spacing-8xl);
+        // padding-block: var(--spacing-10xl) var(--spacing-8xl);
+        padding: var(--spacing-10xl) 0 var(--spacing-8xl);
 
         &.hide {
             display: none;

@@ -122,8 +122,8 @@
                             -430px + 130 * (100vw - 360px) / 640
                         ) -10px;
                     width: calc(1200px + 410 * (100vw - 360px) / 640);
-                    height: auto;
-                    // height: 800px;
+                    // height: auto;
+                    height: 100%;
                     transition: 0.5s ease-in-out;
                 }
             }
@@ -213,6 +213,11 @@
 
             picture {
                 height: 400px;
+
+                img {
+                    height: 400px;
+                    width: auto;
+                }
             }
         }
 
@@ -271,7 +276,7 @@
     }
 
     .hours {
-        padding-block-end: 0;
+        padding-block: var(--spacing-6xl) var(--spacing-4xl);
 
         .row {
             row-gap: var(--spacing-lg);

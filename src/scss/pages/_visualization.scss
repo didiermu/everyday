@@ -92,14 +92,6 @@
         }
     }
 
-    //     &--fondo {
-    //         position: relative;
-    //
-    //         svg {
-    //             display: none;
-    //         }
-    //     }
-
     &--button {
         position: absolute;
         top: 2.375rem;
@@ -119,43 +111,6 @@
         color: var(--color-not-so-black);
         cursor: pointer;
     }
-
-    //     &--data {
-    //         align-items: normal !important;
-    //         row-gap: var(--spacing-lg) !important;
-    //
-    //         h4 {
-    //             @include typography.typography("md", tertiary);
-    //             font-weight: 300;
-    //             padding-block: var(--spacing-sm);
-    //             text-align: center;
-    //             background: url(./../img/cerillo-negative.webp) no-repeat 35%
-    //                 center / 50px;
-    //
-    //             strong {
-    //                 font-weight: 500;
-    //             }
-    //         }
-    //
-    //         @include mixins.data-table;
-    //
-    //         a {
-    //             text-decoration: none;
-    //         }
-    //
-    //         .button {
-    //             background: var(--color-not-so-white-viz-300);
-    //             @include typography.typography("sm", tertiary);
-    //             letter-spacing: normal;
-    //             width: max-content;
-    //             margin: auto;
-    //             margin-block-start: var(--spacing-lg);
-    //         }
-    //     }
-
-    // .col-12.visualization--instructions {
-    //     display: none;
-    // }
 
     &--period--head {
         display: none;

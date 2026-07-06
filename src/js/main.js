@@ -99,6 +99,7 @@ export const initMenuLinks = () => {
                 scrollToSection(hash);
                 linkHandlerMobile();
             } else {
+                startScroll();
                 scrollToSection(hash);
             }
 
@@ -114,6 +115,7 @@ export const initHashScroll = () => {
 
     // Espera a que Locomotive esté listo
     setTimeout(() => {
+        startScroll();
         scrollToSection(hash);
     }, 300);
 };
