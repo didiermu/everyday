@@ -45,13 +45,10 @@ const modalViz = () => {
                 el = el.offsetParent;
             }
 
-            // console.trace("REFRESH");
-            // console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
-            // console.trace();
             ScrollTrigger.refresh(true);
-            // console.groupEnd();
-            // console.log("top absoluto:", top);
-            lenis.scrollTo(top, { immediate: true });
+            console.log("top absoluto:");
+            // NO BORRAR AUN
+            // lenis.scrollTo(top, { immediate: true });
         };
 
         button.addEventListener("click", buttonHandler);
