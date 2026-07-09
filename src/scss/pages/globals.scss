@@ -9,9 +9,13 @@
 // }
 
 & {
-    // background-color: var(--color-not-so-white-viz-300);
-    background: var(--color-magic);
+    // background: var(--color-not-so-white-viz-300);
+    // background: var(--color-magic);
+    background: transparent;
     font-family: var(--font-primaria-regular);
+
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
 
     h1,
     h2,

@@ -69,7 +69,7 @@
         padding-block-start: var(--spacing-8xl);
 
         .expand {
-            padding-block: var(--spacing-8xl);
+            padding-block: var(--spacing-8xl) var(--spacing-10xl);
         }
     }
 
@@ -187,6 +187,12 @@
     .regular {
         padding-block: var(--spacing-8xl);
 
+        @supports (font: -apple-system-body) and (-webkit-appearance: none) {
+            &.video-psy {
+                padding-block-start: var(--spacing-6xl);
+            }
+        }
+
         &.carousel {
             display: flex;
             flex-direction: column;
@@ -276,7 +282,7 @@
     }
 
     .hours {
-        padding-block: var(--spacing-6xl) var(--spacing-4xl);
+        padding-block: var(--spacing-6xl) var(--spacing-8xl);
 
         .row {
             row-gap: var(--spacing-lg);
@@ -427,6 +433,10 @@
             .carousel-all {
                 picture {
                     height: 700px;
+
+                    img {
+                        height: 700px;
+                    }
                 }
             }
 
@@ -470,18 +480,36 @@
                     inset: 0;
                     margin: 0 auto;
 
+                    @supports (font: -apple-system-body) and
+                        (-webkit-appearance: none) {
+                        height: auto;
+                    }
+
                     &:nth-child(1) {
                         margin-inline: auto;
                         top: 210px;
+
+                        @supports (font: -apple-system-body) and
+                            (-webkit-appearance: none) {
+                            bottom: 190px;
+                        }
                     }
                     &:nth-child(2) {
                         right: 60%;
                         top: 190px;
+                        @supports (font: -apple-system-body) and
+                            (-webkit-appearance: none) {
+                            bottom: 340px;
+                        }
                     }
 
                     &:nth-child(3) {
                         left: 9%;
                         top: 230px;
+                        @supports (font: -apple-system-body) and
+                            (-webkit-appearance: none) {
+                            bottom: 300px;
+                        }
                     }
                 }
 

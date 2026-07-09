@@ -3,15 +3,19 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0a0a">
     <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
     <link rel="preload" href="fonts/TTTrailers-Regular.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="preload" href="fonts/TTTrailers-Bold.ttf" as="font" type="font/ttf" crossorigin />
     <title>Everyday</title>
-  <script type="module" crossorigin src="/js/index-D6GVDK2E.js"></script>
+  <script type="module" crossorigin src="/js/index-Ci-ifF9w.js"></script>
   <link rel="modulepreload" crossorigin href="/js/three-CsQg7oh7.js">
-  <link rel="modulepreload" crossorigin href="/js/main-Du8VDxRP.js">
-  <link rel="stylesheet" crossorigin href="/css/main-Cni8NwOP.css">
+  <link rel="modulepreload" crossorigin href="/js/main-Dz6xTgk1.js">
+  <link rel="stylesheet" crossorigin href="/css/main-Cja_I_rg.css">
   <link rel="stylesheet" crossorigin href="/css/index-EsTBEVQd.css">
 </head>
 
@@ -32,7 +36,7 @@
     <!-- <main id="app data-scroll-container" data-scroll-container> -->
     <main id="app" data-scroll-container>
         <!-- HOME -->
-        <div class="page-home panel" id="intro">
+        <div class="page-home" id="intro">
             <div class="panel__content">
                 <section class="intro">
                     <div class="container">
@@ -49,14 +53,22 @@
                         </div>
                     </div>
                 </section>
-                <section class="video">
+                <!-- <section class="video">
                     <video poster="./img/intro_video_portrait.webp" muted playsinline loop preload="metadata">
                         <source src="./video/Intro_video_portrait.webm" type="video/webm"
                             media="(orientation: portrait)" />
                     </video>
                     <button class="btn-play">PLAY</button>
-                </section>
+                </section> -->
             </div>
+        </div>
+        <div class="page-video panel">
+            <section class="video">
+                <video poster="./img/intro_video_portrait.webp" muted playsinline loop preload="metadata">
+                    <source src="./video/Intro_video_portrait.webm" type="video/webm" media="(orientation: portrait)" />
+                </video>
+                <button class="btn-play">PLAY</button>
+            </section>
         </div>
         <!-- PSYCH -->
         <div class="page-physicalizing panel panel-zoom" id="physicalizing">
@@ -133,7 +145,7 @@
         </div>
         <div class="page-physicalizing panel video-section">
             <div class="panel__content">
-                <section class="regular">
+                <section class="regular video-psy">
                     <div class="container">
                         <div class="row">
                             <div class="col-12">

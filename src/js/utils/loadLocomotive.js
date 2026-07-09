@@ -18,10 +18,15 @@ export function smoothScroll() {
         smooth: true,
         // autoStart: false, // ✅ no arrancar RAF propio
         lenisOptions: {
-            lerp: 0.1,
-            autoRaf: false, // ✅ desactivar RAF interno de Lenis
+            duration: 1.2,
+            lerp: undefined, // Locomotive v5 inyecta lerp:0.1 por defecto internamente;
+            // hay que anularlo explícitamente o ignora duration
+            autoRaf: false,
+            wheelMultiplier: 0.8,
         },
     });
+
+    // console.log(getLenisInstance().options);
 
     isReady = true; // ✅ marcar como listo
 
@@ -62,7 +67,7 @@ export function stopScroll() {
 
 export function startScroll() {
     scrollInstance?.lenisInstance?.start();
-    console.log("start");
+    // console.log("start");
 }
 
 export function stopScrollMob() {
