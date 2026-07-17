@@ -117,8 +117,6 @@ canvas {
 .page-video {
     @include mixins.modal;
     height: 200vh;
-    position: sticky !important;
-    top: 0;
 
     #modal-video {
         .modal--content {
@@ -217,7 +215,6 @@ canvas {
             letter-spacing: 0;
             width: max-content;
             padding: var(--spacing-sm) var(--spacing-lg);
-            // margin-block-end: 20px;
         }
     }
 }

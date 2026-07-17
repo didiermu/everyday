@@ -207,44 +207,115 @@ const smoothLenis = async (lenis) => {
         const panels = gsap.utils.toArray(".panel");
         const panelContent = gsap.utils.toArray(".panel__content");
         const headerHome = document.querySelector(".head-home");
+        let startValue;
+        let endValue;
+        let pinValue;
+        const scrollTriggers = []; // guarda referencias para poder controlarlas después
+
+        // no borrar aun, origial
+        // panels.forEach((panel, i) => {
+        //     if (i < panels.length - 1) {
+        //         ScrollTrigger.create({
+        //             trigger: panel,
+        //             start: "bottom bottom",
+        //             // start: mediaQuery.matches
+        //             //     ? "bottom bottom"
+        //             //     : "+=100% bottom",
+        //             pin: true,
+        //             pinSpacing: false,
+        //             end: "bottom top",
+        //             invalidateOnRefresh: true,
+        //             ignoreMobileResize: true,
+        //             markers: true,
+        //         });
+        //     }
+        // });
+        // no borrar aun, origial
 
         panels.forEach((panel, i) => {
             if (i >= panels.length - 1) return;
 
-            const config = {
-                trigger: panel,
-                pin: panel,
-                pinSpacing: false,
-                invalidateOnRefresh: true,
-                fastScrollEnd: true,
-                ignoreMobileResize: true,
-                anticipatePin: 1, // ✅
-                id: `panel-${i}`,
-                markers: true,
-                start: "bottom bottom",
-                end: "bottom top",
-            };
+            let startValue;
+            let endValue;
 
             if (i === 0) {
-                const video = panel.querySelector(".video");
-                const extraHold = window.innerHeight * 1.1;
-
-                config.trigger = video;
-                config.pin = panel;
-                config.start = "top top";
-                config.end = `top+=${extraHold} top`;
-
-                let spacer = panel.nextElementSibling;
-                if (!spacer || !spacer.classList.contains("panel-spacer")) {
-                    spacer = document.createElement("div");
-                    spacer.classList.add("panel-spacer");
-                    panel.after(spacer);
-                }
-                spacer.style.height = `${extraHold}px`;
+                // Primer panel (video)
+                startValue = "top top";
+                endValue = () => `+=${window.innerHeight * 2}`; // 200vh
+            } else {
+                // Demás paneles
+                ((startValue = "bottom bottom"),
+                    // startValue = () => `top+=${window.innerHeight} top`; // retrasa 100vh
+                    (endValue = "bottom top"));
             }
 
-            ScrollTrigger.create(config);
+            const st = ScrollTrigger.create({
+                trigger: panel,
+                pin: true,
+                pinSpacing: false,
+                start: startValue,
+                end: endValue,
+                invalidateOnRefresh: true,
+                anticipatePin: 1,
+                fastScrollEnd: true,
+                // markers: true,
+                id: `panel-${i}`,
+                // onRefresh(self) {
+                //     console.log(
+                //         `Panel ${i}`,
+                //         "start:",
+                //         self.start,
+                //         "end:",
+                //         self.end,
+                //         "duration:",
+                //         self.end - self.start,
+                //     );
+                // },
+            });
         });
+
+        // panels.forEach((panel, i) => {
+        //     if (i >= panels.length - 1) return;
+        //
+        //     let startValue;
+        //     let endValue;
+        //     let pinValue = false; // pinSpacing siempre false para mantener el overlap
+        //
+        //     const esPanelVideo = panel.classList.contains("page-video");
+        //
+        //     if (esPanelVideo) {
+        //         startValue = "top top";
+        //         endValue = `top+=${extraHold} top`;
+        //
+        //         // spacer manual: reserva la duración extra sin bloquear el overlap
+        //         let spacer = panel.nextElementSibling;
+        //         if (!spacer || !spacer.classList.contains("panel-spacer")) {
+        //             spacer = document.createElement("div");
+        //             spacer.classList.add("panel-spacer");
+        //             panel.after(spacer);
+        //         }
+        //         spacer.style.height = `${extraHold}px`;
+        //     } else {
+        //         startValue = "bottom bottom";
+        //         endValue = "bottom top";
+        //     }
+        //
+        //     const config = {
+        //         trigger: panel, // ✅ ya no necesita ser un hijo distinto
+        //         pin: panel,
+        //         pinSpacing: pinValue,
+        //         invalidateOnRefresh: true,
+        //         fastScrollEnd: true,
+        //         ignoreMobileResize: true,
+        //         anticipatePin: 1,
+        //         id: `panel-${i}`,
+        //         markers: true,
+        //         start: startValue,
+        //         end: endValue,
+        //     };
+        //
+        //     ScrollTrigger.create(config);
+        // });
 
         panelContent.forEach((panel) => {
             ScrollTrigger.create({
@@ -349,128 +420,26 @@ const smoothLenis = async (lenis) => {
         });
     };
 
-    /**
-     * Pin del video con "scroll lock": el usuario debe hacer N gestos de
-     * scroll dentro del video antes de que Lenis retome el control.
-     *
-     * Ajustes vs la versión anterior:
-     * - stopScroll()/startScroll() ahora vienen de loadLocomotive.js
-     *   (antes se llamaban como globales, lo cual solo funcionaba si
-     *   existían en window por casualidad de bundling).
-     * - trigger.disable(false, false) sigue siendo la forma correcta de
-     *   evitar que el propio trigger dispare onLeave mientras lo tenemos
-     *   "secuestrado" manualmente.
-     */
-    const pinVideo = () => {
-        const video = document.querySelector(".video");
-        if (!video) return;
-
-        let scrollCount = 0;
-        let isLocked = false;
-        let lastScrollTime = 0;
-        let lastTouchY = 0;
-        let trigger;
-
-        const unlockScroll = () => {
-            if (!isLocked) return;
-
-            isLocked = false;
-            scrollCount = 0;
-
-            startScroll();
-
-            window.removeEventListener("wheel", handleScroll);
-            window.removeEventListener("touchstart", handleTouchStart);
-            window.removeEventListener("touchmove", handleScroll);
-
-            // Esperar un frame para que Lenis vuelva a tomar el control
-            requestAnimationFrame(() => {
-                trigger.enable(false, false);
-            });
-        };
-
-        const handleTouchStart = (e) => {
-            lastTouchY = e.touches[0].clientY;
-        };
-
-        const handleScroll = (e) => {
-            if (!isLocked) return;
-            if (e.cancelable) e.preventDefault();
-
-            let scrollDirection = 0;
-            let requiredScrolls = 6;
-
-            if (e.type === "wheel") {
-                if (e.deltaY > 0) scrollDirection = 1;
-                if (e.deltaY < 0) scrollDirection = -1;
-            }
-
-            if (e.type === "touchmove") {
-                const currentY = e.touches[0].clientY;
-                if (currentY < lastTouchY) scrollDirection = 1;
-                else if (currentY > lastTouchY) scrollDirection = -1;
-                lastTouchY = currentY;
-                requiredScrolls = 3;
-            }
-
-            if (!scrollDirection) return;
-
-            const now = Date.now();
-            if (now - lastScrollTime < 250) return;
-            lastScrollTime = now;
-
-            scrollCount = Math.max(0, scrollCount + scrollDirection);
-
-            if (scrollCount >= requiredScrolls) {
-                unlockScroll();
-            }
-        };
-
-        trigger = ScrollTrigger.create({
-            trigger: video,
-            start: "top top",
-            end: "+=105% center",
-            // markers: true,
-
-            onEnter: () => {
-                if (isLocked) return;
-
-                isLocked = true;
-                scrollCount = 0;
-                lastScrollTime = 0;
-
-                stopScroll();
-
-                // Evita que los cambios del viewport disparen onLeave
-                trigger.disable(false, false);
-
-                window.addEventListener("wheel", handleScroll, {
-                    passive: false,
-                });
-                window.addEventListener("touchstart", handleTouchStart, {
-                    passive: false,
-                });
-                window.addEventListener("touchmove", handleScroll, {
-                    passive: false,
-                });
-            },
-        });
-    };
-
     const setupThreeAnimation = () => {
         ScrollTrigger.create({
             trigger: ".page-home",
             scroller: window,
             start: mediaQuery.matches ? "-=2%" : "+=2%",
-            end: mediaQuery.matches ? "80% bottom" : "90% bottom",
+            end: mediaQuery.matches
+                ? "bottom+=20% bottom"
+                : "bottom+=50% bottom",
             // markers: true,
             scrub: true,
 
             onUpdate: (self) => {
                 const progress = self.progress;
                 const base = currentConfig.baseRotation;
-                const largoScroll = mediaQuery.matches ? 5.8 : 4;
-
+                // const largoScroll = mediaQuery.matches ? 10 : 5;
+                const largoScroll = mediaQueryFullwidth.matches
+                    ? 6
+                    : mediaQuery.matches
+                      ? 10
+                      : 5;
                 targetRotationX = base.x + progress * (Math.PI * 3);
                 targetRotationY = base.y + progress * (Math.PI * 1);
 
@@ -487,6 +456,9 @@ const smoothLenis = async (lenis) => {
         const mainPeriods = document.querySelector(".main-periods");
 
         if (mediaQuery.matches) {
+            console.log("desk");
+            mainPeriods.removeAttribute("data-lenis-prevent");
+            visualizationSection.removeAttribute("data-lenis-prevent");
             visualizationSection.classList.add("panel");
 
             if (visualizationSection.previousElementSibling !== pageViz) {
@@ -497,6 +469,10 @@ const smoothLenis = async (lenis) => {
                 visualizationSection.appendChild(mainPeriods);
             }
         } else {
+            console.log("mob");
+            mainPeriods.setAttribute("data-lenis-prevent", true);
+            visualizationSection.setAttribute("data-lenis-prevent", true);
+
             if (
                 visualizationHeroViz.previousElementSibling !==
                 visualizationSection
@@ -530,15 +506,14 @@ const smoothLenis = async (lenis) => {
     };
 
     await scrollViz();
+
     paneles();
     panelZoom();
-    // pinVideo();
     pinCards();
     setupThreeAnimation();
 
-    // Único refresh, al final, cuando TODOS los ScrollTrigger ya existen
-    // y el DOM (incluyendo los reordenamientos de scrollViz) está estable.
-    ScrollTrigger.refresh();
+    // no borrar aun
+    // ScrollTrigger.refresh();
 };
 
 const modalVideo = () => {
@@ -614,10 +589,10 @@ let targetPosY = 0;
 
 let sizeRender = [1, 1, 1];
 
-const maxRotationX = Math.PI * 3;
+const maxRotationX = Math.PI * 2;
 const maxRotationY = Math.PI * 1;
-const maxRotationZ = Math.PI * 3;
-const maxMoveY = 4;
+const maxRotationZ = Math.PI * 2;
+const maxMoveY = 5;
 const maxMoveX = 0;
 
 /* ==============================
@@ -628,37 +603,37 @@ const CONFIG = {
     mobile: {
         baseRotation: { x: -1, y: -1, z: -0.5 },
         scale: [-1, 1, 1],
-        position: [0.2, -4, 0],
-        camara: [0, 0, 15],
-        camaraShadow: [0, 0, 16],
+        position: [0.2, -0.5, 0],
+        camara: [0, 0, 6.6],
+        camaraShadow: [0, 0, 10],
     },
     laptop: {
         baseRotation: { x: -1.5, y: 4, z: -0.3 },
         scale: [-1, 1, 1],
-        position: [0, -4.8, 0],
-        camara: [0, 0, 12],
-        camaraShadow: [-2, 2.5, 18.5],
+        position: [0, -3.5, 0],
+        camara: [0, 0, 9],
+        camaraShadow: [-2, 2.5, 15.5],
     },
     desktop: {
         baseRotation: { x: -1.5, y: 4, z: -0.3 },
         scale: [-1, 1, 1],
-        position: [0, -3.9, 0],
-        camara: [0, 0, 10],
-        camaraShadow: [-2, 2.5, 18.5],
+        position: [0, -3, 0],
+        camara: [0, 0, 8],
+        camaraShadow: [-2, 2.5, 16.5],
     },
     fullwidth: {
         baseRotation: { x: -1.5, y: 4, z: -0.3 },
         scale: [-1, 1, 1],
-        position: [0, -3, 0],
-        camara: [0, 0, 8],
-        camaraShadow: [-2, 2.5, 18.5],
+        position: [0, -1.8, 0],
+        camara: [0, 0, 5.5],
+        camaraShadow: [-2, 2.5, 16],
     },
     fourk: {
         baseRotation: { x: -1.5, y: 4, z: -0.3 },
         scale: [-1, 1, 1],
-        position: [0, -3.5, 0],
-        camara: [0, 0, 9],
-        camaraShadow: [-2, 2.5, 18.5],
+        position: [0, -1.5, 0],
+        camara: [0, 0, 4.5],
+        camaraShadow: [-2, 2.5, 12],
     },
 };
 
@@ -823,8 +798,10 @@ const render = async () => {
 
         if (!model) return; // 🔥 evita mover antes de cargar
 
-        const rotationSpeed = mediaQuery.matches ? 0.2 : 0.2;
-        const positionSpeed = mediaQuery.matches ? 1 : 0.4;
+        const rotationSpeed = mediaQuery.matches ? 0.2 : 0.3;
+        // const rotationSpeed = mediaQuery.matches ? 0.2 : 0.05;
+        // const positionSpeed = mediaQuery.matches ? 1 : 0.4;
+        const positionSpeed = mediaQuery.matches ? 1 : 0.05;
 
         model.rotation.x +=
             (targetRotationX - model.rotation.x) * rotationSpeed;
@@ -1032,95 +1009,25 @@ const renderShadow = async () => {
 const init = async () => {
     // render();
     // renderShadow();
-    // no borrar aun
-    //     window.addEventListener("locomotiveReady", async ({ detail }) => {
-    //         const lenis = detail.instance?.lenisInstance;
-    //         if (!lenis) return;
-    //
-    //         lenis.on("scroll", ScrollTrigger.update);
-    //
-    //
-    //         ScrollTrigger.getAll().forEach((st) => st.kill());
-    //         await scrollGsap();
-    //
-    //         await new Promise((resolve) => requestAnimationFrame(resolve));
-    //         await new Promise((resolve) => requestAnimationFrame(resolve));
-    //
-    //         scrollToSection();
-    //
-    //         ScrollTrigger.refresh(true);
-    //     });
-
-    // window.addEventListener("locomotiveReady", async ({ detail }) => {
-    // const lenis = detail.instance?.lenisInstance;
-    // if (!lenis) return;
-
-    // lenis.on("scroll", ScrollTrigger.update);
-
-    window.addEventListener("locomotiveReady", () => {
-        const lenis = getLenisInstance();
-        const scrollContainer = document.querySelector(
-            "[data-scroll-container]",
-        );
-
-        // 2️⃣ ESTO es lo que falta: el scrollerProxy
-        ScrollTrigger.scrollerProxy(scrollContainer, {
-            scrollTop(value) {
-                if (arguments.length) {
-                    lenis.scrollTo(value, { immediate: true });
-                }
-                return lenis.scroll;
-            },
-            getBoundingClientRect() {
-                return {
-                    top: 0,
-                    left: 0,
-                    width: window.innerWidth,
-                    height: window.innerHeight,
-                };
-            },
-            // 3️⃣ CRÍTICO para que el pin funcione: como Lenis mueve el contenedor
-            // con transform y no scrollea window nativo, el pin debe usar transform
-            pinType: scrollContainer.style.transform ? "transform" : "fixed",
-        });
-
-        // 4️⃣ Sincronizar ScrollTrigger con el scroll de Lenis (esto ya lo tenías identificado)
-        lenis.on("scroll", ScrollTrigger.update);
-
-        // 5️⃣ Que TODOS tus ScrollTrigger.create usen este scroller por defecto,
-        // en vez de tener que repetirlo en cada uno
-        ScrollTrigger.defaults({ scroller: scrollContainer });
-
-        // 6️⃣ Cuando ScrollTrigger recalcula medidas, avisarle a Lenis también
-        ScrollTrigger.addEventListener("refresh", () => lenis.resize());
-
-        ScrollTrigger.refresh();
-    });
 
     ScrollTrigger.getAll().forEach((st) => st.kill());
 
     ScrollTrigger.clearScrollMemory();
 
-    // 1. Crear Locomotive/Lenis PRIMERO
     const loco = smoothScroll();
 
-    // 2. Recién ahora pasarle la instancia real de Lenis a smoothLenis,
-    //    para que el lenis.on("scroll", ScrollTrigger.update) se registre
-    //    contra una instancia que ya existe.
     await smoothLenis(loco?.lenisInstance);
 
     await new Promise((resolve) => requestAnimationFrame(resolve));
 
     scrollToSection();
 
+    // no borrar aun
     ScrollTrigger.refresh(true);
 
     modalVideo();
-    // videoHome();
-    // console.trace("REFRESH"); console.group("%cMANUAL REFRESH", "color:#00BCD4;font-weight:bold");
-    // console.trace();
-    // ScrollTrigger.refresh(true);
-    // console.groupEnd();
+    videoHome();
+
     mediaQueryLaptop.addEventListener("change", modalVideo);
 };
 

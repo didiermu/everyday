@@ -44,6 +44,8 @@ let modalVideoTrigger = null;
 let modalVideoCleanup = null;
 let sectionVideoWasPlaying = false;
 let gsapInitialized = false;
+let scrollVizTrigger = null;
+let resizeScrollVizFrame = null;
 
 const openModalVideo = async () => {
     const pageHome = document.querySelector(".page-home");
@@ -203,34 +205,18 @@ const smoothLenis = async (lenis) => {
         });
     };
 
+    const panelTriggers = [];
+
     const paneles = () => {
+        panelTriggers.forEach((trigger) => trigger.kill());
+        panelTriggers.length = 0;
+
         const panels = gsap.utils.toArray(".panel");
         const panelContent = gsap.utils.toArray(".panel__content");
         const headerHome = document.querySelector(".head-home");
         let startValue;
         let endValue;
         let pinValue;
-        const scrollTriggers = []; // guarda referencias para poder controlarlas después
-
-        // no borrar aun, origial
-        // panels.forEach((panel, i) => {
-        //     if (i < panels.length - 1) {
-        //         ScrollTrigger.create({
-        //             trigger: panel,
-        //             start: "bottom bottom",
-        //             // start: mediaQuery.matches
-        //             //     ? "bottom bottom"
-        //             //     : "+=100% bottom",
-        //             pin: true,
-        //             pinSpacing: false,
-        //             end: "bottom top",
-        //             invalidateOnRefresh: true,
-        //             ignoreMobileResize: true,
-        //             markers: true,
-        //         });
-        //     }
-        // });
-        // no borrar aun, origial
 
         panels.forEach((panel, i) => {
             if (i >= panels.length - 1) return;
@@ -272,63 +258,24 @@ const smoothLenis = async (lenis) => {
                 //     );
                 // },
             });
+
+            panelTriggers.push(st);
         });
 
-        // panels.forEach((panel, i) => {
-        //     if (i >= panels.length - 1) return;
-        //
-        //     let startValue;
-        //     let endValue;
-        //     let pinValue = false; // pinSpacing siempre false para mantener el overlap
-        //
-        //     const esPanelVideo = panel.classList.contains("page-video");
-        //
-        //     if (esPanelVideo) {
-        //         startValue = "top top";
-        //         endValue = `top+=${extraHold} top`;
-        //
-        //         // spacer manual: reserva la duración extra sin bloquear el overlap
-        //         let spacer = panel.nextElementSibling;
-        //         if (!spacer || !spacer.classList.contains("panel-spacer")) {
-        //             spacer = document.createElement("div");
-        //             spacer.classList.add("panel-spacer");
-        //             panel.after(spacer);
-        //         }
-        //         spacer.style.height = `${extraHold}px`;
-        //     } else {
-        //         startValue = "bottom bottom";
-        //         endValue = "bottom top";
-        //     }
-        //
-        //     const config = {
-        //         trigger: panel, // ✅ ya no necesita ser un hijo distinto
-        //         pin: panel,
-        //         pinSpacing: pinValue,
-        //         invalidateOnRefresh: true,
-        //         fastScrollEnd: true,
-        //         ignoreMobileResize: true,
-        //         anticipatePin: 1,
-        //         id: `panel-${i}`,
-        //         markers: true,
-        //         start: startValue,
-        //         end: endValue,
-        //     };
-        //
-        //     ScrollTrigger.create(config);
-        // });
-
         panelContent.forEach((panel) => {
-            ScrollTrigger.create({
+            const st = ScrollTrigger.create({
                 trigger: panel,
                 start: "-=200 top",
                 end: "bottom bottom",
                 toogleActions: "restart pause reverse pause",
                 // markers: true,
             });
+
+            panelTriggers.push(st);
         });
 
         if (!mediaQuery.matches) {
-            ScrollTrigger.create({
+            const st = ScrollTrigger.create({
                 trigger: ".page-periods",
                 start: "-=200 top",
                 end: "bottom bottom",
@@ -338,7 +285,11 @@ const smoothLenis = async (lenis) => {
                 onLeave: () => (headerHome.style.opacity = "1"),
                 onLeaveBack: () => (headerHome.style.opacity = "1"),
             });
+
+            panelTriggers.push(st);
         }
+
+        ScrollTrigger.refresh();
     };
 
     let currentStep = null;
@@ -450,13 +401,21 @@ const smoothLenis = async (lenis) => {
     };
 
     const scrollViz = async () => {
-        const pageViz = document.querySelector(".page-visualization");
-        const visualizationHeroViz = document.querySelector(".hero-viz");
-        const visualizationSection = document.querySelector(".visualization");
-        const mainPeriods = document.querySelector(".main-periods");
+        if (
+            !pageViz ||
+            !panelViz ||
+            !visualizationHeroViz ||
+            !visualizationSection ||
+            !mainPeriods
+        ) {
+            return;
+        }
 
         if (mediaQuery.matches) {
+            mainPeriods.removeAttribute("data-lenis-prevent");
+            visualizationSection.removeAttribute("data-lenis-prevent");
             visualizationSection.classList.add("panel");
+            visualizationSection.classList.remove("hide");
 
             if (visualizationSection.previousElementSibling !== pageViz) {
                 pageViz.after(visualizationSection);
@@ -465,41 +424,40 @@ const smoothLenis = async (lenis) => {
             if (mainPeriods.parentNode !== visualizationSection) {
                 visualizationSection.appendChild(mainPeriods);
             }
+            console.log("desk");
         } else {
-            if (
-                visualizationHeroViz.previousElementSibling !==
-                visualizationSection
-            ) {
-                visualizationSection.after(visualizationHeroViz);
+            mainPeriods.setAttribute("data-lenis-prevent", true);
+            visualizationSection.setAttribute("data-lenis-prevent", true);
+            visualizationSection.classList.remove("panel");
+
+            if (visualizationSection.parentNode !== panelViz) {
+                panelViz.appendChild(visualizationSection);
             }
 
-            if (mainPeriods.nextElementSibling !== visualizationHeroViz) {
-                mainPeriods.after(visualizationHeroViz);
+            if (mainPeriods.parentNode !== panelViz) {
+                panelViz.appendChild(mainPeriods);
             }
+
+            console.log("mob");
         }
-
-        ScrollTrigger.create({
-            trigger: ".visualization",
-            start: "-=150 top",
-            end: "120% bottom",
-            // markers: true,
-            onEnter: () =>
-                document.querySelector("#head-full").classList.add("viz-show"),
-            onEnterBack: () =>
-                document.querySelector("#head-full").classList.add("viz-show"),
-            onLeave: () =>
-                document
-                    .querySelector("#head-full")
-                    .classList.remove("viz-show"),
-            onLeaveBack: () =>
-                document
-                    .querySelector("#head-full")
-                    .classList.remove("viz-show"),
-        });
     };
 
-    await scrollViz();
-    paneles();
+    // await scrollViz();
+
+    const handleResizeScrollViz = async () => {
+        if (resizeScrollVizFrame) {
+            cancelAnimationFrame(resizeScrollVizFrame);
+        }
+
+        resizeScrollVizFrame = requestAnimationFrame(() => {
+            scrollViz();
+            paneles();
+        });
+    };
+    // no borrar aun
+    // window.addEventListener("resize", handleResizeScrollViz);
+
+    // paneles();
     panelZoom();
     pinCards();
     setupThreeAnimation();

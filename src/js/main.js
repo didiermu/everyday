@@ -69,6 +69,16 @@ export const initHashNavigation = () => {
     });
 };
 
+const vizView = document.querySelector(".viz-mapa");
+const vizInit = document.querySelector(".hero-viz");
+const pageViz = document.querySelector(".page-visualization");
+
+const toggleViz = () => {
+    vizView.classList.remove("show");
+    vizInit.classList.remove("hide");
+    pageViz.removeAttribute("data-lenis-prevent");
+};
+
 export const initMenuLinks = () => {
     const links = {
         "#link-intro": "#intro",
@@ -103,7 +113,11 @@ export const initMenuLinks = () => {
                 scrollToSection(hash);
             }
 
-            return;
+            if (vizView.classList.contains("show")) {
+                toggleViz();
+            } else {
+                console.log("no");
+            }
         }
     });
 };
@@ -118,6 +132,16 @@ export const initHashScroll = () => {
         startScroll();
         scrollToSection(hash);
     }, 300);
+};
+
+const validacionIos = () => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isChromeIOS = isIOS && /CriOS/i.test(navigator.userAgent);
+
+    if (isChromeIOS) {
+        document.body.classList.add("is-chrome-ios");
+    }
+    // document.body.classList.add("is-chrome-ios");
 };
 
 // Layout
@@ -140,4 +164,6 @@ export const initHashScroll = () => {
     // initHashNavigation();
     initMenuLinks();
     initHashScroll();
+
+    validacionIos();
 })();

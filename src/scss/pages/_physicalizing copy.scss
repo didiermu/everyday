@@ -287,130 +287,51 @@
     }
 }
 
-.page-hours {
-    background: var(--color-magic);
+.hours {
     padding-block: var(--spacing-6xl) var(--spacing-8xl);
     position: sticky !important;
     top: 0;
-    // min-height: auto !important;
 
-    .regular {
-        padding-block: 0;
-
-        // .col-12 {
-        //     display: grid;
-        //     place-content: space-between;
-        // }
-
-        .col-12 {
-            display: flex;
-            flex-direction: column;
-            row-gap: var(--spacing-lg);
-        }
-
-        h2 {
-            @include typography.typography("9xlDesk", primaryBold);
-            margin-block-end: 31.25rem;
-            grid-column: 1 / 2;
-            margin-block-end: auto;
-            // width: 80%;
-        }
-
-        video {
-            grid-column: 2 / 3;
-            grid-row: 1 / 3;
-            max-width: 424px;
-        }
-
-        p {
-            width: 80%;
-            max-width: 700px;
-            grid-column: 1 / 2;
-            grid-row: 2 / 3;
-            align-self: flex-end;
-        }
-
-        .carousel-all {
-            picture {
-                height: 700px;
-
-                img {
-                    height: 700px;
-                }
-            }
-        }
-
-        &.circle {
-            padding-block: 20rem 0;
-
-            h2 {
-                width: 60%;
-                margin-inline-start: auto;
-            }
-
-            & > picture {
-                margin-block-start: 19.375rem;
-            }
-        }
-
-        &.hours {
-            .row {
-                grid-template-columns: 55% 35%;
-            }
-
-            video {
-                max-width: 100%;
-            }
-        }
-
-        .swiper-slide {
-            display: grid;
-            justify-content: center;
-        }
+    .row {
+        row-gap: var(--spacing-lg);
     }
 
-    .hours {
-        .row {
-            row-gap: var(--spacing-lg);
+    h3 {
+        @include typography.typography("6xl", primaryBold);
+        text-transform: uppercase;
+        padding: 0 var(--spacing-sm);
+    }
+
+    &--list {
+        row-gap: var(--spacing-sm) !important;
+    }
+
+    ul {
+        display: flex;
+        justify-content: space-between;
+        list-style: none;
+        // column-gap: var(--spacing-sm);
+        padding: 0 var(--spacing-sm);
+
+        &:last-child {
+            background: var(--color-magic-500);
+            border-radius: var(--border-radius-xs);
+            padding: var(--spacing-sm);
+            margin-block-start: var(--spacing-xxs);
         }
 
-        h3 {
-            @include typography.typography("6xl", primaryBold);
-            text-transform: uppercase;
-            padding: 0 var(--spacing-sm);
-        }
+        li {
+            @include typography.typography("sm", tertiary);
+            flex-basis: 10%;
+            text-align: right;
 
-        &--list {
-            row-gap: var(--spacing-sm) !important;
-        }
-
-        ul {
-            display: flex;
-            justify-content: space-between;
-            list-style: none;
-            // column-gap: var(--spacing-sm);
-            padding: 0 var(--spacing-sm);
-
-            &:last-child {
-                background: var(--color-magic-500);
-                border-radius: var(--border-radius-xs);
-                padding: var(--spacing-sm);
-                margin-block-start: var(--spacing-xxs);
+            &:first-child {
+                text-align: left;
+                flex-basis: 67%;
             }
 
-            li {
-                @include typography.typography("sm", tertiary);
-                flex-basis: 10%;
-                text-align: right;
-
-                &:first-child {
-                    text-align: left;
-                    flex-basis: 67%;
-                }
-
-                strong {
-                    font-weight: 500;
-                }
+            strong {
+                font-weight: 500;
             }
         }
     }
@@ -437,7 +358,7 @@
         }
 
         .expand {
-            padding-block: var(--spacing-6xl) !important;
+            padding-block: 0;
             overflow-x: hidden;
 
             .marquee {
@@ -552,12 +473,7 @@
 
         &--moments {
             // height: 300vh;
-
             height: 350vh;
-
-            .expand {
-                padding-block: 0 !important;
-            }
 
             .expand__image {
                 &__info {
@@ -703,83 +619,6 @@
             }
         }
 
-        .link-decorated {
-            display: none;
-        }
-    }
-
-    .page-hours {
-        padding-block: 0;
-
-        .regular {
-            padding-block: var(--spacing-6xl);
-
-            .col-12 {
-                display: grid;
-                place-content: space-between;
-            }
-
-            h2 {
-                @include typography.typography("9xlDesk", primaryBold);
-                margin-block-end: 31.25rem;
-                grid-column: 1 / 2;
-                margin-block-end: auto;
-                // width: 80%;
-            }
-
-            video {
-                grid-column: 2 / 3;
-                grid-row: 1 / 3;
-                max-width: 424px;
-            }
-
-            p {
-                width: 80%;
-                max-width: 700px;
-                grid-column: 1 / 2;
-                grid-row: 2 / 3;
-                align-self: flex-end;
-            }
-
-            .carousel-all {
-                picture {
-                    height: 700px;
-
-                    img {
-                        height: 700px;
-                    }
-                }
-            }
-
-            &.circle {
-                padding-block: 20rem 0;
-
-                h2 {
-                    width: 60%;
-                    margin-inline-start: auto;
-                }
-
-                & > picture {
-                    margin-block-start: 19.375rem;
-                }
-            }
-
-            &.hours {
-                .row {
-                    grid-template-columns: 55% 35%;
-                }
-
-                video {
-                    max-width: 100%;
-                }
-            }
-
-            .swiper-slide {
-                display: grid;
-                justify-content: center;
-            }
-        }
-
         .hours {
             position: relative;
             padding-block-end: 12.5rem;
@@ -812,6 +651,10 @@
                     aspect-ratio: 1 / 1;
                 }
             }
+        }
+
+        .link-decorated {
+            display: none;
         }
     }
 }

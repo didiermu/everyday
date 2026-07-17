@@ -1,6 +1,23 @@
 @use "../core/typography";
 @use "../core/mixins";
 
+&.is-chrome-ios {
+    .visualization {
+        padding-block-start: 15rem;
+        top: 0;
+        height: 100vh !important;
+    }
+
+    .page-visualization {
+        height: 100svh !important;
+
+        &:has(.main-periods.show),
+        &:has(.visualization.show) {
+            padding-block-start: 12rem;
+        }
+    }
+}
+
 .page-visualization {
     padding-block-start: var(--spacing-6xl);
     background: var(--color-banana);
@@ -8,9 +25,13 @@
     &:has(.main-periods.show),
     &:has(.visualization.show) {
         background: var(--color-not-so-white-viz-300);
+        height: 100dvh;
+        overflow-y: scroll;
     }
 
-    /// modal periods se quitó a periods.scss
+    @supports (font: -apple-system-body) and (-webkit-appearance: none) {
+        padding-block-start: var(--spacing-10xl);
+    }
 }
 
 .main-periods {
@@ -20,16 +41,18 @@
     &.show {
         display: block;
         width: 100%;
-        height: 100svh;
-        overflow-y: scroll;
-        // position: absolute;
-        // top: 0;
+        // height: 100svh;
+        // overflow-y: scroll;
     }
 }
 
 .visualization {
+    position: fixed;
+    top: 0;
+    ///
     background: var(--color-not-so-white-viz-300);
-    padding-block: var(--spacing-6xl) var(--spacing-6xl);
+    // padding-block: var(--spacing-6xl) var(--spacing-6xl);
+    padding-block: var(--spacing-10xl) var(--spacing-6xl);
     display: none;
 
     &.hide {
@@ -38,6 +61,16 @@
 
     &.show {
         display: block;
+        overflow-y: scroll;
+        height: 100vh;
+    }
+
+    @supports (font: -apple-system-body) and (-webkit-appearance: none) {
+        top: var(--spacing-6xl);
+
+        &.show {
+            height: 100dvh;
+        }
     }
 
     .row {
@@ -112,7 +145,8 @@
         cursor: pointer;
     }
 
-    &--period--head {
+    &--period--head,
+    &--ring--head {
         display: none;
     }
 
@@ -131,10 +165,20 @@
 @media (min-width: 1280px) {
     .page-visualization {
         padding-block: 0;
+        position: sticky !important;
+        top: 0;
+
+        &:has(.main-periods.show) {
+            .visualization {
+                position: fixed;
+            }
+        }
 
         &:has(.main-periods.show),
         &:has(.visualization.show) {
             background: var(--color-banana);
+            overflow-y: initial;
+            height: auto;
         }
 
         &:has(.hero.hide) {
@@ -147,6 +191,8 @@
             height: 100dvh;
             display: grid;
             padding-block: 0;
+            position: sticky;
+            top: 0;
 
             .container {
                 align-self: center;
@@ -196,16 +242,15 @@
     }
 
     .visualization {
+        --height-parrafo: 400px;
+
         display: block;
         padding-block: 0;
         width: 100%;
-        // height: 100vh;
         height: 100svh;
         background: var(--color-not-so-white-viz-300);
         position: relative;
-        // position: absolute;
-        // top: 0;
-        // opacity: 0;
+        top: initial;
 
         &.hover {
             background: #fcfcfc;
@@ -289,34 +334,6 @@
             transition: 0.3s ease-in-out;
             display: none;
         }
-
-        //         .col-12.visualization--instructions {
-        //             display: flex;
-        //             flex-direction: column;
-        //             row-gap: var(--spacing-lg);
-        //             width: 24%;
-        //             max-width: 320px;
-        //             z-index: 1;
-        //             align-items: flex-start;
-        //             transition: 0.3s ease-in-out;
-        //             //
-        //             position: absolute;
-        //             left: 0;
-        //             top: 20%;
-        //
-        //             h4 {
-        //                 @include typography.typography("md", tertiary);
-        //                 font-weight: 300;
-        //                 padding-block: var(--spacing-sm);
-        //                 text-align: center;
-        //                 background: url(./../img/cerillo-negative.webp) no-repeat 35%
-        //                     center / 50px;
-        //
-        //                 strong {
-        //                     font-weight: 500;
-        //                 }
-        //             }
-        //         }
 
         &--instructions__block {
             h5 {
@@ -506,7 +523,8 @@
         &--resume {
             position: absolute;
             width: 290px;
-            height: max-content;
+            // height: max-content;
+            height: var(--height-parrafo);
             margin: auto;
             opacity: 0;
             display: none;
@@ -517,7 +535,8 @@
             }
 
             &.show {
-                display: block;
+                display: flex;
+                align-items: center;
                 opacity: 1;
                 z-index: 2;
             }
@@ -528,8 +547,9 @@
             &.resume-17,
             &.resume-18,
             &.resume-26 {
-                top: 0;
-                bottom: 0;
+                // top: 0;
+                top: 12%;
+                // bottom: 0;
                 right: 0;
             }
 
@@ -547,8 +567,9 @@
             &.resume-7,
             &.resume-9,
             &.resume-10 {
-                top: 0;
-                bottom: 0;
+                // top: 0;
+                top: 12%;
+                // bottom: 0;
                 left: 0;
             }
 
@@ -606,7 +627,17 @@
 }
 
 @media (min-width: 1920px) {
-    .visualization--resume {
-        width: 320px;
+    .visualization {
+        --height-parrafo: 500px;
+
+        &--resume {
+            width: 320px;
+        }
+    }
+}
+
+@media (min-width: 1921px) {
+    .visualization {
+        --height-parrafo: 600px;
     }
 }

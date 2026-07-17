@@ -44,6 +44,8 @@ let modalVideoTrigger = null;
 let modalVideoCleanup = null;
 let sectionVideoWasPlaying = false;
 let gsapInitialized = false;
+let scrollVizTrigger = null;
+let resizeScrollVizFrame = null;
 
 const openModalVideo = async () => {
     const pageHome = document.querySelector(".page-home");
@@ -203,34 +205,18 @@ const smoothLenis = async (lenis) => {
         });
     };
 
+    const panelTriggers = [];
+
     const paneles = () => {
+        panelTriggers.forEach((trigger) => trigger.kill());
+        panelTriggers.length = 0;
+
         const panels = gsap.utils.toArray(".panel");
         const panelContent = gsap.utils.toArray(".panel__content");
         const headerHome = document.querySelector(".head-home");
         let startValue;
         let endValue;
         let pinValue;
-        const scrollTriggers = []; // guarda referencias para poder controlarlas después
-
-        // no borrar aun, origial
-        // panels.forEach((panel, i) => {
-        //     if (i < panels.length - 1) {
-        //         ScrollTrigger.create({
-        //             trigger: panel,
-        //             start: "bottom bottom",
-        //             // start: mediaQuery.matches
-        //             //     ? "bottom bottom"
-        //             //     : "+=100% bottom",
-        //             pin: true,
-        //             pinSpacing: false,
-        //             end: "bottom top",
-        //             invalidateOnRefresh: true,
-        //             ignoreMobileResize: true,
-        //             markers: true,
-        //         });
-        //     }
-        // });
-        // no borrar aun, origial
 
         panels.forEach((panel, i) => {
             if (i >= panels.length - 1) return;
@@ -272,63 +258,24 @@ const smoothLenis = async (lenis) => {
                 //     );
                 // },
             });
+
+            panelTriggers.push(st);
         });
 
-        // panels.forEach((panel, i) => {
-        //     if (i >= panels.length - 1) return;
-        //
-        //     let startValue;
-        //     let endValue;
-        //     let pinValue = false; // pinSpacing siempre false para mantener el overlap
-        //
-        //     const esPanelVideo = panel.classList.contains("page-video");
-        //
-        //     if (esPanelVideo) {
-        //         startValue = "top top";
-        //         endValue = `top+=${extraHold} top`;
-        //
-        //         // spacer manual: reserva la duración extra sin bloquear el overlap
-        //         let spacer = panel.nextElementSibling;
-        //         if (!spacer || !spacer.classList.contains("panel-spacer")) {
-        //             spacer = document.createElement("div");
-        //             spacer.classList.add("panel-spacer");
-        //             panel.after(spacer);
-        //         }
-        //         spacer.style.height = `${extraHold}px`;
-        //     } else {
-        //         startValue = "bottom bottom";
-        //         endValue = "bottom top";
-        //     }
-        //
-        //     const config = {
-        //         trigger: panel, // ✅ ya no necesita ser un hijo distinto
-        //         pin: panel,
-        //         pinSpacing: pinValue,
-        //         invalidateOnRefresh: true,
-        //         fastScrollEnd: true,
-        //         ignoreMobileResize: true,
-        //         anticipatePin: 1,
-        //         id: `panel-${i}`,
-        //         markers: true,
-        //         start: startValue,
-        //         end: endValue,
-        //     };
-        //
-        //     ScrollTrigger.create(config);
-        // });
-
         panelContent.forEach((panel) => {
-            ScrollTrigger.create({
+            const st = ScrollTrigger.create({
                 trigger: panel,
                 start: "-=200 top",
                 end: "bottom bottom",
                 toogleActions: "restart pause reverse pause",
                 // markers: true,
             });
+
+            panelTriggers.push(st);
         });
 
         if (!mediaQuery.matches) {
-            ScrollTrigger.create({
+            const st = ScrollTrigger.create({
                 trigger: ".page-periods",
                 start: "-=200 top",
                 end: "bottom bottom",
@@ -338,7 +285,11 @@ const smoothLenis = async (lenis) => {
                 onLeave: () => (headerHome.style.opacity = "1"),
                 onLeaveBack: () => (headerHome.style.opacity = "1"),
             });
+
+            panelTriggers.push(st);
         }
+
+        ScrollTrigger.refresh();
     };
 
     let currentStep = null;
@@ -425,15 +376,21 @@ const smoothLenis = async (lenis) => {
             trigger: ".page-home",
             scroller: window,
             start: mediaQuery.matches ? "-=2%" : "+=2%",
-            end: mediaQuery.matches ? "80% bottom" : "90% bottom",
+            end: mediaQuery.matches
+                ? "bottom+=20% bottom"
+                : "bottom+=50% bottom",
             // markers: true,
             scrub: true,
 
             onUpdate: (self) => {
                 const progress = self.progress;
                 const base = currentConfig.baseRotation;
-                const largoScroll = mediaQuery.matches ? 5.8 : 4;
-
+                // const largoScroll = mediaQuery.matches ? 10 : 5;
+                const largoScroll = mediaQueryFullwidth.matches
+                    ? 6
+                    : mediaQuery.matches
+                      ? 10
+                      : 5;
                 targetRotationX = base.x + progress * (Math.PI * 3);
                 targetRotationY = base.y + progress * (Math.PI * 1);
 
@@ -444,13 +401,27 @@ const smoothLenis = async (lenis) => {
     };
 
     const scrollViz = async () => {
-        const pageViz = document.querySelector(".page-visualization");
-        const visualizationHeroViz = document.querySelector(".hero-viz");
-        const visualizationSection = document.querySelector(".visualization");
-        const mainPeriods = document.querySelector(".main-periods");
+        // const pageViz = document.querySelector(".page-visualization");
+        // const panelViz = pageViz?.querySelector(".panel__content");
+        // const visualizationHeroViz = document.querySelector(".hero-viz");
+        // const visualizationSection = document.querySelector(".visualization");
+        // const mainPeriods = document.querySelector(".main-periods");
+
+        if (
+            !pageViz ||
+            !panelViz ||
+            !visualizationHeroViz ||
+            !visualizationSection ||
+            !mainPeriods
+        ) {
+            return;
+        }
 
         if (mediaQuery.matches) {
+            mainPeriods.removeAttribute("data-lenis-prevent");
+            visualizationSection.removeAttribute("data-lenis-prevent");
             visualizationSection.classList.add("panel");
+            visualizationSection.classList.remove("hide");
 
             if (visualizationSection.previousElementSibling !== pageViz) {
                 pageViz.after(visualizationSection);
@@ -459,40 +430,60 @@ const smoothLenis = async (lenis) => {
             if (mainPeriods.parentNode !== visualizationSection) {
                 visualizationSection.appendChild(mainPeriods);
             }
+            console.log("desk");
         } else {
-            if (
-                visualizationHeroViz.previousElementSibling !==
-                visualizationSection
-            ) {
-                visualizationSection.after(visualizationHeroViz);
+            mainPeriods.setAttribute("data-lenis-prevent", true);
+            visualizationSection.setAttribute("data-lenis-prevent", true);
+            visualizationSection.classList.remove("panel");
+
+            if (visualizationSection.parentNode !== panelViz) {
+                panelViz.appendChild(visualizationSection);
             }
 
-            if (mainPeriods.nextElementSibling !== visualizationHeroViz) {
-                mainPeriods.after(visualizationHeroViz);
+            if (mainPeriods.parentNode !== panelViz) {
+                panelViz.appendChild(mainPeriods);
             }
+
+            console.log("mob");
         }
 
-        ScrollTrigger.create({
-            trigger: ".visualization",
-            start: "-=150 top",
-            end: "120% bottom",
-            // markers: true,
-            onEnter: () =>
-                document.querySelector("#head-full").classList.add("viz-show"),
-            onEnterBack: () =>
-                document.querySelector("#head-full").classList.add("viz-show"),
-            onLeave: () =>
-                document
-                    .querySelector("#head-full")
-                    .classList.remove("viz-show"),
-            onLeaveBack: () =>
-                document
-                    .querySelector("#head-full")
-                    .classList.remove("viz-show"),
-        });
+        // ScrollTrigger.create({
+        //     trigger: ".visualization",
+        //     start: "-=150 top",
+        //     end: "120% bottom",
+        //     // markers: true,
+        //     onEnter: () =>
+        //         document.querySelector("#head-full")?.classList.add("viz-show"),
+        //     onEnterBack: () =>
+        //         document.querySelector("#head-full")?.classList.add("viz-show"),
+        //     onLeave: () =>
+        //         document
+        //             .querySelector("#head-full")
+        //             ?.classList.remove("viz-show"),
+        //     onLeaveBack: () =>
+        //         document
+        //             .querySelector("#head-full")
+        //             ?.classList.remove("viz-show"),
+        // });
+
+        // ScrollTrigger.refresh();
     };
 
-    await scrollViz();
+    // await scrollViz();
+
+    const handleResizeScrollViz = async () => {
+        if (resizeScrollVizFrame) {
+            cancelAnimationFrame(resizeScrollVizFrame);
+        }
+
+        resizeScrollVizFrame = requestAnimationFrame(() => {
+            scrollViz();
+            paneles();
+        });
+    };
+    // no borrar aun
+    // window.addEventListener("resize", handleResizeScrollViz);
+
     paneles();
     panelZoom();
     pinCards();
@@ -575,10 +566,10 @@ let targetPosY = 0;
 
 let sizeRender = [1, 1, 1];
 
-const maxRotationX = Math.PI * 3;
+const maxRotationX = Math.PI * 2;
 const maxRotationY = Math.PI * 1;
-const maxRotationZ = Math.PI * 3;
-const maxMoveY = 4;
+const maxRotationZ = Math.PI * 2;
+const maxMoveY = 5;
 const maxMoveX = 0;
 
 /* ==============================
@@ -589,37 +580,37 @@ const CONFIG = {
     mobile: {
         baseRotation: { x: -1, y: -1, z: -0.5 },
         scale: [-1, 1, 1],
-        position: [0.2, -4, 0],
-        camara: [0, 0, 15],
-        camaraShadow: [0, 0, 16],
+        position: [0.2, -0.5, 0],
+        camara: [0, 0, 6.6],
+        camaraShadow: [0, 0, 10],
     },
     laptop: {
         baseRotation: { x: -1.5, y: 4, z: -0.3 },
         scale: [-1, 1, 1],
-        position: [0, -4.8, 0],
-        camara: [0, 0, 12],
-        camaraShadow: [-2, 2.5, 18.5],
+        position: [0, -3.5, 0],
+        camara: [0, 0, 9],
+        camaraShadow: [-2, 2.5, 15.5],
     },
     desktop: {
         baseRotation: { x: -1.5, y: 4, z: -0.3 },
         scale: [-1, 1, 1],
-        position: [0, -3.9, 0],
-        camara: [0, 0, 10],
-        camaraShadow: [-2, 2.5, 18.5],
+        position: [0, -3, 0],
+        camara: [0, 0, 8],
+        camaraShadow: [-2, 2.5, 16.5],
     },
     fullwidth: {
         baseRotation: { x: -1.5, y: 4, z: -0.3 },
         scale: [-1, 1, 1],
-        position: [0, -3, 0],
-        camara: [0, 0, 8],
-        camaraShadow: [-2, 2.5, 18.5],
+        position: [0, -1.8, 0],
+        camara: [0, 0, 5.5],
+        camaraShadow: [-2, 2.5, 16],
     },
     fourk: {
         baseRotation: { x: -1.5, y: 4, z: -0.3 },
         scale: [-1, 1, 1],
-        position: [0, -3.5, 0],
-        camara: [0, 0, 9],
-        camaraShadow: [-2, 2.5, 18.5],
+        position: [0, -1.5, 0],
+        camara: [0, 0, 4.5],
+        camaraShadow: [-2, 2.5, 12],
     },
 };
 
@@ -784,8 +775,10 @@ const render = async () => {
 
         if (!model) return; // 🔥 evita mover antes de cargar
 
-        const rotationSpeed = mediaQuery.matches ? 0.2 : 0.2;
-        const positionSpeed = mediaQuery.matches ? 1 : 0.4;
+        const rotationSpeed = mediaQuery.matches ? 0.2 : 0.3;
+        // const rotationSpeed = mediaQuery.matches ? 0.2 : 0.05;
+        // const positionSpeed = mediaQuery.matches ? 1 : 0.4;
+        const positionSpeed = mediaQuery.matches ? 1 : 0.05;
 
         model.rotation.x +=
             (targetRotationX - model.rotation.x) * rotationSpeed;
@@ -991,61 +984,15 @@ const renderShadow = async () => {
 };
 
 const init = async () => {
-    render();
-    renderShadow();
-
-    //     window.addEventListener("locomotiveReady", () => {
-    //         const lenis = getLenisInstance();
-    //         const scrollContainer = document.querySelector(
-    //             "[data-scroll-container]",
-    //         );
-    //
-    //         // 2️⃣ ESTO es lo que falta: el scrollerProxy
-    //         ScrollTrigger.scrollerProxy(scrollContainer, {
-    //             scrollTop(value) {
-    //                 if (arguments.length) {
-    //                     lenis.scrollTo(value, { immediate: true });
-    //                 }
-    //                 return lenis.scroll;
-    //             },
-    //             getBoundingClientRect() {
-    //                 return {
-    //                     top: 0,
-    //                     left: 0,
-    //                     width: window.innerWidth,
-    //                     height: window.innerHeight,
-    //                 };
-    //             },
-    //             // 3️⃣ CRÍTICO para que el pin funcione: como Lenis mueve el contenedor
-    //             // con transform y no scrollea window nativo, el pin debe usar transform
-    //             pinType: scrollContainer.style.transform ? "transform" : "fixed",
-    //         });
-    //
-    //         // 4️⃣ Sincronizar ScrollTrigger con el scroll de Lenis (esto ya lo tenías identificado)
-    //         lenis.on("scroll", ScrollTrigger.update);
-    //
-    //         // 5️⃣ Que TODOS tus ScrollTrigger.create usen este scroller por defecto,
-    //         // en vez de tener que repetirlo en cada uno
-    //         ScrollTrigger.defaults({ scroller: scrollContainer });
-    //
-    //         // no borrar aun
-    //         // 6️⃣ Cuando ScrollTrigger recalcula medidas, avisarle a Lenis también
-    //         ScrollTrigger.addEventListener("refresh", () => lenis.resize());
-    //
-    //         // no borrar aun
-    //         // ScrollTrigger.refresh();
-    //     });
+    // render();
+    // renderShadow();
 
     ScrollTrigger.getAll().forEach((st) => st.kill());
 
     ScrollTrigger.clearScrollMemory();
 
-    // 1. Crear Locomotive/Lenis PRIMERO
     const loco = smoothScroll();
 
-    // 2. Recién ahora pasarle la instancia real de Lenis a smoothLenis,
-    //    para que el lenis.on("scroll", ScrollTrigger.update) se registre
-    //    contra una instancia que ya existe.
     await smoothLenis(loco?.lenisInstance);
 
     await new Promise((resolve) => requestAnimationFrame(resolve));

@@ -18,16 +18,98 @@ const mediaQueryFull = window.matchMedia("(min-width:1920px)");
 let swiperInstance = null;
 const scroll = getScrollInstance();
 
+const pageViz = document.querySelector(".page-visualization");
+const panelViz = pageViz?.querySelector(".panel__content");
+const visualizationHeroViz = document.querySelector(".hero-viz");
+const visualizationSection = document.querySelector(".visualization");
+const mainPeriods = document.querySelector(".main-periods");
+
+const resetDesktop = () => {
+    if (mediaQuery.matches) {
+        visualizationHeroViz.classList.remove("hide");
+        visualizationSection.classList.remove("show");
+        mainPeriods.removeAttribute("data-lenis-prevent");
+        visualizationSection.removeAttribute("data-lenis-prevent");
+        startScroll();
+        console.log("d");
+    } else {
+        console.log("m");
+        mainPeriods.setAttribute("data-lenis-prevent", true);
+        visualizationSection.setAttribute("data-lenis-prevent", true);
+    }
+};
+
+// window.addEventListener("resize", resetDesktop);
+// resetDesktop();
+
+const scrollViz = async () => {
+    if (
+        !pageViz ||
+        !panelViz ||
+        !visualizationHeroViz ||
+        !visualizationSection ||
+        !mainPeriods
+    ) {
+        return;
+    }
+
+    if (mediaQuery.matches) {
+        // mainPeriods.removeAttribute("data-lenis-prevent");
+        // visualizationSection.removeAttribute("data-lenis-prevent");
+        if (visualizationSection.classList.contains("show")) {
+            pageViz.removeAttribute("data-lenis-prevent");
+        }
+
+        visualizationSection.classList.add("panel");
+        visualizationSection.classList.remove("hide");
+
+        if (visualizationSection.previousElementSibling !== pageViz) {
+            pageViz.after(visualizationSection);
+        }
+
+        if (mainPeriods.parentNode !== visualizationSection) {
+            visualizationSection.appendChild(mainPeriods);
+        }
+        console.log("desk");
+    } else {
+        // mainPeriods.setAttribute("data-lenis-prevent", true);
+        // visualizationSection.setAttribute("data-lenis-prevent", true);
+        if (visualizationSection.classList.contains("show")) {
+            pageViz.setAttribute("data-lenis-prevent", true);
+        }
+
+        visualizationSection.classList.remove("panel");
+
+        if (visualizationSection.parentNode !== panelViz) {
+            panelViz.appendChild(visualizationSection);
+        }
+
+        if (mainPeriods.parentNode !== panelViz) {
+            panelViz.appendChild(mainPeriods);
+        }
+
+        console.log("mob");
+    }
+};
+
+window.addEventListener("resize", scrollViz);
+scrollViz();
+
 const modalViz = () => {
     const hero = document.querySelector(".hero-viz");
     const modal = document.querySelector(".visualization");
     const button = document.querySelector("#btn-viz");
 
     if (modal && button) {
-        buttonHandler = () => {
+        const buttonHandlerViz = () => {
             hero.classList.add("hide");
             modal.classList.add("show");
-            document.querySelector("body").className = "panel-3";
+            // document.querySelector("body").className = "panel-3";
+            document.querySelector("body").classList.add("panel-3");
+            pageViz.setAttribute("data-lenis-prevent", true);
+
+            stopScroll();
+            // ScrollTrigger.refresh();
 
             const loco = getScrollInstance();
             if (!loco) return;
@@ -44,14 +126,18 @@ const modalViz = () => {
                 top += el.offsetTop;
                 el = el.offsetParent;
             }
-
-            ScrollTrigger.refresh(true);
-            console.log("top absoluto:");
+            setTimeout(() => {
+                lenis.scrollTo(top, { immediate: true });
+            }, 500);
             // NO BORRAR AUN
-            // lenis.scrollTo(top, { immediate: true });
+
+            // PRUEBA
+
+            // console.log("modalviz");
+            // PRUEBA
         };
 
-        button.addEventListener("click", buttonHandler);
+        button.addEventListener("click", buttonHandlerViz);
     }
 };
 
@@ -90,7 +176,8 @@ const modalExplore = () => {
 
                 linkBack = document.querySelector(".link-back");
                 linkBack.addEventListener("click", linkHandlerMobile);
-                document.querySelector("body").className = "panel-3";
+                // document.querySelector("body").className = "panel-3";
+                document.querySelector("body").classList.add("panel-3");
 
                 //
                 const loco = getScrollInstance();
@@ -117,11 +204,11 @@ const modalExplore = () => {
                 // console.trace();
                 // ScrollTrigger.refresh(true);
                 // console.groupEnd();
-                lenis.scrollTo(top, { immediate: true });
                 //
                 // //destroyScroll();
                 stopScroll();
-                // console.log("modd");
+                lenis.scrollTo(top, { immediate: true });
+                console.log("explore");
             }, 300);
         };
 
@@ -169,7 +256,9 @@ export const linkHandlerMobile = async () => {
     }
 
     await loadComponent("#header", "componets/header.html");
-    startScroll();
+    // NO BORRAR AUN
+    // startScroll();
+    // NO BORRAR AUN
     // if (scroll) {
     //     smoothScroll();
     // }
@@ -317,7 +406,8 @@ const openExplore = async (idRing) => {
         // console.trace();
         // ScrollTrigger.refresh(true);
         // console.groupEnd();
-        document.querySelector("body").className = "panel-3";
+        // document.querySelector("body").className = "panel-3";
+        document.querySelector("body").classList.add("panel-3");
     }, 500);
 
     // no borrar aun
